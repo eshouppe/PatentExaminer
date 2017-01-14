@@ -1,7 +1,10 @@
 #!flask/bin/python
 from flask import Flask, request, jsonify, current_app
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__, static_url_path='/public')
+#TODO: remove cors before deployment...use for development of UI
+CORS(app)
 
 #Fake data for now
 fresults = [
@@ -44,7 +47,7 @@ def get_tasks():
         'done': False
     }
     #Return Response to request from client(JS)
-    return jsonify({'task': task})
+    return jsonify(task)
 
 #Kick off the server
 if __name__ == '__main__':

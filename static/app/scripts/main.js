@@ -80,11 +80,17 @@
   });
 
   $.ajax({
-    url: 'http://localhost:5000/venn/api/v1.0/tasks',
-    contentType: "application/json"
+    url: 'http://localhost:5000/venn/api/v1.0/search',
+    contentType: "application/json",
+    dataType:'json',
+    method:'POST',
+    //data is the search term
+    data:JSON.stringify({
+      "search":"tank of russia"
+    })
   }).then(function (data) {
-    for(var obj in data._items) {
-      $('.dataresults').append('<li class="mdl-list__item">'+ data._items[obj].model +'</li>');
+    for(var obj in data.results) {
+      $('.dataresults').append('<li class="mdl-list__item">'+ JSON.stringify(data.results[obj]) +'</li>');
     }
   })
 })();
