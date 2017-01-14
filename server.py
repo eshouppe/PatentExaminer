@@ -1,6 +1,7 @@
 #!flask/bin/python
 from flask import Flask, request, jsonify, current_app
 from flask_cors import CORS, cross_origin
+from processor.search import search_json
 
 
 app = Flask(__name__, static_url_path='/public')
@@ -41,14 +42,15 @@ def get_tasks():
     
     # Entry point to call search. Pass it the request.json['search'].
     #  It will return the response (take the place of task below)
+    match_num, match_abstract, searched_terms = search_json("processor/patents.json", request.json['search'])
+    print("Matching patents: {}".format(", ".join(match_num)))
 
     #Create Response Obj
     task = {
-        'id': '1230i4',
-        'numOfResults': 2,
+        'numMatchedPatents': len(match_num),
         'searchedString': request.json['search'],
-        'results': fresults,
-        'done': False
+        'matchingPatentNums': match_num,
+        'searchedTerms': ", ".join(searched_terms)
     }
     #Return Response to request from client(JS)
     return jsonify(task)
