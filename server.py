@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify, current_app
 from flask_cors import CORS, cross_origin
 
+
 app = Flask(__name__, static_url_path='/public')
 #TODO: remove cors before deployment...use for development of UI
 CORS(app)
@@ -37,6 +38,9 @@ def get_tasks():
     #if not Abort search with a 400 code
     if not request.json or not 'search' in request.json:
         abort(400)
+    
+    # Entry point to call search. Pass it the request.json['search'].
+    #  It will return the response (take the place of task below)
 
     #Create Response Obj
     task = {
