@@ -90,7 +90,8 @@
     })
   }).then(function (data) {
     for(var obj in data.results) {
-      $('.dataresults').append('<li class="mdl-list__item">'+ JSON.stringify(data.results[obj]) +'</li>');
+      $('.dataresults').append('<li class="mdl-list__item"><i class="material-icons mdl-list__item-icon">description</i>' +
+        JSON.stringify(data.results[obj]) +'</li>');
     }
   })
 })();

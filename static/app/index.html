@@ -37,7 +37,8 @@
   -->
 
   <!-- Material Design icons -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+  <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">-->
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
@@ -82,6 +83,42 @@
     <div class="mdl-grid demo-content">
       <div id="home" class="tab active demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
         Venn Search
+        <div class="searchContainer">
+          <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--6-col">
+              <form action="#" class="inputForm">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" id="search1">
+                  <label class="mdl-textfield__label" for="search1">Search 1</label>
+                </div>
+                <label class="mdl-button mdl-js-button mdl-button--icon mdl-layout--large-screen-only" for="search1">
+                  <i class="material-icons">search</i>
+                </label>
+              </form>
+              <button class="center mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-layout--small-screen-only">
+                Search 1 <i class="material-icons">search</i>
+              </button>
+            </div>
+            <div class="mdl-cell mdl-cell--6-col">
+              <form action="#" class="inputForm">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" id="search2">
+                  <label class="mdl-textfield__label" for="search2">Search 2</label>
+                </div>
+                <label class="mdl-button mdl-js-button mdl-button--icon mdl-layout--large-screen-only" for="search2">
+                  <i class="material-icons">search</i>
+                </label>
+              </form>
+              <button class="center mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-layout--small-screen-only">
+                Search 2 <i class="material-icons">search</i>
+              </button>
+            </div>
+          </div>
+          <div class="mdl-grid" style="max-width: 400px;display: none;">
+            <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+          </div>
+        </div>
+
         <ul class='mdl-list dataresults'>
 
         </ul>

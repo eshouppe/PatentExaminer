@@ -239,3 +239,16 @@ main .tab.active {
 .title i {
   font-size: 4rem;
 }
+.inputForm {
+  text-align: center;
+}
+.center {
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+}
+.dataresults {
+  max-width: 500px;
+  margin: auto;
+  word-break:break-all;
+}
