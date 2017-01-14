@@ -71,6 +71,8 @@
       console.error('Error during service worker registration:', e);
     });
   }
+  //Navigation Functions
+  //********************
   $(document).on('click', 'a.mdl-navigation__link', function(e) {
     var currentClickedObj = $(e.currentTarget);
     if (currentClickedObj.data('link')) {
@@ -79,19 +81,80 @@
     }
   });
 
-  $.ajax({
-    url: 'http://localhost:5000/venn/api/v1.0/search',
-    contentType: "application/json",
-    dataType:'json',
-    method:'POST',
-    //data is the search term
-    data:JSON.stringify({
-      "search":"tank of russia"
-    })
-  }).then(function (data) {
-    for(var obj in data.results) {
-      $('.dataresults').append('<li class="mdl-list__item"><i class="material-icons mdl-list__item-icon">description</i>' +
-        JSON.stringify(data.results[obj]) +'</li>');
+  //Charting functions:
+  //********************
+  var times = function(n) {
+    return Array.apply(null, new Array(n));
+  };
+
+  var data = times(52).map(Math.random).reduce(function(data, rnd, index) {
+    data.labels.push(index + 1);
+    data.series.forEach(function(series) {
+      series.push(Math.random() * 100)
+    });
+
+    return data;
+  }, {
+    labels: [],
+    series: times(2).map(function() { return new Array() })
+  });
+
+  var options = {
+    showLine: false,
+    axisX: {
+      labelInterpolationFnc: function(value, index) {
+        return index % 13 === 0 ? 'W' + value : null;
+      }
     }
-  })
+  };
+
+  var responsiveOptions = [
+    ['screen and (min-width: 640px)', {
+      axisX: {
+        labelInterpolationFnc: function(value, index) {
+          return index % 4 === 0 ? 'W' + value : null;
+        }
+      }
+    }]
+  ];
+
+  var mychart = new Chartist.Line('.ct-chart', data, options, responsiveOptions).on('draw', addCircles);
+
+  function addCircles(data) {
+    //debugger;
+    if (data.type === 'grid' && data.index === 0) {
+      // create a custom label element to insert into the bar
+      var width=40, barHorizontalCenter = (data.x1 + (data.element.width() * .5)),
+        barVerticalCenter =  (data.y1 + (width * .12)),
+        label = new Chartist.Svg("text");
+      label.text('test!');
+      label.attr({
+        x: barHorizontalCenter,
+        y: barVerticalCenter,
+        "text-anchor": "middle",
+        style: "font-family: 'proxima-nova-alt', Helvetica, Arial, sans-serif; font-size: 12px; fill: black"
+      });
+
+      // add the new custom text label to the bar
+      data.group.append(label);
+    }
+    console.log(data.type);
+
+  }
+  //Base demo of ajax
+  // $.ajax({
+  //   url: 'http://localhost:5000/venn/api/v1.0/search',
+  //   contentType: "application/json",
+  //   dataType:'json',
+  //   method:'POST',
+  //   //data is the search term
+  //   data:JSON.stringify({
+  //     "search":"tank of russia"
+  //   })
+  // }).then(function (data) {
+  //   for(var obj in data.results) {
+  //     $('.dataresults').append('<li class="mdl-list__item"><i class="material-icons mdl-list__item-icon">description</i>' +
+  //       JSON.stringify(data.results[obj]) +'</li>');
+  //   }
+  // })
 })();
