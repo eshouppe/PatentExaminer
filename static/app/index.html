@@ -78,6 +78,9 @@
       <a class="mdl-navigation__link" data-link="settings" href="#settings">
         <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">gradient</i>Plot Search
       </a>
+      <a class="mdl-navigation__link" data-link="results" href="#results">
+        <i class="material-icons" role="presentation">dns</i>Api Results
+      </a>
     </nav>
   </div>
   <main class="mdl-layout__content mdl-color--grey-100">
@@ -115,18 +118,24 @@
               </button>
             </div>
           </div>
-          <div class="mdl-grid" style="max-width: 400px;display: none;">
+          <div class="mdl-grid searchProgress" style="max-width: 400px;display: none;">
             <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
           </div>
         </div>
+        <div class="title center">
+          <h4>Search Results</h4>
+        </div>
         <div class="ct-chart ct-golden-section">
+        </div>
 
-        <ul class='mdl-list dataresults'>
-
-        </ul>
       </div>
       <div id="settings" class="tab mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
         Plot search coming soon
+      </div>
+      <div id="results" class="tab mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+        <ul class='mdl-list dataresults'>
+
+        </ul>
       </div>
     </div>
   </main>

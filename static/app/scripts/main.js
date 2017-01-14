@@ -138,23 +138,22 @@
       // add the new custom text label to the bar
       data.group.append(label);
     }
-    console.log(data.type);
 
   }
   //Base demo of ajax
-  // $.ajax({
-  //   url: 'http://localhost:5000/venn/api/v1.0/search',
-  //   contentType: "application/json",
-  //   dataType:'json',
-  //   method:'POST',
-  //   //data is the search term
-  //   data:JSON.stringify({
-  //     "search":"tank of russia"
-  //   })
-  // }).then(function (data) {
-  //   for(var obj in data.results) {
-  //     $('.dataresults').append('<li class="mdl-list__item"><i class="material-icons mdl-list__item-icon">description</i>' +
-  //       JSON.stringify(data.results[obj]) +'</li>');
-  //   }
-  // })
+  $.ajax({
+    url: 'http://localhost:5000/venn/api/v1.0/search',
+    contentType: "application/json",
+    dataType:'json',
+    method:'POST',
+    //data is the search term
+    data:JSON.stringify({
+      "search":"tank of russia"
+    })
+  }).then(function (data) {
+    for(var obj in data.results) {
+      $('.dataresults').append('<li class="mdl-list__item"><i class="material-icons mdl-list__item-icon">description</i>' +
+        JSON.stringify(data.results[obj]) +'</li>');
+    }
+  })
 })();
