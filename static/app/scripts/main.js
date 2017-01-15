@@ -182,6 +182,25 @@
           ' <span class="mdl-chip__text">'+ data.searchedTerms[terms] +'</span></span>' +
           '</li>');
       }
+      if (data.matchingPatentNums.length < 1) {
+        $docsFound.append('<li class="mdl-list__item center">' +
+          '<span class="mdl-chip mdl-chip--contact">'+
+          '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
+          ' <i class="material-icons mdl-list__item-icon">description</i>' +
+          '</span>'+
+          ' <span class="mdl-chip__text">None Found</span></span>' +
+          '</li>');
+      }
+      if (data.searchedTerms.length < 1) {
+        $searchTermsUsed.append('<li class="mdl-list__item center">' +
+          '<span class="mdl-chip mdl-chip--contact">'+
+          '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
+          ' <i class="material-icons mdl-list__item-icon">find_in_page</i>' +
+          '</span>'+
+          ' <span class="mdl-chip__text">None Used.</span></span>' +
+          '</li>');
+      }
+
       //todo draw graph here
       $searchButton.attr('disabled', false);
       $progressBar.fadeOut();
