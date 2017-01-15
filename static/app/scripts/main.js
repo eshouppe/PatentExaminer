@@ -140,20 +140,47 @@
     }
 
   }
-  //Base demo of ajax
-  $.ajax({
-    url: 'http://localhost:5000/venn/api/v1.0/search',
-    contentType: "application/json",
-    dataType:'json',
-    method:'POST',
-    //data is the search term
-    data:JSON.stringify({
-      "search":"tank of russia"
-    })
-  }).then(function (data) {
-    for(var obj in data.matchingPatentNums) {
-      $('.dataresults').append('<li class="mdl-list__item center"><i class="material-icons mdl-list__item-icon">description</i>' +
-        JSON.stringify(data.matchingPatentNums[obj]) +'</li>');
+  function searchNow() {
+    var $progressBar = $('.searchContainer .searchProgress'),
+      $searchButton = $('.searchContainer .searchnow'),
+      $searchBox1 = $('.searchContainer #search1'),
+      $searchBox2 = $('.searchContainer #search2');
+
+    //Start search
+    $searchButton.attr('disabled', true);
+    $progressBar.fadeIn();
+    var searchObj = {
+      'search1':$searchBox1.val() || '',
+      'search2':$searchBox2.val() || ''
+    };
+    function processResults(data){
+      debugger;
+      $searchButton.attr('disabled', false);
+      $progressBar.fadeOut();
+      for(var obj in data.matchingPatentNums) {
+        $('.dataresults').append('<li class="mdl-list__item center"><i class="material-icons mdl-list__item-icon">description</i>' +
+          JSON.stringify(data.matchingPatentNums[obj]) +'</li>');
+      }
     }
-  })
+    $.ajax({
+      url: 'http://localhost:5000/venn/api/v1.0/search',
+      contentType: "application/json",
+      dataType:'json',
+      method:'POST',
+      //data is the search term
+      data:JSON.stringify(searchObj),
+      success: processResults,
+      error: function(){
+        $searchButton.attr('disabled', false);
+        $progressBar.fadeOut();
+        var snackbarContainer = document.querySelector('#demo-toast-example'),
+          showToastButton = document.querySelector('#demo-show-toast'),
+          data = {message: 'Search Error Occurred'};
+        snackbarContainer.MaterialSnackbar.showSnackbar(data);
+      }
+    });
+  }
+  //Add Search Function
+  $(".searchContainer").on('click','.searchnow', searchNow);
+
 })();
