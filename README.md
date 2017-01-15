@@ -2,6 +2,10 @@
 Demo for Venn Software
 Written by Ryan Carlton & Emily Shouppe
 
+
+add eb to path:
+export PATH=/Users/ryancarlton/.local/bin:$PATH
+
 ### How do I get set up? ###
 
 * Summary of set up

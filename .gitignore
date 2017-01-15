@@ -9,3 +9,7 @@
 static/node_modules
 static/.idea
 static/.tmp
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

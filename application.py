@@ -4,9 +4,9 @@ from flask_cors import CORS, cross_origin
 from processor.search import Search_and_Match
 
 
-app = Flask(__name__, static_url_path='/public')
+application = Flask(__name__)
 #TODO: remove cors before deployment...use for development of UI
-CORS(app)
+CORS(application)
 
 #Fake data for now
 fresults = [
@@ -24,12 +24,12 @@ fresults = [
     }
 ]
 
-@app.route('/<path:path>')
+@application.route('/<path:path>')
 def static_proxy(path):
   # send_static_file will guess the correct MIME type
-  return app.send_static_file(path)
+  return application.send_static_file(path)
 
-@app.route('/venn/api/v1.0/search', methods=['POST'])
+@application.route('/venn/api/v1.0/search', methods=['POST'])
 def get_tasks():
     #TODO: Add calls to process incoming request ect
     #TODO: Add call capable of return the json below
@@ -57,4 +57,4 @@ def get_tasks():
 
 #Kick off the server
 if __name__ == '__main__':
-    app.run(debug=True)
+    application.run(debug=True)
