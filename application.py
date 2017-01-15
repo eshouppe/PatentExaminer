@@ -38,7 +38,7 @@ def get_tasks():
         'numMatchedPatents': len(match_num),
         'searchedString(s)': search_list,
         'matchingPatentNums': list(match_num.keys()),
-        'searchedTerms': ", ".join(searched_terms)
+        'searchedTerms': searched_terms
     }
     #Return Response to request from client(JS)
     return jsonify(task)

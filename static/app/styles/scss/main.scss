@@ -247,10 +247,13 @@ main .tab.active {
   margin: 0 auto;
   display: block;
 }
-.dataresults {
-  max-width: 500px;
-  margin: auto;
-  word-break:break-all;
+.docFound i.material-icons {
+  padding-top: 3px;
+  color:white;
+}
+.searchedTerms i.material-icons {
+  padding-top: 3px;
+  color:white;
 }
 .graphs {
   /*height:600px;*/

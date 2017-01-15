@@ -144,23 +144,47 @@
     var $progressBar = $('.searchContainer .searchProgress'),
       $searchButton = $('.searchContainer .searchnow'),
       $searchBox1 = $('.searchContainer #search1'),
-      $searchBox2 = $('.searchContainer #search2');
+      $searchBox2 = $('.searchContainer #search2'),
+      $docsFound = $('.docFound'),
+      $searchTermsUsed = $('.searchedTerms');
 
     //Start search
     $searchButton.attr('disabled', true);
     $progressBar.fadeIn();
+
     var searchObj = {
       'search1':$searchBox1.val() || '',
       'search2':$searchBox2.val() || ''
     };
+    if (searchObj['search1'] === '' && searchObj['search2'] !== '') {
+      searchObj.search1 = searchObj.search2;
+      searchObj.search2 = '';
+    }
     function processResults(data){
-      debugger;
+      $docsFound.empty();
+      $searchTermsUsed.empty();
+      for(var obj in data.matchingPatentNums) {
+
+        $docsFound.append('<li class="mdl-list__item center">' +
+          '<span class="mdl-chip mdl-chip--contact">'+
+            '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
+              ' <i class="material-icons mdl-list__item-icon">description</i>' +
+            '</span>'+
+          ' <span class="mdl-chip__text">'+data.matchingPatentNums[obj] +'</span></span>' +
+          '</li>');
+      }
+      for(var terms in data.searchedTerms) {
+        $searchTermsUsed.append('<li class="mdl-list__item center">' +
+          '<span class="mdl-chip mdl-chip--contact">'+
+          '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
+          ' <i class="material-icons mdl-list__item-icon">find_in_page</i>' +
+          '</span>'+
+          ' <span class="mdl-chip__text">'+ data.searchedTerms[terms] +'</span></span>' +
+          '</li>');
+      }
+      //todo draw graph here
       $searchButton.attr('disabled', false);
       $progressBar.fadeOut();
-      for(var obj in data.matchingPatentNums) {
-        $('.dataresults').append('<li class="mdl-list__item center"><i class="material-icons mdl-list__item-icon">description</i>' +
-          JSON.stringify(data.matchingPatentNums[obj]) +'</li>');
-      }
     }
     $.ajax({
       url: 'http://localhost:5000/venn/api/v1.0/search',
