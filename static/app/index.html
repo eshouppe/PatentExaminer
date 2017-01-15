@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web Starter Kit</title>
+  <title>VennGraphDemo</title>
 
   <!-- Disable tap highlight on IE -->
   <meta name="msapplication-tap-highlight" content="no">
@@ -15,7 +15,7 @@
 
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="application-name" content="Web Starter Kit">
+  <meta name="application-name" content="VennGraphDemo">
   <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
 
   <!-- Add to homescreen for Safari on iOS -->
@@ -86,11 +86,10 @@
   <main class="mdl-layout__content mdl-color--grey-100">
     <div class="mdl-grid demo-content">
       <div id="home" class="tab active demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-        Venn Search
         <div class="searchContainer">
           <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--6-col">
-              <form action="#" class="inputForm">
+            <div class="mdl-cell mdl-cell--6-col searchRow">
+              <div class="inputForm">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" id="search1">
                   <label class="mdl-textfield__label" for="search1">Search 1</label>
@@ -98,10 +97,10 @@
                 <label class="mdl-button mdl-js-button mdl-button--icon mdl-layout--large-screen-only" for="search1">
                   <i class="material-icons">search</i>
                 </label>
-              </form>
+              </div>
             </div>
-            <div class="mdl-cell mdl-cell--6-col">
-              <form action="#" class="inputForm">
+            <div class="mdl-cell mdl-cell--6-col searchRow">
+              <div class="inputForm">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" id="search2">
                   <label class="mdl-textfield__label" for="search2">Search 2</label>
@@ -109,7 +108,7 @@
                 <label class="mdl-button mdl-js-button mdl-button--icon mdl-layout--large-screen-only" for="search2">
                   <i class="material-icons">search</i>
                 </label>
-              </form>
+              </div>
             </div>
             <div class="mdl-cell mdl-cell--12-col">
               <button class="searchnow center mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
@@ -131,13 +130,24 @@
       <div id="settings" class="tab mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
         Plot search coming soon
       </div>
-      <div id="results" class="tab mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-        <div class="title center">
-          <h4>Search Results</h4>
-        </div>
-        <ul class='mdl-list dataresults'>
+      <div id="results" class="tab demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+        <div class="mdl-grid">
 
-        </ul>
+          <div class="mdl-cell mdl-cell--6-col">
+            <div class="title center">
+              <h4>Documents Found</h4>
+            </div>
+            <ul class='mdl-list docFound'>
+            </ul>
+          </div>
+          <div class="mdl-cell mdl-cell--6-col">
+            <div class="title center">
+              <h4>Searched Terms</h4>
+            </div>
+            <ul class='mdl-list searchedTerms'>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -157,6 +167,7 @@
 
 <!-- build:js scripts/main.min.js -->
 <script src="scripts/chartist.js"></script>
+<script src="scripts/chartist.tooltip.js"></script>
 <script src="scripts/main.js"></script>
 <!-- endbuild -->
 
