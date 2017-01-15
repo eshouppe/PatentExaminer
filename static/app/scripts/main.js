@@ -71,15 +71,6 @@
       console.error('Error during service worker registration:', e);
     });
   }
-  //Navigation Functions
-  //********************
-  $(document).on('click', 'a.mdl-navigation__link', function(e) {
-    var currentClickedObj = $(e.currentTarget);
-    if (currentClickedObj.data('link')) {
-      $('main .tab').hide();
-      $('main #' + currentClickedObj.data('link')).show();
-    }
-  });
 
   //Charting functions:
   //********************
@@ -111,6 +102,10 @@
       showLabel: false,
       offset: 0
     },
+    plugins: [
+        Chartist.plugins.tooltip()
+      ]
+    //
     // axisX: {
     //   labelInterpolationFnc: function(value, index) {
     //     return index % 13 === 0 ? 'W' + value : null;
@@ -119,33 +114,52 @@
   };
 
   var responsiveOptions = [
-    // ['screen and (min-width: 640px)', {
-    //   axisX: {
-    //     labelInterpolationFnc: function(value, index) {
-    //       return index % 4 === 0 ? 'W' + value : null;
-    //     }
-    //   }
-    // }]
+    ['screen and (min-width: 640px)', {
+      axisX: {
+        labelInterpolationFnc: function(value, index) {
+          return index % 4 === 0 ? 'W' + value : null;
+        }
+      }
+    }]
   ];
   var mychart = new Chartist.Line('.ct-chart', data, options, responsiveOptions).on('draw', addCircles);
-
+  var test = 0;
   function addCircles(data) {
     //debugger;
-    if (data.type === 'grid' && data.index === 0) {
+    if (data.type === 'grid' && data.index === 0 && test === 0) {
+      test += 1;
       // create a custom label element to insert into the bar
-      var width=40, barHorizontalCenter = (data.x1 + (data.element.width() * .5)),
-        barVerticalCenter =  (data.y1 + (width * .12)),
-        label = new Chartist.Svg("text");
+      var label = new Chartist.Svg("circle");
       label.text('test!');
       label.attr({
-        x: barHorizontalCenter,
-        y: barVerticalCenter,
+        cx: 480,
+        cy: 280,
+        r:[200],
         "text-anchor": "middle",
-        style: "font-family: 'proxima-nova-alt', Helvetica, Arial, sans-serif; font-size: 12px; fill: black"
+        "fill":"blue",
+        "fill-opacity":".5"
+        // style: "color: white"
       });
 
       // add the new custom text label to the bar
       data.group.append(label);
+    }
+    if (data.type === 'grid' && data.index === 0 && test === 1) {
+      test += 1;
+      label = new Chartist.Svg("circle");
+      label.text('test!');
+      label.attr({
+        cx: 280,
+        cy: 160,
+        r:[150],
+        "text-anchor": "middle",
+        "fill":"red",
+        "fill-opacity":".5"
+        // style: "color: white"
+      });
+      // add the new custom text label to the bar
+      data.group.append(label);
+
     }
 
   }
@@ -153,9 +167,7 @@
     var $progressBar = $('.searchContainer .searchProgress'),
       $searchButton = $('.searchContainer .searchnow'),
       $searchBox1 = $('.searchContainer #search1'),
-      $searchBox2 = $('.searchContainer #search2'),
-      $docsFound = $('.docFound'),
-      $searchTermsUsed = $('.searchedTerms');
+      $searchBox2 = $('.searchContainer #search2');
 
     //Start search
     $searchButton.attr('disabled', true);
@@ -170,51 +182,16 @@
       searchObj.search2 = '';
     }
     function processResults(data){
-      $docsFound.empty();
-      $searchTermsUsed.empty();
-      for(var obj in data.matchingPatentNums) {
-
-        $docsFound.append('<li class="mdl-list__item center">' +
-          '<span class="mdl-chip mdl-chip--contact">'+
-            '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
-              ' <i class="material-icons mdl-list__item-icon">description</i>' +
-            '</span>'+
-          ' <span class="mdl-chip__text">'+data.matchingPatentNums[obj] +'</span></span>' +
-          '</li>');
-      }
-      for(var terms in data.searchedTerms) {
-        $searchTermsUsed.append('<li class="mdl-list__item center">' +
-          '<span class="mdl-chip mdl-chip--contact">'+
-          '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
-          ' <i class="material-icons mdl-list__item-icon">find_in_page</i>' +
-          '</span>'+
-          ' <span class="mdl-chip__text">'+ data.searchedTerms[terms] +'</span></span>' +
-          '</li>');
-      }
-      if (data.matchingPatentNums.length < 1) {
-        $docsFound.append('<li class="mdl-list__item center">' +
-          '<span class="mdl-chip mdl-chip--contact">'+
-          '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
-          ' <i class="material-icons mdl-list__item-icon">description</i>' +
-          '</span>'+
-          ' <span class="mdl-chip__text">None Found</span></span>' +
-          '</li>');
-      }
-      if (data.searchedTerms.length < 1) {
-        $searchTermsUsed.append('<li class="mdl-list__item center">' +
-          '<span class="mdl-chip mdl-chip--contact">'+
-          '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
-          ' <i class="material-icons mdl-list__item-icon">find_in_page</i>' +
-          '</span>'+
-          ' <span class="mdl-chip__text">None Used.</span></span>' +
-          '</li>');
-      }
-
+      //Successfully made search
+      populateApiResults(data);
       //todo draw graph here
+
+      showToast('Search Finished');
       $searchButton.attr('disabled', false);
       $progressBar.fadeOut();
     }
     $.ajax({
+      // url: '/venn/api/v1.0/search',
       url: 'http://localhost:5000/venn/api/v1.0/search',
       contentType: "application/json",
       dataType:'json',
@@ -225,14 +202,103 @@
       error: function(){
         $searchButton.attr('disabled', false);
         $progressBar.fadeOut();
-        var snackbarContainer = document.querySelector('#demo-toast-example'),
-          showToastButton = document.querySelector('#demo-show-toast'),
-          data = {message: 'Search Error Occurred'};
-        snackbarContainer.MaterialSnackbar.showSnackbar(data);
+        showToast('Search Error Occurred.');
       }
     });
   }
+
+  function populateApiResults(data) {
+    var $docsFound = $('.docFound'),
+      $searchTermsUsed = $('.searchedTerms');
+    $docsFound.empty();
+    $searchTermsUsed.empty();
+    for(var obj in data.matchingPatentNums) {
+      $docsFound.append('<li class="mdl-list__item center">' +
+        '<span class="mdl-chip mdl-chip--contact">'+
+        '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
+        ' <i class="material-icons mdl-list__item-icon">description</i>' +
+        '</span>'+
+        ' <span class="mdl-chip__text">'+data.matchingPatentNums[obj] +'</span></span>' +
+        '</li>');
+    }
+    for(var terms in data.searchedTerms) {
+      $searchTermsUsed.append('<li class="mdl-list__item center">' +
+        '<span class="mdl-chip mdl-chip--contact">'+
+        '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
+        ' <i class="material-icons mdl-list__item-icon">find_in_page</i>' +
+        '</span>'+
+        ' <span class="mdl-chip__text">'+ data.searchedTerms[terms] +'</span></span>' +
+        '</li>');
+    }
+    if (data.matchingPatentNums.length < 1) {
+      $docsFound.append('<li class="mdl-list__item center">' +
+        '<span class="mdl-chip mdl-chip--contact">'+
+        '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
+        ' <i class="material-icons mdl-list__item-icon">description</i>' +
+        '</span>'+
+        ' <span class="mdl-chip__text">None Found</span></span>' +
+        '</li>');
+    }
+    if (data.searchedTerms.length < 1) {
+      $searchTermsUsed.append('<li class="mdl-list__item center">' +
+        '<span class="mdl-chip mdl-chip--contact">'+
+        '<span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">' +
+        ' <i class="material-icons mdl-list__item-icon">find_in_page</i>' +
+        '</span>'+
+        ' <span class="mdl-chip__text">None Used.</span></span>' +
+        '</li>');
+    }
+  }
+
+  function showToast(text) {
+    var snackbarContainer = document.querySelector('#demo-toast-example'),
+      showToastButton = document.querySelector('#demo-show-toast'),
+      toastMessage = {message: text};
+    snackbarContainer.MaterialSnackbar.showSnackbar(toastMessage);
+  }
+
+  function createPlotChart() {
+    // //needs plugin
+    // var chart = new Chartist.Line('.ct-chart', {
+    //   labels: [1, 2, 3],
+    //   series: [
+    //     [
+    //       {meta: 'description', value: 1},
+    //       {meta: 'description', value: 5},
+    //       {meta: 'description', value: 3}
+    //     ],
+    //     [
+    //       {meta: 'other description', value: 2},
+    //       {meta: 'other description', value: 4},
+    //       {meta: 'other description', value: 2}
+    //     ]
+    //   ]
+    // }, {
+    //   plugins: [
+    //     Chartist.plugins.tooltip()
+    //   ]
+    // });
+  }
   //Add Search Function
   $(".searchContainer").on('click','.searchnow', searchNow);
+
+  //Add enter to search function
+  $(document).keypress(function(event){
+
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+      $('.searchnow').click();
+    }
+  });
+  //Navigation Functions
+  //********************
+  $(document).on('click', 'a.mdl-navigation__link', function(e) {
+    var currentClickedObj = $(e.currentTarget);
+    if (currentClickedObj.data('link')) {
+      event.preventDefault();
+      $('main .tab').hide();
+      $('main #' + currentClickedObj.data('link')).show();
+    }
+  });
 
 })();
