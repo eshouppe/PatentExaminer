@@ -151,9 +151,9 @@
       "search":"tank of russia"
     })
   }).then(function (data) {
-    for(var obj in data.results) {
-      $('.dataresults').append('<li class="mdl-list__item"><i class="material-icons mdl-list__item-icon">description</i>' +
-        JSON.stringify(data.results[obj]) +'</li>');
+    for(var obj in data.matchingPatentNums) {
+      $('.dataresults').append('<li class="mdl-list__item center"><i class="material-icons mdl-list__item-icon">description</i>' +
+        JSON.stringify(data.matchingPatentNums[obj]) +'</li>');
     }
   })
 })();
