@@ -204,4 +204,3 @@
   return Chartist.plugins.tooltips;
 
 }));
-0
