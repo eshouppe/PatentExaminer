@@ -37,7 +37,7 @@ def get_tasks():
     task = {
         'numMatchedPatents': len(match_num),
         'searchedString(s)': search_list,
-        'matchingPatentNums': ", ".join(list(match_num.keys())),
+        'matchingPatentNums': list(match_num.keys()),
         'searchedTerms': ", ".join(searched_terms)
     }
     #Return Response to request from client(JS)
