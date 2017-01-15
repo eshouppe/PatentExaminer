@@ -102,22 +102,31 @@
   var options = {
     showLine: false,
     axisX: {
-      labelInterpolationFnc: function(value, index) {
-        return index % 13 === 0 ? 'W' + value : null;
-      }
-    }
+      showGrid: true,
+      showLabel: false,
+      offset: 0
+    },
+    axisY: {
+      showGrid: true,
+      showLabel: false,
+      offset: 0
+    },
+    // axisX: {
+    //   labelInterpolationFnc: function(value, index) {
+    //     return index % 13 === 0 ? 'W' + value : null;
+    //   }
+    // }
   };
 
   var responsiveOptions = [
-    ['screen and (min-width: 640px)', {
-      axisX: {
-        labelInterpolationFnc: function(value, index) {
-          return index % 4 === 0 ? 'W' + value : null;
-        }
-      }
-    }]
+    // ['screen and (min-width: 640px)', {
+    //   axisX: {
+    //     labelInterpolationFnc: function(value, index) {
+    //       return index % 4 === 0 ? 'W' + value : null;
+    //     }
+    //   }
+    // }]
   ];
-
   var mychart = new Chartist.Line('.ct-chart', data, options, responsiveOptions).on('draw', addCircles);
 
   function addCircles(data) {

@@ -261,3 +261,8 @@ main .tab.active {
   overflow:hidden;
 }
 
+@media (max-width: 839px) and (min-width: 480px) {
+  .searchContainer .searchRow {
+    margin: 0 auto;
+  }
+}
