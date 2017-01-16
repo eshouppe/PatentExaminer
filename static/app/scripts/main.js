@@ -134,29 +134,19 @@
     debugger;
     var newData = {
       series:[
-        [
-          {x: 1, y: 100},//first
-          {x: 2, y: 50},
-          {x: 3, y: 25},
-          {x: 5, y: 12.5},
-          {x: 8, y: 6.25}
-        ],
-        [
-          {x: 10, y: 67},//second search
-          {x: 2, y: 25},
-          {x: 15, y: 34},
-          {x: 13, y: 65.5},
-          {x: 25, y: 12.25}
-        ],[
-          {x: 12, y: 13.4},//mixed
-          {x: 4, y: 25},
-          {x: 22, y: 23},
-          {x: 15, y: 65.5},
-          {x: 20, y: 12.25}
-        ]
-
+        [],
+        [],
+        []
       ]
     };
+    if (data.resultsToPlot) {
+      for (var idx in data.resultsToPlot) {
+        var doc = data.resultsToPlot[idx];
+        doc.meta = doc.patent_ID;
+        newData.series[doc.series - 1].push(doc);
+      }
+    }
+    debugger;
     test = 0;
     seq = 0;
     mychart.update(newData)
@@ -246,7 +236,6 @@
     function processResults(data){
       //Successfully made search
       populateApiResults(data);
-      //todo draw graph here
       drawGraph(data);
       showToast('Search Finished');
       $searchButton.attr('disabled', false);
