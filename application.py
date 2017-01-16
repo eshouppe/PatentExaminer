@@ -25,7 +25,7 @@ def get_tasks():
         abort(400)
     
     # Instantiate search class and pass json location as param
-    processor = Search_and_Match(json_filepath="processor/patents.json")
+    processor = Search_and_Match(json_filepath="test_data.json")
     # Call class method to perform search. If only 1 search, search2 is empty string.
     if len(request.json['search2']) > 0:
         search_list = [request.json['search1'], request.json['search2']]
