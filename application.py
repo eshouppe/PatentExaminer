@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify, current_app
 from flask_cors import CORS, cross_origin
 from processor.search import Search_and_Match
+from processor.topic_model import LDA_Model
 
 
 application = Flask(__name__)
@@ -25,20 +26,26 @@ def get_tasks():
         abort(400)
     
     # Instantiate search class and pass json location as param
-    processor = Search_and_Match(json_filepath="test_data.json")
+    processor = Search_and_Match(json_filepath="processor/test_data.json")
     # Call class method to perform search. If only 1 search, search2 is empty string.
     if len(request.json['search2']) > 0:
         search_list = [request.json['search1'], request.json['search2']]
     else:
         search_list = [request.json['search1']]
-    match_num, searched_terms = processor.prepare_vars(raw_search_list=search_list)
+    search_results, searched_terms = processor.prepare_vars(raw_search_list=search_list)
+    # Instantiate model class and pass search results, which is an object whose
+    #  keys are the matched patent numbers and values are a list of searches made match
+    model = LDA_Model(matched_docs=search_results)
+    # Model results is an array of objects.  Keys are x, y, patent_id, and series
+    model_results = model.multidim_scaling()
 
     #Create Response Obj
     task = {
-        'numMatchedPatents': len(match_num),
+        'numMatchedPatents': len(search_results),
         'searchedString(s)': search_list,
-        'matchingPatentNums': list(match_num.keys()),
-        'searchedTerms': searched_terms
+        'matchingPatentNums': list(search_results.keys()),
+        'searchedTerms': searched_terms,
+        'resultsToPlot': model_results
     }
     #Return Response to request from client(JS)
     return jsonify(task)
