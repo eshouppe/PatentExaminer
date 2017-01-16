@@ -21,9 +21,9 @@ class Search_and_Match(object):
                 if term in self.full_corpus[key] :
                     val = self.match_patent_nums.get(key, None) # Check if patent already matched
                     if val is None: # If not already matched, add patent num & search number
-                        self.match_patent_nums[key] = [[search_num]]
+                        self.match_patent_nums[key] = [search_num]
                     else: # If already matched, append search number
-                        self.match_patent_nums[key][0].append(search_num)
+                        self.match_patent_nums[key].append(search_num)
                     break
 
     def prepare_vars(self, raw_search_list):
