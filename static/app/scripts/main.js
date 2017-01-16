@@ -131,6 +131,7 @@
 
   function drawGraph(data){
     //TODO: Parse Data here
+    debugger;
     var newData = {
       series:[
         [
