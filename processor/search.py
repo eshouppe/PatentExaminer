@@ -18,7 +18,7 @@ class Search_and_Match(object):
         Exit search if any term found in value."""
         for key in self.full_corpus:
             for term in search_term_list:
-                if term in self.full_corpus[key] :
+                if term in self.full_corpus[key]:
                     val = self.match_patent_nums.get(key, None) # Check if patent already matched
                     if val is None: # If not already matched, add patent num & search number
                         self.match_patent_nums[key] = [search_num]
@@ -29,7 +29,8 @@ class Search_and_Match(object):
     def prepare_vars(self, raw_search_list):
         """Group method that calls search term creation method and search json method"""
         search_string_one = self.create_search_substrings(raw_search_list[0])
-        search_terms = search_string_one
+        search_terms = list(search_string_one)
+
         try:
             search_string_two = self.create_search_substrings(raw_search_list[1])
             search_terms.extend(search_string_two)
@@ -43,7 +44,7 @@ class Search_and_Match(object):
                 self.search_json(search_string_two, search_num=2)
             except NameError:
                 pass
-        
+
         return self.match_patent_nums, search_terms
 
 
