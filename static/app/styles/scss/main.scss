@@ -235,6 +235,9 @@ main .tab.active {
 }
 .title {
   text-align:center;
+  letter-spacing: .1rem;
+  //text-transform: uppercase;
+  //font-weight:lighter;
 }
 .title i {
   font-size: 4rem;
@@ -266,3 +269,51 @@ main .tab.active {
     margin: 0 auto;
   }
 }
+$color1: purple;
+$color2: blue;
+$mixedColor: red;
+//VennColors
+.vennCircle1 {
+  fill:$color1;
+  text-anchor: "middle";
+  fill-opacity:.20;
+}
+.vennCircle2 {
+  text-anchor: "middle";
+  fill: $color2;
+  fill-opacity:.20;
+}
+//Graph series colors
+//Series 1
+.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
+  stroke: $color1;
+}
+
+.ct-series-a .ct-slice-pie, .ct-series-a .ct-area {
+  fill: $color1;
+}
+.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {
+  stroke: $color2;
+}
+
+.ct-series-b .ct-slice-pie, .ct-series-b .ct-area {
+  fill: $color2;
+}
+.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {
+  stroke: $mixedColor;
+}
+
+.ct-series-c .ct-slice-pie, .ct-series-c .ct-area {
+  fill: $mixedColor;
+}
+#home .search1Legend {
+  color: $color1;
+}
+//Series 2
+#home .search2Legend {
+  color: $mixedColor;
+}
+#home .search3Legend {
+  color: $color2
+}
+

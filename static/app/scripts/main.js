@@ -74,58 +74,125 @@
 
   //Charting functions:
   //********************
-  var times = function(n) {
-    return Array.apply(null, new Array(n));
-  };
+  var test = 2;
+  var seq = 0;
+  var mychart = buildInitialChart();
 
-  var data = times(52).map(Math.random).reduce(function(data, rnd, index) {
-    data.labels.push(index + 1);
-    data.series.forEach(function(series) {
-      series.push(Math.random() * 100)
-    });
+  function buildInitialChart() {
 
-    return data;
-  }, {
-    labels: [],
-    series: times(2).map(function() { return new Array() })
-  });
-
-  var options = {
-    showLine: false,
-    axisX: {
-      showGrid: true,
-      showLabel: false,
-      offset: 0
-    },
-    axisY: {
-      showGrid: true,
-      showLabel: false,
-      offset: 0
-    },
-    plugins: [
+    var data = {
+      series: [
+        // [
+        //   {x: 1, y: 100, meta:'tttt'},
+        //   {x: 2, y: 50},
+        //   {x: 3, y: 25},
+        //   {x: 5, y: 12.5},
+        //   {x: 8, y: 6.25}
+        // ],
+        // [
+        //   {x: 10, y: 67},
+        //   {x: 2, y: 25},
+        //   {x: 15, y: 34},
+        //   {x: 13, y: 65.5},
+        //   {x: 25, y: 12.25}
+        // ]
+      ]
+    };
+    var options = {
+      showLine: false,
+      axisX: {
+        showGrid: true,
+        showLabel: false,
+        type: Chartist.AutoScaleAxis,
+        labelInterpolationFnc: function(value, index) {
+          return index % 13 === 0 ? 'x' + value : null;
+        }
+      },
+      axisY: {
+        showGrid: true,
+        showLabel: false
+      },
+      plugins: [
         Chartist.plugins.tooltip()
       ]
-    //
-    // axisX: {
-    //   labelInterpolationFnc: function(value, index) {
-    //     return index % 13 === 0 ? 'W' + value : null;
-    //   }
-    // }
-  };
+    };
 
-  var responsiveOptions = [
-    ['screen and (min-width: 640px)', {
-      axisX: {
-        labelInterpolationFnc: function(value, index) {
-          return index % 4 === 0 ? 'W' + value : null;
+    var responsiveOptions = [
+      ['screen and (min-width: 640px)', {
+        axisX: {
+          labelInterpolationFnc: function(value, index) {
+            return index % 4 === 0 ? 'W' + value : null;
+          }
         }
-      }
-    }]
-  ];
-  var mychart = new Chartist.Line('.ct-chart', data, options, responsiveOptions).on('draw', addCircles);
-  var test = 0;
+      }]
+    ];
+    return new Chartist.Line('#resultsChart', data, options, responsiveOptions).on('draw', onDrawUpdates);
+  }
+
+  function drawGraph(data){
+    //TODO: Parse Data here
+    var newData = {
+      series:[
+        [
+          {x: 1, y: 100},//first
+          {x: 2, y: 50},
+          {x: 3, y: 25},
+          {x: 5, y: 12.5},
+          {x: 8, y: 6.25}
+        ],
+        [
+          {x: 10, y: 67},//second search
+          {x: 2, y: 25},
+          {x: 15, y: 34},
+          {x: 13, y: 65.5},
+          {x: 25, y: 12.25}
+        ],[
+          {x: 12, y: 13.4},//mixed
+          {x: 4, y: 25},
+          {x: 22, y: 23},
+          {x: 15, y: 65.5},
+          {x: 20, y: 12.25}
+        ]
+
+      ]
+    };
+    test = 0;
+    seq = 0;
+    mychart.update(newData)
+
+  }
+
+  function onDrawUpdates(data) {
+    animatePoints(data);
+    addCircles(data);
+  }
+  function animatePoints(data) {
+    if(data.type === 'point') {
+          // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
+      data.element.animate({
+        opacity: {
+          // The delay when we like to start the animation
+          begin: seq++ * 80,
+          // Duration of the animation
+          dur: 50,
+          // The value where the animation should start
+          from: 0,
+          // The value where it should end
+          to: 1
+        },
+        x1: {
+          begin: seq++ * 80,
+          dur: 50,
+          from: data.x - 100,
+          to: data.x,
+          // You can specify an easing function name or use easing functions from Chartist.Svg.Easing directly
+          easing: Chartist.Svg.Easing.easeOutQuart
+        }
+      });
+    }
+  }
   function addCircles(data) {
-    //debugger;
+
     if (data.type === 'grid' && data.index === 0 && test === 0) {
       test += 1;
       // create a custom label element to insert into the bar
@@ -135,10 +202,7 @@
         cx: 480,
         cy: 280,
         r:[200],
-        "text-anchor": "middle",
-        "fill":"blue",
-        "fill-opacity":".5"
-        // style: "color: white"
+        "class":"vennCircle1"
       });
 
       // add the new custom text label to the bar
@@ -152,10 +216,7 @@
         cx: 280,
         cy: 160,
         r:[150],
-        "text-anchor": "middle",
-        "fill":"red",
-        "fill-opacity":".5"
-        // style: "color: white"
+        "class":"vennCircle2"
       });
       // add the new custom text label to the bar
       data.group.append(label);
@@ -185,7 +246,7 @@
       //Successfully made search
       populateApiResults(data);
       //todo draw graph here
-
+      drawGraph(data);
       showToast('Search Finished');
       $searchButton.attr('disabled', false);
       $progressBar.fadeOut();
@@ -199,10 +260,11 @@
       //data is the search term
       data:JSON.stringify(searchObj),
       success: processResults,
-      error: function(){
+      error: function(response){
+        //var errorCode = JSON.parse(xhr.responseText);
         $searchButton.attr('disabled', false);
         $progressBar.fadeOut();
-        showToast('Search Error Occurred.');
+        showToast('Search Error Occurred - Code:' + response.status);
       }
     });
   }
