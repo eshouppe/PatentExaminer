@@ -1,6 +1,8 @@
 import json
+import math
 from processor.stopwords import stopwords
 import numpy as np
+from scipy import optimize
 from gensim import corpora, models
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
@@ -88,6 +90,41 @@ class LDA_Model(object):
             test_probs.append(template_list)
         
         return np.asarray(test_probs), test_y
+    
+    def venn_circles(self, series_coords):
+        x = series_coords[:,0]
+        y = series_coords[:,1]
+
+        # coordinates of the barycenter
+        x_m = np.mean(x)
+        y_m = np.mean(y)
+
+        # calculation of the reduced coordinates
+        u = x - x_m
+        v = y - y_m
+
+        # linear system defining the center in reduced coordinates (uc, vc):
+        #  Suu * uc + Suv * vc = (Suuu + Suvv)/2
+        #  Suv * uc + Svv * vc = (Suuv + Svvv)/2
+        Suv = np.sum(u*v)
+        Suu = np.sum(u**2)
+        Svv = np.sum(v**2)
+        Suuv = np.sum(u**2 * v)
+        Suvv = np.sum(u * v**2)
+        Suuu = np.sum(u**3)
+        Svvv = np.sum(v**3)
+
+        # Solving the linear system
+        A = np.array([[Suu, Suv], [Suv, Svv]])
+        B = np.array([Suuu + Suvv, Svvv + Suuv]) / 2.0
+        uc, vc = np.linalg.solve(A, B)
+
+        xc_1 = x_m + uc
+        yc_1 = y_m + vc
+
+        # Calculation of all distances from the center (xc_1, yc_1)
+        Ri_1 = np.sqrt((x-xc_1)**2 + (y-yc_1)**2)
+        return x_m, y_m, np.mean(Ri_1)
 
     def multidim_scaling(self):
         test_probs, test_y = self.test_lda_model()
@@ -99,15 +136,17 @@ class LDA_Model(object):
 
         # Update search IDs to series values for plot
         matched_searches = list(self.matched_docs.values())
-        for idx, match in enumerate(matched_searches):
+        series = []
+        for match in matched_searches:
             if match == [1]:
-                matched_searches[idx] = 1
+                series.append(1)
             elif match == [2]:
-                matched_searches[idx] = 2
+                series.append(2)
             elif match == [1,2] or match == [2,1]:
-                matched_searches[idx] = 3
+                series.append(3)
             else:
-                print("What's up with the search ID? --> ", match)
+                print("What's up with this search ID? --> ", match)
+                series.append(55) # If error append weird series num to keep order
 
         # Create return array
         plot_data = []
@@ -116,7 +155,29 @@ class LDA_Model(object):
             this_point['x'] = coord[0]
             this_point['y'] = coord[1]
             this_point['patent_ID'] = test_y[idx]
-            this_point['series'] = matched_searches[idx]
+            this_point['series'] = series[idx]
+            this_point['full_search'] = matched_searches[idx]
             plot_data.append(this_point)
         
-        return plot_data
+        # Prepare data structure to calculate circle center and radius
+        series1_points = np.empty((1,2),dtype=float)
+        series2_points = np.empty((1,2),dtype=float)
+
+        for obj in plot_data:
+            if 1 in obj['full_search']:
+                series1_points = np.append(series1_points, [[obj['x'], obj['y']]], axis=0)
+            if 2 in obj['full_search']:
+                series2_points = np.append(series2_points, [[obj['x'], obj['y']]], axis=0)    
+        
+        series1_points = series1_points[1:,:]
+        series1_center_x, series1_center_y, series1_radius = self.venn_circles(series1_points)
+        circle1 = {'x': series1_center_x, 'y': series1_center_y, 'r': series1_radius}
+
+        if len(series2_points) > 1:
+            series2_points = series2_points[1:,:]
+            series2_center_x, series2_center_y, series2_radius = self.venn_circles(series2_points)
+            circle2 = {'x': series2_center_x, 'y': series2_center_y, 'r': series2_radius}
+        else:
+            circle2 = {'No search 2': True}
+
+        return plot_data, circle1, circle2
