@@ -37,7 +37,7 @@ def get_tasks():
     #  keys are the matched patent numbers and values are a list of searches made match
     model = LDA_Model(matched_docs=search_results)
     # Model results is an array of objects.  Keys are x, y, patent_id, and series
-    model_results = model.multidim_scaling()
+    model_results, search1_circle, search2_circle = model.multidim_scaling()
 
     #Create Response Obj
     task = {
@@ -45,7 +45,9 @@ def get_tasks():
         'searchedString(s)': search_list,
         'matchingPatentNums': list(search_results.keys()),
         'searchedTerms': searched_terms,
-        'resultsToPlot': model_results
+        'resultsToPlot': model_results,
+        'search1Circle': search1_circle,
+        'search2Circle': search2_circle
     }
     #Return Response to request from client(JS)
     return jsonify(task)
