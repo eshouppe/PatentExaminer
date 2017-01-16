@@ -15,9 +15,3 @@ stopwords = ['a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'a
 'were', "weren't", 'what', "what's", 'when', "when's", 'where', "where's", 'which',
 'while', 'who', "who's", 'whom', 'why', "why's", 'with', "won't", 'would', "wouldn't",
 'you', "you'd", "you'll", "you're", "you've", 'your', 'yours', 'yourself', 'yourselves']
-
-
-# filepath = 'stopwords.txt'
-# stopwords = []
-# with open(filepath, 'r') as infile:
-#     stopwords = [line.rstrip('\n').replace("'", r"\'") for line in infile]
