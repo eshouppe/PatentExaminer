@@ -178,6 +178,6 @@ class LDA_Model(object):
             series2_center_x, series2_center_y, series2_radius = self.venn_circles(series2_points)
             circle2 = {'x': series2_center_x, 'y': series2_center_y, 'r': series2_radius}
         else:
-            circle2 = {'No search 2': True}
+            circle2 = {'error': True}
 
         return plot_data, circle1, circle2

@@ -76,6 +76,8 @@
   //********************
   var test = 2;
   var seq = 0;
+  var circle1 = {};
+  var circle2 = {};
   var mychart = buildInitialChart();
 
   function buildInitialChart() {
@@ -131,7 +133,6 @@
 
   function drawGraph(data){
     //TODO: Parse Data here
-    debugger;
     var newData = {
       series:[
         [],
@@ -146,9 +147,11 @@
         newData.series[doc.series - 1].push(doc);
       }
     }
-    debugger;
+    circle1 = data.search1Circle;
+    circle2 = data.search2Circle;
     test = 0;
     seq = 0;
+
     mychart.update(newData)
 
   }
@@ -183,35 +186,34 @@
     }
   }
   function addCircles(data) {
-
     if (data.type === 'grid' && data.index === 0 && test === 0) {
       test += 1;
       // create a custom label element to insert into the bar
       var label = new Chartist.Svg("circle");
       label.text('test!');
       label.attr({
-        cx: 480,
-        cy: 280,
-        r:[200],
+        cx: circle1.y,
+        cy: circle1.x,
+        r:[circle1.r * 100],
         "class":"vennCircle1"
       });
 
       // add the new custom text label to the bar
       data.group.append(label);
+
     }
-    if (data.type === 'grid' && data.index === 0 && test === 1) {
+    if (data.type === 'grid' && data.index === 0 && test === 1 && !circle2.hasOwnProperty('error')) {
       test += 1;
       label = new Chartist.Svg("circle");
       label.text('test!');
       label.attr({
-        cx: 280,
-        cy: 160,
-        r:[150],
+        cx: circle2.y,
+        cy: circle2.x,
+        r:[circle2.r * 100],
         "class":"vennCircle2"
       });
       // add the new custom text label to the bar
       data.group.append(label);
-
     }
 
   }
