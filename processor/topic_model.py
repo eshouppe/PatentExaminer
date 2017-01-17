@@ -117,6 +117,8 @@ class LDA_Model(object):
         # Solving the linear system
         A = np.array([[Suu, Suv], [Suv, Svv]])
         B = np.array([Suuu + Suvv, Svvv + Suuv]) / 2.0
+        print(a)
+        print(b)
         uc, vc = np.linalg.solve(A, B)
 
         xc_1 = x_m + uc
@@ -170,12 +172,25 @@ class LDA_Model(object):
                 series2_points = np.append(series2_points, [[obj['x'], obj['y']]], axis=0)    
         
         series1_points = series1_points[1:,:]
-        series1_center_x, series1_center_y, series1_radius = self.venn_circles(series1_points)
+        try:
+            series1_center_x, series1_center_y, series1_radius = self.venn_circles(series1_points)
+        except:
+            print("series 1 venn computation failed")
+            series1_center_x = 0
+            series1_center_y = 0
+            series1_radius = 0
+
         circle1 = {'x': series1_center_x, 'y': series1_center_y, 'r': series1_radius}
 
         if len(series2_points) > 1:
             series2_points = series2_points[1:,:]
-            series2_center_x, series2_center_y, series2_radius = self.venn_circles(series2_points)
+            try:
+                series2_center_x, series2_center_y, series2_radius = self.venn_circles(series2_points)
+            except:
+                print("series 2 venn computation failed")
+                series2_center_x = 0
+                series2_center_y = 0
+                series2_radius = 0
             circle2 = {'x': series2_center_x, 'y': series2_center_y, 'r': series2_radius}
         else:
             circle2 = {'x': 0, 'y':0, 'r':0, 'error':'no search 2'}
