@@ -112,7 +112,8 @@
       },
       axisY: {
         showGrid: true,
-        showLabel: false
+        showLabel: false,
+        type: Chartist.AutoScaleAxis,
       },
       plugins: [
         Chartist.plugins.tooltip()
@@ -161,6 +162,8 @@
     addCircles(data);
   }
   function animatePoints(data) {
+    //todo: data.element.addClass('test')
+    //only add teh class on the last object item
     if(data.type === 'point') {
           // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
       data.element.animate({
@@ -190,30 +193,39 @@
       test += 1;
       // create a custom label element to insert into the bar
       var label = new Chartist.Svg("circle");
-      label.text('test!');
-      label.attr({
+      circle1.x = data.axis.axisLength * (Chartist.getMultiValue(circle1.x,'x') - data.axis.range.min)/(data.axis.range.max-data.axis.range.min);
+      circle2.x = data.axis.axisLength * (Chartist.getMultiValue(circle2.x,'x') - data.axis.range.min)/(data.axis.range.max-data.axis.range.min);
+      circle1.r = (circle1.r * circle1.x);
+      circle2.r = (circle2.r * circle2.x);
+    }
+    // if (data.type === 'grid' && data.index === 1 && test === 1 && ) {
+    if (data.type === 'grid' && data.index === 0 && test === 1) {
+      test += 1;
+      circle1.y = data.axis.axisLength * (Chartist.getMultiValue(circle1.y,'y') - data.axis.range.min)/(data.axis.range.max-data.axis.range.min);
+      circle2.y = data.axis.axisLength * (Chartist.getMultiValue(circle2.y,'y') - data.axis.range.min)/(data.axis.range.max-data.axis.range.min);
+    }
+    if (data.type === 'point' && data.index === 0 && test === 2) {
+      test += 1;
+      var circ1 = new Chartist.Svg("circle");
+      var circ2 = new Chartist.Svg("circle");
+      //circle1.r = (circle1.r * circle1.x)/(circle1.r * circle1.y);
+      //circle2.r = (circle2.r * circle2.x)/(circle2.r * circle2.y);
+
+      circ1.attr({
         cx: circle1.y,
         cy: circle1.x,
-        r:[circle1.r * 100],
+        r:[circle1.r],
         "class":"vennCircle1"
       });
-
-      // add the new custom text label to the bar
-      data.group.append(label);
-
-    }
-    if (data.type === 'grid' && data.index === 0 && test === 1 && !circle2.hasOwnProperty('error')) {
-      test += 1;
-      label = new Chartist.Svg("circle");
-      label.text('test!');
-      label.attr({
+      circ2.attr({
         cx: circle2.y,
         cy: circle2.x,
-        r:[circle2.r * 100],
+        r:[circle2.r],
         "class":"vennCircle2"
       });
       // add the new custom text label to the bar
-      data.group.append(label);
+      data.group.append(circ1);
+      data.group.append(circ2);
     }
 
   }
