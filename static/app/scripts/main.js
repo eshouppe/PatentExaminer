@@ -79,6 +79,7 @@
   var circle1 = {};
   var circle2 = {};
   var mychart = buildInitialChart();
+  var resetFnc;
 
   function buildInitialChart() {
 
@@ -116,7 +117,11 @@
         type: Chartist.AutoScaleAxis,
       },
       plugins: [
-        Chartist.plugins.tooltip()
+        // Chartist.plugins.tooltip(),
+        Chartist.plugins.ctPointLabels({
+          textAnchor: 'middle'
+        }),
+        Chartist.plugins.zoom({onZoom:onZoom})
       ]
     };
 
@@ -131,7 +136,12 @@
     ];
     return new Chartist.Line('#resultsChart', data, options, responsiveOptions).on('draw', onDrawUpdates);
   }
-
+  function onZoom(chart, reset){
+    seq = 0;
+    test = 0;
+    resetFnc = reset;
+    mychart.update();
+  }
   function drawGraph(data){
     //TODO: Parse Data here
     var newData = {
@@ -144,7 +154,7 @@
     if (data.resultsToPlot) {
       for (var idx in data.resultsToPlot) {
         var doc = data.resultsToPlot[idx];
-        doc.meta = doc.patent_ID;
+        doc.meta = 'Pat Num:' + doc.patent_ID;
         newData.series[doc.series - 1].push(doc);
       }
     }
@@ -158,7 +168,7 @@
   }
 
   function onDrawUpdates(data) {
-    animatePoints(data);
+    //animatePoints(data);
     addCircles(data);
   }
   function animatePoints(data) {
@@ -355,6 +365,9 @@
     if(keycode == '13'){
       $('.searchnow').click();
     }
+  });
+  $('.searchContainer').on('click','.resetZoom',function () {
+    resetFnc && resetFnc();
   });
   //Navigation Functions
   //********************

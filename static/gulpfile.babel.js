@@ -111,6 +111,8 @@ gulp.task('scripts', () =>
       './app/scripts/numeric.js',
       './app/scripts/chartist.js',
       './app/scripts/chartist.tooltip.js',
+      './app/scripts/chartist.pointlabel.js',
+      './app/scripts/chartist.zoom.js',
       './app/scripts/main.js'
       // Other scripts
     ])
