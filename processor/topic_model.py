@@ -117,8 +117,6 @@ class LDA_Model(object):
         # Solving the linear system
         A = np.array([[Suu, Suv], [Suv, Svv]])
         B = np.array([Suuu + Suvv, Svvv + Suuv]) / 2.0
-        print(a)
-        print(b)
         uc, vc = np.linalg.solve(A, B)
 
         xc_1 = x_m + uc
@@ -174,6 +172,7 @@ class LDA_Model(object):
         series1_points = series1_points[1:,:]
         try:
             series1_center_x, series1_center_y, series1_radius = self.venn_circles(series1_points)
+        
         except:
             print("series 1 venn computation failed")
             series1_center_x = 0
@@ -184,6 +183,7 @@ class LDA_Model(object):
 
         if len(series2_points) > 1:
             series2_points = series2_points[1:,:]
+            print(series2_points)
             try:
                 series2_center_x, series2_center_y, series2_radius = self.venn_circles(series2_points)
             except:
