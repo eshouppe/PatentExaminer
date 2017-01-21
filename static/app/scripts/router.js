@@ -6,7 +6,7 @@ window.app.router = (function (window, Backbone) {
     view: null,
 
     routes: {
-      "/api/":"api",
+      "api":"api",
       "*actions":"home",    // #help
     },
 
@@ -21,7 +21,6 @@ window.app.router = (function (window, Backbone) {
 
     //View Functions
     loadNewView: function(newView) {
-      debugger;
       this.view = new newView();
     },
     destroyCurrentView: function () {

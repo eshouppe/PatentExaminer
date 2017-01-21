@@ -25,6 +25,10 @@
 import path from "path";
 import gulp from "gulp";
 import del from "del";
+import handlebars from "gulp-handlebars";
+import wrap from "gulp-wrap";
+import declare from "gulp-declare";
+import concat from "gulp-concat";
 import runSequence from "run-sequence";
 import browserSync from "browser-sync";
 import swPrecache from "sw-precache";
@@ -99,7 +103,18 @@ gulp.task('styles', () => {
     .pipe(gulp.dest('dist/styles'))
     .pipe(gulp.dest('.tmp/styles'));
 });
-
+gulp.task('templates', function(){
+  gulp.src('app/scripts/templates/*.hbs')
+    .pipe(handlebars())
+    .pipe(wrap('Handlebars.template(<%= contents %>)'))
+    .pipe(declare({
+      namespace: 'Templates',
+      noRedeclare: true, // Avoid duplicate declarations
+    }))
+    .pipe(concat('templates.js'))
+    .pipe(gulp.dest('dist/scripts/'))
+    .pipe(gulp.dest('.tmp/scripts/'));
+});
 // Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
 // to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
 // `.babelrc` file.
@@ -111,6 +126,7 @@ gulp.task('scripts', () =>
       './app/scripts/libs/jquery-3.1.1.js',
       './app/scripts/libs/underscore.js',
       './app/scripts/libs/backbone-1.3.3.js',
+      './app/scripts/libs/handlebars-v4.0.5.js',
       './app/scripts/libs/numeric.js',
       './app/scripts/libs/chartist.js',
       './app/scripts/libs/chartist.tooltip.js',
@@ -119,9 +135,9 @@ gulp.task('scripts', () =>
       './app/scripts/libs/chartist.zoom.js',
       './app/scripts/libs/chartist.zoom.js',
 
-      './app/scripts/app/apiView.js',
-      './app/scripts/app/homeView.js',
-      './app/scripts/app/router.js',
+      './app/scripts/apiView.js',
+      './app/scripts/homeView.js',
+      './app/scripts/router.js',
       './app/scripts/main.js'
       // Other scripts
     ])
@@ -168,7 +184,7 @@ gulp.task('html', () => {
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
 // Watch files for changes & reload
-gulp.task('serve', ['scripts', 'styles'], () => {
+gulp.task('serve', ['scripts', 'styles', 'templates'], () => {
   browserSync({
     notify: false,
     // Customize the Browsersync console logging prefix
@@ -186,6 +202,7 @@ gulp.task('serve', ['scripts', 'styles'], () => {
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
   gulp.watch(['app/scripts/**/*.js'], ['lint', 'scripts', reload]);
+  gulp.watch(['app/scripts/**/*.hbs'], ['lint', 'templates', reload]);
   gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -209,7 +226,7 @@ gulp.task('serve:dist', ['default'], () =>
 gulp.task('default', ['clean'], cb =>
   runSequence(
     'styles',
-    ['lint', 'html', 'scripts', 'images', 'copy'],
+    ['lint', 'html', 'scripts','templates', 'images', 'copy'],
     'generate-service-worker',
     cb
   )
