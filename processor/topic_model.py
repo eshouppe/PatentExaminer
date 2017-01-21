@@ -15,7 +15,7 @@ class LDA_Model(object):
 
     def train_lda_model(self):
         # Load json to dictionary
-        train_json_path = 'train_data.json'
+        train_json_path = 'data/train_data.json'
         with open(train_json_path) as train_json_reader:
             train_json = json.load(train_json_reader)
 
@@ -49,7 +49,7 @@ class LDA_Model(object):
 
     def test_lda_model(self):
         # Matched docs is a dict with patent nums as keys and a list of matched searches as values
-        test_json_path = 'processor/test_data.json'
+        test_json_path = 'processor/data/test_data.json'
         with open(test_json_path) as test_json_reader:
             test_json = json.load(test_json_reader)
         
