@@ -2,10 +2,9 @@
  * Created by ryancarlton on 1/20/17.
  */
 
-window.app.homeView = (function (window, Backbone) {
-  return Backbone.View.extend({
-    template: '<p>hello from the home view</p>',
-    // id:'app-homeview',
+(function (window, Backbone, Handlebars, Templates) {
+  window.app.homeView = Backbone.View.extend({
+    template: Templates.homeView(),
     el:'#homeView',
     initialize: function () {
       this.render();
@@ -14,4 +13,4 @@ window.app.homeView = (function (window, Backbone) {
       this.$el.html(this.template);
     }
   });
-})(window, Backbone);
+})(window, Backbone, Handlebars, Templates);

@@ -11,7 +11,7 @@ window.app.router = (function (window, Backbone) {
     },
 
     home: function() {
-      //this.destroyCurrentView();
+      //this.destroyeCurrentView();
       this.loadNewView(window.app.homeView)
     },
     api: function () {

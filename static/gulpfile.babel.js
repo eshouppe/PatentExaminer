@@ -112,13 +112,14 @@ gulp.task('templates', function(){
       noRedeclare: true, // Avoid duplicate declarations
     }))
     .pipe(concat('templates.js'))
-    .pipe(gulp.dest('dist/scripts/'))
-    .pipe(gulp.dest('.tmp/scripts/'));
+    .pipe(gulp.dest('app/scripts/'));
+    // .pipe(gulp.dest('dist/scripts/'))
+    // .pipe(gulp.dest('.tmp/scripts/'));
 });
 // Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
 // to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
 // `.babelrc` file.
-gulp.task('scripts', () =>
+gulp.task('scripts',['templates'], () =>
     gulp.src([
       // Note: Since we are not using useref in the scripts build pipeline,
       //       you need to explicitly list your scripts here in the right order
@@ -134,7 +135,7 @@ gulp.task('scripts', () =>
       './app/scripts/libs/chartist.zoom.js',
       './app/scripts/libs/chartist.zoom.js',
       './app/scripts/libs/chartist.zoom.js',
-
+      './app/scripts/templates.js',
       './app/scripts/apiView.js',
       './app/scripts/homeView.js',
       './app/scripts/router.js',
@@ -184,7 +185,7 @@ gulp.task('html', () => {
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
 // Watch files for changes & reload
-gulp.task('serve', ['scripts', 'styles', 'templates'], () => {
+gulp.task('serve', ['scripts', 'styles'], () => {
   browserSync({
     notify: false,
     // Customize the Browsersync console logging prefix
@@ -202,7 +203,7 @@ gulp.task('serve', ['scripts', 'styles', 'templates'], () => {
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
   gulp.watch(['app/scripts/**/*.js'], ['lint', 'scripts', reload]);
-  gulp.watch(['app/scripts/**/*.hbs'], ['lint', 'templates', reload]);
+  gulp.watch(['app/scripts/**/*.hbs'], ['lint', 'scripts', reload]);
   gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -226,7 +227,7 @@ gulp.task('serve:dist', ['default'], () =>
 gulp.task('default', ['clean'], cb =>
   runSequence(
     'styles',
-    ['lint', 'html', 'scripts','templates', 'images', 'copy'],
+    ['lint', 'html', 'scripts', 'images', 'copy'],
     'generate-service-worker',
     cb
   )
