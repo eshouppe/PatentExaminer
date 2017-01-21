@@ -108,11 +108,20 @@ gulp.task('scripts', () =>
       // Note: Since we are not using useref in the scripts build pipeline,
       //       you need to explicitly list your scripts here in the right order
       //       to be correctly concatenated
-      './app/scripts/numeric.js',
-      './app/scripts/chartist.js',
-      './app/scripts/chartist.tooltip.js',
-      './app/scripts/chartist.pointlabel.js',
-      './app/scripts/chartist.zoom.js',
+      './app/scripts/libs/jquery-3.1.1.js',
+      './app/scripts/libs/underscore.js',
+      './app/scripts/libs/backbone-1.3.3.js',
+      './app/scripts/libs/numeric.js',
+      './app/scripts/libs/chartist.js',
+      './app/scripts/libs/chartist.tooltip.js',
+      './app/scripts/libs/chartist.pointlabel.js',
+      './app/scripts/libs/chartist.zoom.js',
+      './app/scripts/libs/chartist.zoom.js',
+      './app/scripts/libs/chartist.zoom.js',
+
+      './app/scripts/app/apiView.js',
+      './app/scripts/app/homeView.js',
+      './app/scripts/app/router.js',
       './app/scripts/main.js'
       // Other scripts
     ])

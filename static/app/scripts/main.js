@@ -355,6 +355,11 @@
     //   ]
     // });
   }
+
+  window.mainRouter = new window.app.router({});
+  Backbone.history.start();
+
+
   //Add Search Function
   $(".searchContainer").on('click','.searchnow', searchNow);
 
@@ -380,4 +385,4 @@
     }
   });
 
-})();
+})(window, Backbone);
