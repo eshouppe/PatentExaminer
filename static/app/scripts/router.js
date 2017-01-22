@@ -7,16 +7,21 @@ window.app.router = (function (window, Backbone) {
 
     routes: {
       "api":"api",
+      "vennSearch":"vennSearch",
       "*actions":"home",    // #help
     },
 
     home: function() {
       this.destroyCurrentView();
-      this.loadNewView(window.app.homeView)
+      this.loadNewView(window.app.homeView);
     },
     api: function () {
       this.destroyCurrentView();
-      this.loadNewView(window.app.apiView)
+      this.loadNewView(window.app.apiView);
+    },
+    vennSearch: function () {
+      this.destroyCurrentView();
+      this.loadNewView(window.app.vennSearchView);
     },
 
     //View Functions

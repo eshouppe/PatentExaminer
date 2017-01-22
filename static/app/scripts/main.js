@@ -94,6 +94,9 @@
       toastMessage = {message: text};
     snackbarContainer.MaterialSnackbar.showSnackbar(toastMessage);
   };
+  window.app.changePageTitle = function (newPageTitle) {
+    $('header .pageTitle').text(newPageTitle);
+  };
   //Kick off application Router and through it the application views:
   window.mainRouter = new window.app.router({});
   Backbone.history.start();

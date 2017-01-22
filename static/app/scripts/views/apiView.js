@@ -15,6 +15,7 @@
     },
     render: function () {
       this.$el.html(this.template);
+      window.app.changePageTitle('Api Results')
     }
   });
 })(window, Backbone, Handlebars, Templates);

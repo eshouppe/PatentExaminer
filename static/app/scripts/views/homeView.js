@@ -27,6 +27,7 @@
     },
     render: function () {
       this.$el.html(this.template);
+      window.app.changePageTitle('Home');
       //reinit dom with mdl
       //componentHandler.upgradeDom();
     },
@@ -66,8 +67,8 @@
       }
 
       $.ajax({
-        // url: '/venn/api/v1.0/search',
-        url: 'http://localhost:5000/venn/api/v1.0/search',
+         url: '/venn/api/v1.0/search',
+        //url: 'http://localhost:5000/venn/api/v1.0/search',
         contentType: "application/json",
         dataType: 'json',
         method: 'POST',

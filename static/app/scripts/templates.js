@@ -31,3 +31,15 @@ this["Templates"]["homeView"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"
 this["Templates"]["scatterView"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid\">\n  Plot search coming soon\n</div>\n";
 },"useData":true});
+this["Templates"]["vennSearchView"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    return "    <div class=\"searchContainer mdl-color-text--grey-100\">\n      <div class=\"mdl-grid searchProgress\" style=\"display: none;\">\n        <div id=\"p3\" class=\"mdl-progress mdl-js-progress mdl-progress__indeterminate\"\n             style=\"width:100% !important;\"></div>\n      </div>\n      <div class=\"mdl-grid\">\n        <div class=\"mdl-cell mdl-cell--12-col searchRow\">\n          <div class=\"inputForm\">\n            <div class=\"mdl-textfield mdl-js-textfield mdl-textfield--floating-label\">\n              <input class=\"mdl-textfield__input\" type=\"text\" id=\"search1\">\n              <label class=\"mdl-textfield__label mdl-color-text--grey-100\" for=\"search1\">Enter a search term</label>\n            </div>\n            <label class=\"mdl-button mdl-js-button mdl-button--icon mdl-layout--large-screen-only\" for=\"search1\">\n              <i class=\"material-icons\">search</i>\n            </label>\n          </div>\n        </div>\n        <div class=\"mdl-cell mdl-cell--12-col\">\n          <button class=\"searchnow center mdl-button mdl-js-button mdl-button--raised mdl-button--colored\">\n            Search <i class=\"material-icons\">search</i>\n          </button>\n        </div>\n      </div>\n    </div>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "    <div class=\"primaryResultsContainer mdl-color-text--grey-100\">\n      test\n    </div>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {};
+
+  return "<div class=\"vennSearchView\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.primarysearch : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.primaryresults : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "</div>\n\n";
+},"useData":true});

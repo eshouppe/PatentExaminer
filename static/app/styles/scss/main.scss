@@ -65,6 +65,7 @@ html, body {
   justify-content: flex-end;
   padding: 16px;
   height: 151px;
+  color:hsla(0, 0%, 100%, 0.77);
 }
 .demo-avatar-dropdown {
   display: -webkit-flex;
@@ -95,69 +96,19 @@ html, body {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  color: rgba(255, 255, 255, 0.56);
+  color:hsla(0, 0%, 100%, 0.77);
   font-weight: 500;
 }
 .demo-layout .demo-navigation .mdl-navigation__link:hover {
-  background-color: #00BCD4;
-  color: #37474F;
+  background-color: rgba(25, 256, 256, 0.54);
+  color: #FFFFFF;
 }
 .demo-navigation .mdl-navigation__link .material-icons {
   font-size: 24px;
-  color: rgba(255, 255, 255, 0.56);
+  color: hsla(0, 0%, 100%, 0.77);
   margin-right: 32px;
 }
 
-.demo-content {
-  max-width: 1080px;
-}
-
-.demo-charts {
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-.demo-chart:nth-child(1) {
-  color: #ACEC00;
-}
-.demo-chart:nth-child(2) {
-  color: #00BBD6;
-}
-.demo-chart:nth-child(3) {
-  color: #BA65C9;
-}
-.demo-chart:nth-child(4) {
-  color: #EF3C79;
-}
-.demo-graphs {
-  padding: 16px 32px;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-}
-/* TODO: Find a proper solution to have the graphs
- * not float around outside their container in IE10/11.
- * Using a browserhacks.com solution for now.
- */
-_:-ms-input-placeholder, :root .demo-graphs {
-  min-height: 664px;
-}
-_:-ms-input-placeholder, :root .demo-graph {
-  max-height: 300px;
-}
-/* TODO end */
-.demo-graph:nth-child(1) {
-  color: #00b9d8;
-}
-.demo-graph:nth-child(2) {
-  color: #d9006e;
-}
 
 .demo-cards {
   -webkit-align-items: flex-start;
@@ -233,6 +184,13 @@ main .tab.active {
   margin-bottom: 40px;
   z-index: 900;
 }
+
+//**************************
+// Global Styles
+//**************************
+#appView {
+  width:100%;
+}
 .title {
   text-align:center;
   letter-spacing: .1rem;
@@ -250,6 +208,21 @@ main .tab.active {
   margin: 0 auto;
   display: block;
 }
+//**************************
+// Primary Search Styles
+//**************************
+.vennSearchView {
+  .searchContainer {
+    margin: 0 auto;
+  }
+  .primaryResultsContainer {
+
+  }
+}
+//**************************
+//**************************
+// Old Styles
+//**************************
 .docFound i.material-icons {
   padding-top: 3px;
   color:white;
@@ -316,6 +289,4 @@ $mixedColor: red;
 #home .search3Legend {
   color: $color2
 }
-#appView {
-  width:100%;
-}
+
