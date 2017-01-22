@@ -7,21 +7,36 @@
     template: Templates.homeView(),
     el: '#appView',
     events: {
-      'click .searchnow': 'searchNow'
+      'click .searchnow': 'searchNow',
+      'click .resetZoom': function () {
+        this.chart.resetZoom();
+      }
     },
     initialize: function () {
       this.render();
+      //create chart
+      this.chart = new window.app.chartView();
+      //Restore state if need be
+      if (window.app.data.primarySearch) {
+        $('.searchContainer #search1').val(window.app.data.primarySearch.searchedTerms[0] || '');
+        $('.searchContainer #search2').val(window.app.data.primarySearch.searchedTerms[1] || '');
+        this.chart.drawGraph(window.app.data.primarySearch);
+      }
+      //required after adding new material items
+      componentHandler.upgradeDom();
     },
     render: function () {
       this.$el.html(this.template);
       //reinit dom with mdl
-      componentHandler.upgradeDom();
+      //componentHandler.upgradeDom();
     },
     searchNow: function () {
+      //TODO move these to be globals of the given view
       var $progressBar = $('.searchContainer .searchProgress'),
         $searchButton = $('.searchContainer .searchnow'),
         $searchBox1 = $('.searchContainer #search1'),
-        $searchBox2 = $('.searchContainer #search2');
+        $searchBox2 = $('.searchContainer #search2'),
+        context = this;
 
       //Start search
       $searchButton.attr('disabled', true);
@@ -39,6 +54,7 @@
         window.app.data.docsFound = data.matchingPatentNums;
         window.app.data.searchedTerms = data.searchedTerms;
         window.app.data.primarySearch = data;
+        context.chart.drawGraph(data);
       }
       function processResults(data) {
         //Successfully made search
@@ -62,7 +78,7 @@
           //var errorCode = JSON.parse(xhr.responseText);
           $searchButton.attr('disabled', false);
           $progressBar.fadeOut();
-          showToast('Search Error Occurred - Code:' + response.status);
+          window.app.showToast('Search Error Occurred - Code:' + response.status);
         }
       });
     }

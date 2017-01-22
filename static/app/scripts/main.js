@@ -72,202 +72,6 @@
     });
   }
 
-  //Charting functions:
-  //********************
-  // var test = 2;
-  // var seq = 0;
-  // var circle1 = {};
-  // var circle2 = {};
-  // var mychart = buildInitialChart();
-  // var resetFnc;
-  //
-  // function buildInitialChart() {
-  //
-  //   var data = {
-  //     series: [
-  //       // [
-  //       //   {x: 1, y: 100, meta:'tttt'},
-  //       //   {x: 2, y: 50},
-  //       //   {x: 3, y: 25},
-  //       //   {x: 5, y: 12.5},
-  //       //   {x: 8, y: 6.25}
-  //       // ],
-  //       // [
-  //       //   {x: 10, y: 67},
-  //       //   {x: 2, y: 25},
-  //       //   {x: 15, y: 34},
-  //       //   {x: 13, y: 65.5},
-  //       //   {x: 25, y: 12.25}
-  //       // ]
-  //     ]
-  //   };
-  //   var options = {
-  //     showLine: false,
-  //     axisX: {
-  //       showGrid: true,
-  //       showLabel: false,
-  //       type: Chartist.AutoScaleAxis,
-  //       labelInterpolationFnc: function(value, index) {
-  //         return index % 13 === 0 ? 'x' + value : null;
-  //       }
-  //     },
-  //     axisY: {
-  //       showGrid: true,
-  //       showLabel: false,
-  //       type: Chartist.AutoScaleAxis,
-  //     },
-  //     plugins: [
-  //       // Chartist.plugins.tooltip(),
-  //       Chartist.plugins.ctPointLabels({
-  //         textAnchor: 'middle'
-  //       }),
-  //       Chartist.plugins.zoom({onZoom:onZoom})
-  //     ]
-  //   };
-  //
-  //   var responsiveOptions = [
-  //     ['screen and (min-width: 640px)', {
-  //       axisX: {
-  //         labelInterpolationFnc: function(value, index) {
-  //           return index % 4 === 0 ? 'W' + value : null;
-  //         }
-  //       }
-  //     }]
-  //   ];
-  //   return new Chartist.Line('#resultsChart', data, options, responsiveOptions).on('draw', onDrawUpdates);
-  // }
-  // function onZoom(chart, reset){
-  //   seq = 0;
-  //   test = 0;
-  //   resetFnc = reset;
-  //   mychart.update();
-  // }
-  // function drawGraph(data){
-  //   //TODO: Parse Data here
-  //   var newData = {
-  //     series:[
-  //       [],
-  //       [],
-  //       []
-  //     ]
-  //   };
-  //   if (data.resultsToPlot) {
-  //     for (var idx in data.resultsToPlot) {
-  //       var doc = data.resultsToPlot[idx];
-  //       doc.meta = 'Pat Num:' + doc.patent_ID;
-  //       newData.series[doc.series - 1].push(doc);
-  //     }
-  //   }
-  //   circle1 = data.search1Circle;
-  //   circle2 = data.search2Circle;
-  //   test = 0;
-  //   seq = 0;
-  //
-  //   mychart.update(newData)
-  //
-  // }
-  //
-  // function onDrawUpdates(data) {
-  //   //animatePoints(data);
-  //   addCircles(data);
-  // }
-  // function animatePoints(data) {
-  //   //todo: data.element.addClass('test')
-  //   //only add teh class on the last object item
-  //   if(data.type === 'point') {
-  //         // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
-  //     data.element.animate({
-  //       opacity: {
-  //         // The delay when we like to start the animation
-  //         begin: seq++ * 80,
-  //         // Duration of the animation
-  //         dur: 50,
-  //         // The value where the animation should start
-  //         from: 0,
-  //         // The value where it should end
-  //         to: 1
-  //       },
-  //       x1: {
-  //         begin: seq++ * 80,
-  //         dur: 50,
-  //         from: data.x - 100,
-  //         to: data.x,
-  //         // You can specify an easing function name or use easing functions from Chartist.Svg.Easing directly
-  //         easing: Chartist.Svg.Easing.easeOutQuart
-  //       }
-  //     });
-  //   }
-  // }
-  // function addCircles(data) {
-  //   if (data.type === 'grid' && data.index === 0 && test === 0) {
-  //     test += 1;
-  //     // create a custom label element to insert into the bar
-  //     var label = new Chartist.Svg("circle");
-  //     circle1.x = data.axis.axisLength * (Chartist.getMultiValue(circle1.x,'x') - data.axis.range.min)/(data.axis.range.max-data.axis.range.min);
-  //     circle2.x = data.axis.axisLength * (Chartist.getMultiValue(circle2.x,'x') - data.axis.range.min)/(data.axis.range.max-data.axis.range.min);
-  //     circle1.r = (circle1.r * circle1.x);
-  //     circle2.r = (circle2.r * circle2.x);
-  //   }
-  //   // if (data.type === 'grid' && data.index === 1 && test === 1 && ) {
-  //   if (data.type === 'grid' && data.index === 0 && test === 1) {
-  //     test += 1;
-  //     circle1.y = data.axis.axisLength * (Chartist.getMultiValue(circle1.y,'y') - data.axis.range.min)/(data.axis.range.max-data.axis.range.min);
-  //     circle2.y = data.axis.axisLength * (Chartist.getMultiValue(circle2.y,'y') - data.axis.range.min)/(data.axis.range.max-data.axis.range.min);
-  //   }
-  //   if (data.type === 'point' && data.index === 0 && test === 2) {
-  //     test += 1;
-  //     var circ1 = new Chartist.Svg("circle");
-  //     var circ2 = new Chartist.Svg("circle");
-  //     //circle1.r = (circle1.r * circle1.x)/(circle1.r * circle1.y);
-  //     //circle2.r = (circle2.r * circle2.x)/(circle2.r * circle2.y);
-  //
-  //     circ1.attr({
-  //       cx: circle1.y,
-  //       cy: circle1.x,
-  //       r:[circle1.r],
-  //       "class":"vennCircle1"
-  //     });
-  //     circ2.attr({
-  //       cx: circle2.y,
-  //       cy: circle2.x,
-  //       r:[circle2.r],
-  //       "class":"vennCircle2"
-  //     });
-  //     // add the new custom text label to the bar
-  //     data.group.append(circ1);
-  //     data.group.append(circ2);
-  //   }
-  //
-  // }
-
-
-  //
-  // function createPlotChart() {
-  //   // //needs plugin
-  //   // var chart = new Chartist.Line('.ct-chart', {
-  //   //   labels: [1, 2, 3],
-  //   //   series: [
-  //   //     [
-  //   //       {meta: 'description', value: 1},
-  //   //       {meta: 'description', value: 5},
-  //   //       {meta: 'description', value: 3}
-  //   //     ],
-  //   //     [
-  //   //       {meta: 'other description', value: 2},
-  //   //       {meta: 'other description', value: 4},
-  //   //       {meta: 'other description', value: 2}
-  //   //     ]
-  //   //   ]
-  //   // }, {
-  //   //   plugins: [
-  //   //     Chartist.plugins.tooltip()
-  //   //   ]
-  //   // });
-  // }
-  //
-
-  //
-  //
   // //Add Search Function
   // $(".searchContainer").on('click','.searchnow', searchNow);
   //
@@ -282,22 +86,15 @@
   // $('.searchContainer').on('click','.resetZoom',function () {
   //   resetFnc && resetFnc();
   // });
-  //Navigation Functions
-  //********************
-  // $(document).on('click', 'a.mdl-navigation__link', function(e) {
-  //   var currentClickedObj = $(e.currentTarget);
-  //   if (currentClickedObj.data('link')) {
-  //     event.preventDefault();
-  //     $('main .tab').hide();
-  //     $('main #' + currentClickedObj.data('link')).show();
-  //   }
-  // });
+
+  //Globals
   window.app.showToast = function (text) {
     var snackbarContainer = document.querySelector('#demo-toast-example'),
       showToastButton = document.querySelector('#demo-show-toast'),
       toastMessage = {message: text};
     snackbarContainer.MaterialSnackbar.showSnackbar(toastMessage);
   };
+  //Kick off application Router and through it the application views:
   window.mainRouter = new window.app.router({});
   Backbone.history.start();
 })(window, Backbone);
