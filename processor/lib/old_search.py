@@ -14,8 +14,7 @@ class Search_and_Match(object):
         return all_substr
 
     def search_json(self, search_term_list, search_num):
-        """Call function to craft search terms. Perform search on all values in JSON.
-        Exit search if any term found in value."""
+        """Perform search on all values in JSON. Exit search if any term found in value."""
         for key in self.full_corpus:
             for term in search_term_list:
                 if term in self.full_corpus[key]:

@@ -6,7 +6,7 @@ from topic_model import LDA_Model
 
 # Create a list of stopwords from a text file of new-line delimited stop words
 def create_stopwords_list():
-    filepath = 'stopwords.txt'
+    filepath = 'data/stopwords.txt'
     stopwords = []
     with open(filepath, 'r') as infile:
         stopwords = [line.rstrip('\n').replace("'", r"\'") for line in infile]
@@ -15,7 +15,7 @@ def create_stopwords_list():
 # Split full json into test and training data sets
 # Perform minimal preprocessing of patent content
 def split_data():
-    with open('all_data.json') as json_data:
+    with open('data/all_data.json') as json_data:
         all_data = json.load(json_data)
         all_patent_IDs = list(all_data.keys())
 
@@ -36,10 +36,10 @@ def split_data():
             else:
                 print("Where did this patent come from? --> ", doc_key)
 
-        with open('train_data.json', 'w') as train_json:
+        with open('data/train_data.json', 'w') as train_json:
             json.dump(train_data, train_json)
 
-        with open('test_data.json', 'w') as test_json:
+        with open('data/test_data.json', 'w') as test_json:
             json.dump(test_data, test_json)
 
 
