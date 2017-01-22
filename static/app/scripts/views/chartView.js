@@ -1,11 +1,12 @@
 /**
  * Created by ryancarlton on 1/20/17.
  */
- (function (window, Backbone, Handlebars, Templates) {
-   window.app.apiView = Backbone.View.extend({
-    template: Templates.apiView(),
-    el:'#apiView',
+(function (window, Backbone, Handlebars, Templates) {
+  window.app.chartView = Backbone.View.extend({
+    template: '',
+    el:'.chartView',
     initialize: function () {
+      this.template = Templates.chartView();
       this.render();
     },
     render: function () {

@@ -1,3 +1,55 @@
-<p>
-  test view from api View!!!!!!!! this is from an hbs:{{user}}
-</p>
+<div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+  <div class="mdl-grid">
+
+    <div class="mdl-cell mdl-cell--6-col">
+      <div class="title center">
+        <h4>Documents Found</h4>
+      </div>
+      <ul class='mdl-list docFound'>
+        {{#unless docFound}}
+          <li class="mdl-list__item center">
+            <span class="mdl-chip mdl-chip--contact">
+            <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">
+              <i class="material-icons mdl-list__item-icon">description</i>
+            </span>
+            <span class="mdl-chip__text">None Found.</span></span>
+          </li>
+        {{/unless}}
+        {{#each docFound}}
+          <li class="mdl-list__item center">
+            <span class="mdl-chip mdl-chip--contact">
+            <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">
+              <i class="material-icons mdl-list__item-icon">description</i>
+            </span>
+            <span class="mdl-chip__text">{{this}}</span></span>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col">
+      <div class="title center">
+        <h4>Searched Terms</h4>
+      </div>
+      <ul class='mdl-list searchedTerms'>
+        {{#unless searchedTerms}}
+          <li class="mdl-list__item center">
+            <span class="mdl-chip mdl-chip--contact">
+            <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">
+              <i class="material-icons mdl-list__item-icon">find_in_page</i>
+            </span>
+            <span class="mdl-chip__text">None Used.</span></span>
+          </li>
+        {{/unless}}
+        {{#each searchedTerms}}
+          <li class="mdl-list__item center">
+            <span class="mdl-chip mdl-chip--contact">
+            <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">
+              <i class="material-icons mdl-list__item-icon">find_in_page</i>
+            </span>
+            <span class="mdl-chip__text">{{this}}</span></span>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</div>

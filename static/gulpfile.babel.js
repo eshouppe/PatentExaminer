@@ -136,8 +136,8 @@ gulp.task('scripts',['templates'], () =>
       './app/scripts/libs/chartist.zoom.js',
       './app/scripts/libs/chartist.zoom.js',
       './app/scripts/templates.js',
-      './app/scripts/apiView.js',
-      './app/scripts/homeView.js',
+      './app/scripts/views/apiView.js',
+      './app/scripts/views/homeView.js',
       './app/scripts/router.js',
       './app/scripts/main.js'
       // Other scripts

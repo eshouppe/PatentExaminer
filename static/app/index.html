@@ -75,105 +75,17 @@
       <a class="mdl-navigation__link" data-link="home" href="#home">
         <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">graphic_eq</i>Venn Search
       </a>
-      <a class="mdl-navigation__link" data-link="settings" href="#settings">
-        <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">gradient</i>Plot Search
-      </a>
-      <a class="mdl-navigation__link" data-link="results" href="#results">
+      <!--<a class="mdl-navigation__link" data-link="settings" href="#settings">-->
+        <!--<i class="mdl-color-text&#45;&#45;blue-grey-400 material-icons" role="presentation">gradient</i>Scatter Plot Search-->
+      <!--</a>-->
+      <a class="mdl-navigation__link" data-link="results" href="#api">
         <i class="material-icons" role="presentation">dns</i>Api Results
       </a>
     </nav>
   </div>
   <main class="mdl-layout__content mdl-color--grey-100">
-    <div class="mdl-grid demo-content">
-      <div id="home" class="tab active demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-        <div class="searchContainer">
-          <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--6-col searchRow">
-              <div class="inputForm">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="search1">
-                  <label class="mdl-textfield__label" for="search1">Search 1</label>
-                </div>
-                <label class="mdl-button mdl-js-button mdl-button--icon mdl-layout--large-screen-only" for="search1">
-                  <i class="material-icons">search</i>
-                </label>
-              </div>
-            </div>
-            <div class="mdl-cell mdl-cell--6-col searchRow">
-              <div class="inputForm">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="search2">
-                  <label class="mdl-textfield__label" for="search2">Search 2</label>
-                </div>
-                <label class="mdl-button mdl-js-button mdl-button--icon mdl-layout--large-screen-only" for="search2">
-                  <i class="material-icons">search</i>
-                </label>
-              </div>
-            </div>
-            <div class="mdl-cell mdl-cell--12-col">
-              <button class="searchnow center mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                Search Now <i class="material-icons">search</i>
-              </button>
-            </div>
-            <div class="mdl-cell mdl-cell--12-col">
-              <button class="resetZoom center mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                Reset Zoom
-              </button>
-            </div>
-          </div>
-          <div class="mdl-grid searchProgress" style="max-width: 400px;display: none;">
-            <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
-          </div>
-        </div>
-        <div class="title center">
-          <h4>Search Results</h4>
-        </div>
-        <div class="ct-chart ct-golden-section" id="resultsChart"></div>
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--12-col">
-            <div class="title center">
-              <h6 style="text-decoration: underline;">Legend</h6>
-            </div>
-          </div>
-          <div class="mdl-cell mdl-cell--4-col">
-            <div class="title center search1Legend">
-              Search 1
-            </div>
-          </div>
-          <div class="mdl-cell mdl-cell--4-col">
-            <div class="title center search2Legend">
-              Both
-            </div>
-          </div>
-          <div class="mdl-cell mdl-cell--4-col">
-            <div class="title center search3Legend">
-              Search 2
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="settings" class="tab mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-        Plot search coming soon
-      </div>
-      <div id="results" class="tab demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-        <div class="mdl-grid">
-
-          <div class="mdl-cell mdl-cell--6-col">
-            <div class="title center">
-              <h4>Documents Found</h4>
-            </div>
-            <ul class='mdl-list docFound'>
-            </ul>
-          </div>
-          <div class="mdl-cell mdl-cell--6-col">
-            <div class="title center">
-              <h4>Searched Terms</h4>
-            </div>
-            <ul class='mdl-list searchedTerms'>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <div class="mdl-grid demo-content appContainer">
+      <div id="appView"></div>
       <div id="homeView"></div>
       <div id="apiView"></div>
     </div>
@@ -186,7 +98,7 @@
 
 <script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 
-<script>window.app = window.app || {};</script>
+<script>window.app = window.app || {};window.app.data = window.app.data || {};</script>
 <!-- build:js scripts/main.min.js -->
 <script src="scripts/libs/jquery-3.1.1.js"></script>
 <script src="scripts/libs/underscore.js"></script>
@@ -199,8 +111,8 @@
 <script src="scripts/libs/chartist.zoom.js"></script>
 <script src="scripts/templates.js"></script>
 
-<script src="scripts/homeView.js"></script>
-<script src="scripts/apiView.js"></script>
+<script src="scripts/views/homeView.js"></script>
+<script src="scripts/views/apiView.js"></script>
 <script src="scripts/router.js"></script>
 <script src="scripts/main.js"></script>
 <!-- endbuild -->

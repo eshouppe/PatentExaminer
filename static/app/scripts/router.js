@@ -11,11 +11,11 @@ window.app.router = (function (window, Backbone) {
     },
 
     home: function() {
-      //this.destroyeCurrentView();
+      this.destroyCurrentView();
       this.loadNewView(window.app.homeView)
     },
     api: function () {
-      //this.destroyCurrentView();
+      this.destroyCurrentView();
       this.loadNewView(window.app.apiView)
     },
 
@@ -28,6 +28,9 @@ window.app.router = (function (window, Backbone) {
         this.view.undelegateEvents();
         $(this.view.el).removeData().unbind();
         Backbone.View.prototype.remove.call(this.view);
+        if ($('#appView').length == 0) {
+          $('.appContainer').prepend('<div id="appView"></div>')
+        }
       }
     }
   });
