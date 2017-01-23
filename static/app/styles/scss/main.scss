@@ -18,31 +18,42 @@
 Note: any .css or .scss files included in the 'styles' directory
 will be correctly compiled during `gulp serve` and `gulp`
  */
+$primary-highlight-color: rgb(255, 87, 34);
+$primary-background-color: #1a237e;
+$menu-light-blue: #37474f;
+$menu-dark-blue: #263238;
 
 html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
 }
+
 .demo-avatar {
   width: 48px;
   height: 48px;
   border-radius: 24px;
 }
+
 .demo-layout .mdl-layout__header .mdl-layout__drawer-button {
   color: rgba(0, 0, 0, 0.54);
 }
+
 .mdl-layout__drawer .avatar {
   margin-bottom: 16px;
 }
+
 .demo-drawer {
   border: none;
 }
+
 /* iOS Safari specific workaround */
 .demo-drawer .mdl-menu__container {
   z-index: -1;
 }
+
 .demo-drawer .demo-navigation {
   z-index: -2;
 }
+
 /* END iOS Safari specific workaround */
 .demo-drawer .mdl-menu .mdl-menu__item {
   display: -webkit-flex;
@@ -52,6 +63,7 @@ html, body {
   -ms-flex-align: center;
   align-items: center;
 }
+
 .demo-drawer-header {
   box-sizing: border-box;
   display: -webkit-flex;
@@ -65,8 +77,9 @@ html, body {
   justify-content: flex-end;
   padding: 16px;
   height: 151px;
-  color:hsla(0, 0%, 100%, 0.77);
+  color: hsla(0, 0%, 100%, 0.77);
 }
+
 .demo-avatar-dropdown {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -86,6 +99,7 @@ html, body {
   -ms-flex-positive: 1;
   flex-grow: 1;
 }
+
 .demo-layout .demo-navigation .mdl-navigation__link {
   display: -webkit-flex !important;
   display: -ms-flexbox !important;
@@ -96,85 +110,29 @@ html, body {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  color:hsla(0, 0%, 100%, 0.77);
+  color: hsla(0, 0%, 100%, 0.77);
   font-weight: 500;
 }
+
 .demo-layout .demo-navigation .mdl-navigation__link:hover {
-  background-color: rgba(25, 256, 256, 0.54);
+  background-color: $primary-highlight-color;
   color: #FFFFFF;
 }
+
 .demo-navigation .mdl-navigation__link .material-icons {
   font-size: 24px;
   color: hsla(0, 0%, 100%, 0.77);
   margin-right: 32px;
 }
 
-
-.demo-cards {
-  -webkit-align-items: flex-start;
-  -ms-flex-align: start;
-  align-items: flex-start;
-  -webkit-align-content: flex-start;
-  -ms-flex-line-pack: start;
-  align-content: flex-start;
-}
-.demo-cards .demo-separator {
-  height: 32px;
-}
-.demo-cards .mdl-card__title.mdl-card__title {
-  color: white;
-  font-size: 24px;
-  font-weight: 400;
-}
-.demo-cards ul {
-  padding: 0;
-}
-.demo-cards h3 {
-  font-size: 1em;
-}
-.demo-updates .mdl-card__title {
-  min-height: 200px;
-  background-image: url('images/dog.png');
-  background-position: 90% 100%;
-  background-repeat: no-repeat;
-}
-.demo-cards .mdl-card__actions a {
-  color: #00BCD4;
-  text-decoration: none;
-}
-
-.demo-options h3 {
-  margin: 0;
-}
-.demo-options .mdl-checkbox__box-outline {
-  border-color: rgba(255, 255, 255, 0.89);
-}
-.demo-options ul {
-  margin: 0;
-  list-style-type: none;
-}
-.demo-options li {
-  margin: 4px 0;
-}
-.demo-options .material-icons {
-  color: rgba(255, 255, 255, 0.89);
-}
-.demo-options .mdl-card__actions {
-  height: 64px;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  box-sizing: border-box;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
 main .tab {
-  display:none;
+  display: none;
 }
+
 main .tab.active {
-  display:block;
+  display: block;
 }
+
 #view-source {
   position: fixed;
   display: block;
@@ -188,26 +146,32 @@ main .tab.active {
 //**************************
 // Global Styles
 //**************************
+
 #appView {
-  width:100%;
+  width: 100%;
 }
+
 .title {
-  text-align:center;
+  text-align: center;
   letter-spacing: .1rem;
   //text-transform: uppercase;
   //font-weight:lighter;
 }
+
 .title i {
   font-size: 4rem;
 }
+
 .inputForm {
   text-align: center;
 }
+
 .center {
   text-align: center;
   margin: 0 auto;
   display: block;
 }
+
 //**************************
 // Primary Search Styles
 //**************************
@@ -216,25 +180,70 @@ main .tab.active {
     margin: 0 auto;
   }
   .primaryResultsContainer {
-
+    .wordInputContainer {
+      max-width:1300px;
+    }
+    .wordSelection {
+      margin: 0 auto;
+      text-align: center;
+      display: block;
+    }
   }
 }
+
+#treeChartView {
+
+  .node {
+    &.topic.active {
+      text {
+        font-size:1.5rem;
+      }
+      circle {
+        fill:$primary-background-color;
+        stroke:$primary-highlight-color;
+        stroke-width: 3px;
+      }
+    }
+    circle {
+      fill: #fff;
+    }
+    text {
+      fill: white;
+      font-size: 1.3rem;
+    }
+  }
+
+  .node--internal text {
+    //text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+    fill: white;
+    font-size: 1.3rem;
+  }
+
+  .link {
+    fill: none;
+    stroke: $primary-highlight-color;
+    stroke-width: 4px;
+  }
+}
+
 //**************************
 //**************************
 // Old Styles
 //**************************
 .docFound i.material-icons {
   padding-top: 3px;
-  color:white;
+  color: white;
 }
+
 .searchedTerms i.material-icons {
   padding-top: 3px;
-  color:white;
+  color: white;
 }
+
 .graphs {
   /*height:600px;*/
-  text-align:center;
-  overflow:hidden;
+  text-align: center;
+  overflow: hidden;
 }
 
 @media (max-width: 839px) and (min-width: 480px) {
@@ -242,20 +251,23 @@ main .tab.active {
     margin: 0 auto;
   }
 }
+
 $color1: green;
 $color2: blue;
 $mixedColor: red;
 //VennColors
 .vennCircle1 {
-  fill:$color1;
+  fill: $color1;
   text-anchor: "middle";
-  fill-opacity:.20;
+  fill-opacity: .20;
 }
+
 .vennCircle2 {
   text-anchor: "middle";
   fill: $color2;
-  fill-opacity:.20;
+  fill-opacity: .20;
 }
+
 //Graph series colors
 //Series 1
 .ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
@@ -265,6 +277,7 @@ $mixedColor: red;
 .ct-series-a .ct-slice-pie, .ct-series-a .ct-area {
   fill: $color1;
 }
+
 .ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {
   stroke: $color2;
 }
@@ -272,6 +285,7 @@ $mixedColor: red;
 .ct-series-b .ct-slice-pie, .ct-series-b .ct-area {
   fill: $color2;
 }
+
 .ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {
   stroke: $mixedColor;
 }
@@ -279,13 +293,16 @@ $mixedColor: red;
 .ct-series-c .ct-slice-pie, .ct-series-c .ct-area {
   fill: $mixedColor;
 }
+
 #home .search1Legend {
   color: $color1;
 }
+
 //Series 2
 #home .search2Legend {
   color: $mixedColor;
 }
+
 #home .search3Legend {
   color: $color2
 }
