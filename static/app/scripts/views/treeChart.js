@@ -5,7 +5,8 @@
   window.app.treeChart = Backbone.View.extend({
     template: '<div id="treeChart"></div>',
     el: '#treeChartView',
-    initialize: function () {
+    initialize: function (data) {
+      this.data = data;
       //this.template = Templates.treeChart();
       this.render();
       this.renderTreeChart();
@@ -14,27 +15,7 @@
       this.$el.html(this.template);
     },
     renderTreeChart: function () {
-      var treeData =
-        {
-          "name": "Cannon",
-
-          "children": [
-            {"name": "Ball"},
-            {"name": "Steel"},
-            {"name": "Carbon"},
-            {"name":"Powder"},
-            {"name":"Ship"},
-            {"name":"Wood"},
-            {"name":"Parrot"},
-            {
-              "name":"Pirate",
-              "children":[
-                {"name":"Barbosa"},
-                {"name":"Jack"}
-              ]
-            }
-          ]
-        };
+      var treeData = this.data;
 
       // set the dimensions and margins of the diagram
       var margin = {top: 20, right: 90, bottom: 30, left: 90},
