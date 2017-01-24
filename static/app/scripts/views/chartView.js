@@ -29,9 +29,9 @@
           showGrid: true,
           showLabel: false,
           type: Chartist.AutoScaleAxis,
-          labelInterpolationFnc: function (value, index) {
-            return index % 13 === 0 ? 'x' + value : null;
-          }
+          // labelInterpolationFnc: function (value, index) {
+          //   return index % 13 === 0 ? 'x' + value : null;
+          // }
         },
         axisY: {
           showGrid: true,
@@ -39,10 +39,10 @@
           type: Chartist.AutoScaleAxis,
         },
         plugins: [
-          // Chartist.plugins.tooltip(),
-          Chartist.plugins.ctPointLabels({
-            textAnchor: 'middle'
-          }),
+          Chartist.plugins.tooltip(),
+          // Chartist.plugins.ctPointLabels({
+          //   textAnchor: 'middle'
+          // }),
           Chartist.plugins.zoom({onZoom: this.onZoom.bind(this)})
         ]
       };
@@ -61,6 +61,7 @@
     drawGraph: function (data) {
       var newData = {
         series: [
+          [],
           [],
           [],
           []

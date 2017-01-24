@@ -190,7 +190,13 @@ main .tab.active {
     }
   }
 }
-
+.chartView {
+  #resultsChart .ct-grids {
+    .ct-grid {
+      stroke:rgba(255, 87, 34, 0.40);
+    }
+  }
+}
 #treeChartView {
 
   .node {
@@ -252,10 +258,23 @@ main .tab.active {
   }
 }
 
-$color1: green;
-$color2: blue;
-$mixedColor: red;
+$color1: #ffff00;
+$color2: lighten(#08CC2A,10%);
+$color3: #E43579;
+$color4: #09c9dc;
 //VennColors
+.search1Legend {
+  color: $color1;
+}
+.search2Legend {
+  color: $color2;
+}
+.search3Legend {
+  color:$color3;
+}
+.search4Legend {
+  color:$color4;
+}
 .vennCircle1 {
   fill: $color1;
   text-anchor: "middle";
@@ -287,20 +306,29 @@ $mixedColor: red;
 }
 
 .ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {
-  stroke: $mixedColor;
+  stroke: $color3;
 }
 
 .ct-series-c .ct-slice-pie, .ct-series-c .ct-area {
-  fill: $mixedColor;
+  fill: $color3;
+}
+.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {
+  stroke: $color4;
 }
 
+.ct-series-d .ct-slice-pie, .ct-series-d .ct-area {
+  fill: $color4;
+}
+
+
+//TODO remove the below
 #home .search1Legend {
   color: $color1;
 }
 
 //Series 2
 #home .search2Legend {
-  color: $mixedColor;
+  color: $color3;
 }
 
 #home .search3Legend {
