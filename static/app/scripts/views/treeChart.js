@@ -21,7 +21,7 @@
       var margin = {top: 20, right: 90, bottom: 30, left: 90},
         //width = '100%',
         width = 960 - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom;
+        height = 550 - margin.top - margin.bottom;
 
     // declares a tree layout and assigns the size
       var treemap = d3.tree()

@@ -97,6 +97,13 @@
   window.app.changePageTitle = function (newPageTitle) {
     $('header .pageTitle').text(newPageTitle);
   };
+  window.app.showHideLoadingBar = function (show) {
+    if (show) {
+      $('#loadingProgress').fadeIn('fast');
+    } else {
+      $('#loadingProgress').fadeOut('fast');
+    }
+  };
   //Kick off application Router and through it the application views:
   window.mainRouter = new window.app.router({});
   Backbone.history.start();

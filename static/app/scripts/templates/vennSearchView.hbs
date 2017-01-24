@@ -1,10 +1,7 @@
 <div class="vennSearchView">
   {{#if primarysearch}}
     <div class="searchContainer mdl-color-text--grey-100">
-      <div class="mdl-grid searchProgress" style="display: none;">
-        <div id="p3" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"
-             style="width:100% !important;"></div>
-      </div>
+
       <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--12-col searchRow">
           <div class="inputForm">
@@ -57,6 +54,16 @@
         </div>
       </div>
 
+    </div>
+  {{/if}}
+  {{#if vennresults}}
+    <div class="vennResults mdl-color-text--grey-100">
+      <h4 class="center">Venn Search Results</h4>
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+          <div class="chartView" style="width:100%;"></div>
+        </div>
+      </div>
     </div>
   {{/if}}
 </div>

@@ -34,7 +34,7 @@ window.app.router = (function (window, Backbone) {
         $(this.view.el).removeData().unbind();
         Backbone.View.prototype.remove.call(this.view);
         if ($('#appView').length == 0) {
-          $('.appContainer').prepend('<div id="appView"></div>')
+          $('.appContainer').append('<div id="appView"></div>')
         }
       }
     }

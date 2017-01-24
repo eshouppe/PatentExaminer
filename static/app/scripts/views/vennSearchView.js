@@ -14,9 +14,10 @@
       's3':''
     },
     events: {
-      'click .vennSearchView .searchnow':'primarySearch',
-      'click .topic':'commonWordSelection',
-      'change .vennSearchView input':'onInputChange'
+      'click .vennSearchView .searchContainer .searchnow':'primarySearch',
+      'click .vennSearchView .primaryResultsContainer .searchnow':'vennSearch',
+      'click .vennSearchView .primaryResultsContainer .topic':'commonWordOnGraphSelection',
+      'change .vennSearchView .primaryResultsContainer input':'onFrequentWordSelectionInputChange'
     },
     initialize: function () {
       //Reup the state if need be
@@ -32,11 +33,12 @@
     },
     primarySearch: function () {
       //Setup Primary search logic here
+      this.changeLoader(true);
       this.viewState = {primaryresults:true};
       this.viewTitle='Filter By Common Words';
       this.render();
       this.treeChart1 = new window.app.treeChart({
-        "name": "Cannon",
+        "name": "Pirate",
         "children": [
           {"name": "Ball"},
           {"name": "Steel"},
@@ -45,20 +47,37 @@
           {"name":"Ship"},
           {"name":"Wood"},
           {"name":"Parrot"},
-          {
-            "name":"Pirate",
-            "children":[
-              {"name":"Barbosa"},
-              {"name":"Jack"}
-            ]
-          }
+          {"name":"Treasure"},
+          {"name":"Bounty"},
+          {"name":"Wench"}
+          // {
+          //   "name":"Pirate",
+          //   "children":[
+          //     {"name":"Barbosa"},
+          //     {"name":"Jack"}
+          //   ]
+          // }
         ]
       });
+      this.changeLoader(false);
+    },
+    vennSearch: function () {
+      this.changeLoader(true);
+      this.viewState = {vennresults:true};
+      this.viewTitle='Venn Results';
+      this.render();
+      this.changeLoader(false);
+      this.chart = new window.app.chartView();
+      this.chart.drawGraph(window.app.data.primarySearch);
+
+    },
+    changeLoader: function (show) {
+      window.app.showHideLoadingBar(show);
     },
     changePageTitle: function (newtitle) {
       window.app.changePageTitle(newtitle);
     },
-    onInputChange: function (event) {
+    onFrequentWordSelectionInputChange: function (event) {
       var currentInput = this.$el.find(event.currentTarget),
         inputChangedNewValue = currentInput.val();
       if (currentInput.attr('id') === 'search2') {
@@ -72,7 +91,7 @@
       }
       this.syncGraphAndSearchInputs();
     },
-    commonWordSelection: function (event) {
+    commonWordOnGraphSelection: function (event) {
       var currentSelection = $(event.currentTarget),
         selection = currentSelection.data('topic');
       //Based on active class present decide if adding or removing a term
