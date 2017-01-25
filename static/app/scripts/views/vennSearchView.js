@@ -17,6 +17,7 @@
       'click .vennSearchView .searchContainer .searchnow':'primarySearch',
       'click .vennSearchView .primaryResultsContainer .searchnow':'vennSearch',
       'click .vennSearchView .primaryResultsContainer .topic':'commonWordOnGraphSelection',
+      'click .vennSearchView .vennResults .reset':'resetZoom',
       'change .vennSearchView .primaryResultsContainer input':'onFrequentWordSelectionInputChange'
     },
     initialize: function () {
@@ -69,6 +70,9 @@
       this.changeLoader(false);
       this.chart = new window.app.chartView();
       this.chart.drawGraph(this.tempFakeVennData2());
+    },
+    resetZoom: function () {
+      this.chart.resetZoom();
     },
     changeLoader: function (show) {
       window.app.showHideLoadingBar(show);

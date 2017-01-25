@@ -8,6 +8,7 @@
     initialize: function () {
       this.test = 2;
       this.seq = 0;
+      this.radiusCalculated = 0;
       this.circle1 = {};
       this.circle2 = {};
 
@@ -31,7 +32,12 @@
           type: Chartist.AutoScaleAxis,
           scaleMinSpace: 30,
           divisor: 5,
-          low: 0
+          highLow: {
+            high: 150,
+            low: -25
+          },
+          high: 150,
+          low: -25
           // labelInterpolationFnc: function (value, index) {
           //   return index % 13 === 0 ? 'x' + value : null;
           // }
@@ -42,7 +48,12 @@
           type: Chartist.AutoScaleAxis,
           scaleMinSpace: 40,
           divisor: 5,
-          low: 0
+          highLow: {
+            high: 150,
+            low: -25
+          },
+          high: 150,
+          low: -25
         },
         plugins: [
           Chartist.plugins.tooltip(),
@@ -52,7 +63,6 @@
           Chartist.plugins.zoom({onZoom: this.onZoom.bind(this)})
         ]
       };
-
       var responsiveOptions = [
         ['screen and (min-width: 640px)', {
           axisX: {
@@ -84,9 +94,14 @@
       newData.series.unshift(this.createCircles(newData.series));
       this.test = 0;
       this.seq = 0;
-      this
 
       this.chart.update(newData);
+      setTimeout(function () {
+        $('.specialText1').append('Search 1');
+        $('.specialText2').append('Search 2');
+        $('.specialText3').append('Search 3');
+        $('.specialText4').append('Search 4');
+      }, 1000);
     },
     onDrawUpdates: function (data) {
       if (data.type !== 'grid' && data.seriesIndex === 0) {
@@ -131,66 +146,38 @@
         });
       }
     },
-    addCircles: function (data) {
-      if (data.type === 'grid' && data.index === 0 && this.test === 0) {
-        this.test += 1;
-        // create a custom label element to insert into the bar
-        var label = new Chartist.Svg("circle");
-        this.circle1.x = data.axis.axisLength * (Chartist.getMultiValue(this.circle1.x, 'x') - data.axis.range.min) / (data.axis.range.max - data.axis.range.min);
-        this.circle2.x = data.axis.axisLength * (Chartist.getMultiValue(this.circle2.x, 'x') - data.axis.range.min) / (data.axis.range.max - data.axis.range.min);
-        this.circle1.r = (this.circle1.r * this.circle1.x);
-        this.circle2.r = (this.circle2.r * this.circle2.x);
-      }
-      // if (data.type === 'grid' && data.index === 1 && test === 1 && ) {
-      if (data.type === 'grid' && data.index === 0 && this.test === 1) {
-        this.test += 1;
-        this.circle1.y = data.axis.axisLength * (Chartist.getMultiValue(this.circle1.y, 'y') - data.axis.range.min) / (data.axis.range.max - data.axis.range.min);
-        this.circle2.y = data.axis.axisLength * (Chartist.getMultiValue(this.circle2.y, 'y') - data.axis.range.min) / (data.axis.range.max - data.axis.range.min);
-      }
-      if (data.type === 'point' && data.index === 0 && this.test === 2) {
-        this.test += 1;
-        var circ1 = new Chartist.Svg("circle");
-        var circ2 = new Chartist.Svg("circle");
-        //this.circle1.r = (this.circle1.r * this.circle1.x)/(this.circle1.r * this.circle1.y);
-        //this.circle2.r = (this.circle2.r * this.circle2.x)/(this.circle2.r * this.circle2.y);
-
-        circ1.attr({
-          cx: this.circle1.y,
-          cy: this.circle1.x,
-          r: [this.circle1.r],
-          "class": "vennCircle1"
-        });
-        circ2.attr({
-          cx: this.circle2.y,
-          cy: this.circle2.x,
-          r: [this.circle2.r],
-          "class": "vennCircle2"
-        });
-        // add the new custom text label to the bar
-        data.group.append(circ1);
-        data.group.append(circ2);
-      }
-
-    },
 
     createVennCirclesOnGraph: function (currentGraphData) {
+      var rangeX = this.chart.options.axisX.highLow || Chartist.getHighLow(this.chart.data.series.slice(1), this.chart.optionsProvider.getCurrentOptions(), 'x');
+      var rangeY = this.chart.options.axisY.highLow || Chartist.getHighLow(this.chart.data.series.slice(1), this.chart.optionsProvider.getCurrentOptions(), 'y');
+
+      //var rangeX = this.chart.options.axisX.highLow;
+      //var rangeY = this.chart.options.axisY.highLow;
+      console.log(rangeX);
+      console.log(rangeY);
       var startingRadius = currentGraphData.series[currentGraphData.index].r;
       var diagonal = (Math.sqrt(Math.pow($('#resultsChart svg').height(), 2) + Math.pow($('#resultsChart svg').width(), 2)) || 1);
-      var rangeX = Chartist.getHighLow(this.chart.data.series.slice(1), this.chart.optionsProvider.getCurrentOptions(), 'x');
-      var rangeY = Chartist.getHighLow(this.chart.data.series.slice(1), this.chart.optionsProvider.getCurrentOptions(), 'y');
-      var bound = {range:(Math.sqrt(Math.pow((rangeX.high - rangeX.low) || 1, 2) + Math.pow((rangeY.high - rangeY.low) || 1, 2)) || 1)};
-
-      //in this case range is the same for both axis...if not find the average of the two?
+      var bound = {range: (Math.sqrt(Math.pow((rangeX.high - rangeX.low) || 1, 2) + Math.pow((rangeY.high - rangeY.low) || 1, 2)) || 1)};
       var newRadius = Chartist.projectLength(diagonal, startingRadius, bound);
+      console.log('newRadius:' + newRadius);
+
 
       var circ1 = new Chartist.Svg("circle");
+      var text1 = new Chartist.Svg("text");
       circ1.attr({
-        "class": "specialCircle",
+        "class": "specialCircle specialCircle" + (currentGraphData.index + 1),
         cx: currentGraphData.x,
         cy: currentGraphData.y,
         r: newRadius
       });
+      text1.attr({
+        "class": "specialText specialText" + (currentGraphData.index + 1),
+        x: currentGraphData.x + newRadius + 10,
+        y: currentGraphData.y
+      });
       currentGraphData.group.append(circ1);
+      currentGraphData.group.append(text1);
+
     },
 
     createCircles: function (series) {
@@ -240,7 +227,9 @@
         currentPoint = arrayOfPoints[currentPoint];
         distancesFromCenter.push(this.calcDistanceBetweenPoints(cX, cY, currentPoint.x, currentPoint.y))
       }
-      var sum = distancesFromCenter.reduce(function(a, b) { return a + b; });
+      var sum = distancesFromCenter.reduce(function (a, b) {
+        return a + b;
+      });
       var avg = sum / (distancesFromCenter.length || 1);
       return avg;
     },

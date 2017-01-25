@@ -146,6 +146,10 @@ main .tab.active {
 //**************************
 // Global Styles
 //**************************
+$color1: #ffff00;
+$color2: lighten(#08CC2A,10%);
+$color3: #E43579;
+$color4: #09c9dc;
 
 #appView {
   width: 100%;
@@ -190,10 +194,107 @@ main .tab.active {
     }
   }
 }
+@mixin rotated-text($num-letters: 100, $angle-span: 180deg, $angle-offset: 0deg) {
+  $angle-per-char: $angle-span / $num-letters;
+  @for $i from 1 through $num-letters {
+    .char#{$i} {
+      transform:rotate($angle-offset + $angle-per-char * $i);
+    }
+  }
+}
 .chartView {
-  #resultsChart .ct-grids {
-    .ct-grid {
-      stroke:rgba(255, 87, 34, 0.40);
+  //VennColors
+  .search1Legend {
+    color: $color1;
+  }
+  .search2Legend {
+    color: $color2;
+  }
+  .search3Legend {
+    color:$color3;
+  }
+  .search4Legend {
+    color:$color4;
+  }
+  #resultsChart {
+    .ct-zoom-rect {
+      fill: rgba(200, 100, 100, 0.3);
+      stroke: red;
+    }
+    .ct-grids .ct-grid {
+      stroke:rgba(255, 87, 34, 0.90);
+    }
+    .specialCircle1 {
+      fill: transparent;
+      stroke: $color1;
+      stroke-width: 2px;
+    }
+    .specialCircle2 {
+      fill: transparent;
+      stroke: $color2;
+      stroke-width: 2px;
+    }
+    .specialCircle3 {
+      fill: transparent;
+      stroke: $color3;
+      stroke-width: 2px;
+    }
+    .specialCircle4 {
+      fill: transparent;
+      stroke: $color4;
+      stroke-width: 2px;
+    }
+    .specialText1 {
+      fill:$color1;
+    }
+    .specialText2 {
+      fill:$color2;
+    }
+    .specialText3 {
+      fill:$color3;
+    }
+    .specialText4 {
+      fill:$color4;
+    }
+    //Graph series colors
+    //Circle Points
+    .ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
+      stroke: white;
+    }
+
+    .ct-series-a .ct-slice-pie, .ct-series-a .ct-area {
+      fill: white;
+    }
+    //Scatter points
+    .ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {
+      stroke: $color1;
+    }
+
+    .ct-series-b .ct-slice-pie, .ct-series-b .ct-area {
+      fill: $color1;
+    }
+
+    .ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {
+      stroke: $color2;
+    }
+
+    .ct-series-c .ct-slice-pie, .ct-series-c .ct-area {
+      fill: $color2;
+    }
+
+    .ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {
+      stroke: $color3;
+    }
+
+    .ct-series-d .ct-slice-pie, .ct-series-d .ct-area {
+      fill: $color3;
+    }
+    .ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {
+      stroke: $color4;
+    }
+
+    .ct-series-e .ct-slice-pie, .ct-series-e .ct-area {
+      fill: $color4;
     }
   }
 }
@@ -252,98 +353,5 @@ main .tab.active {
   overflow: hidden;
 }
 
-@media (max-width: 839px) and (min-width: 480px) {
-  .searchContainer .searchRow {
-    margin: 0 auto;
-  }
-}
 
-$color1: #ffff00;
-$color2: lighten(#08CC2A,10%);
-$color3: #E43579;
-$color4: #09c9dc;
-//VennColors
-.search1Legend {
-  color: $color1;
-}
-.search2Legend {
-  color: $color2;
-}
-.search3Legend {
-  color:$color3;
-}
-.search4Legend {
-  color:$color4;
-}
-.vennCircle1 {
-  fill: $color1;
-  text-anchor: "middle";
-  fill-opacity: .20;
-}
-
-.vennCircle2 {
-  text-anchor: "middle";
-  fill: $color2;
-  fill-opacity: .20;
-}
-.specialCircle {
-  fill: transparent;
-  stroke: white;
-  stroke-width: 2px;
-}
-//Graph series colors
-//Circle Points
-.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
-  stroke: white;
-}
-
-.ct-series-a .ct-slice-pie, .ct-series-a .ct-area {
-  fill: white;
-}
-//Scatter points
-.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {
-  stroke: $color1;
-}
-
-.ct-series-b .ct-slice-pie, .ct-series-b .ct-area {
-  fill: $color1;
-}
-
-.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {
-  stroke: $color2;
-}
-
-.ct-series-c .ct-slice-pie, .ct-series-c .ct-area {
-  fill: $color2;
-}
-
-.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {
-  stroke: $color3;
-}
-
-.ct-series-d .ct-slice-pie, .ct-series-d .ct-area {
-  fill: $color3;
-}
-.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {
-  stroke: $color4;
-}
-
-.ct-series-e .ct-slice-pie, .ct-series-e .ct-area {
-  fill: $color4;
-}
-
-
-//TODO remove the below
-//#home .search1Legend {
-//  color: $color1;
-//}
-//
-////Series 2
-//#home .search2Legend {
-//  color: $color3;
-//}
-//
-//#home .search3Legend {
-//  color: $color2
-//}
 
