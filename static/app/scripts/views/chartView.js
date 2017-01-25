@@ -6,12 +6,7 @@
     template: '',
     el: '.chartView',
     initialize: function () {
-      this.test = 2;
       this.seq = 0;
-      this.radiusCalculated = 0;
-      this.circle1 = {};
-      this.circle2 = {};
-
       this.resetFnc = null;
       this.template = Templates.chartView();
       this.render();
@@ -96,23 +91,15 @@
       this.seq = 0;
 
       this.chart.update(newData);
-      setTimeout(function () {
-        $('.specialText1').append('Search 1');
-        $('.specialText2').append('Search 2');
-        $('.specialText3').append('Search 3');
-        $('.specialText4').append('Search 4');
-      }, 1000);
     },
     onDrawUpdates: function (data) {
       if (data.type !== 'grid' && data.seriesIndex === 0) {
         this.createVennCirclesOnGraph(data);
       }
       //this.animatePoints(data);
-      //this.addCircles(data);
     },
     onZoom: function (chart, reset) {
       this.seq = 0;
-      this.test = 0;
       this.resetFnc = reset;
       this.chart.update();
     },
@@ -146,21 +133,13 @@
         });
       }
     },
-
     createVennCirclesOnGraph: function (currentGraphData) {
       var rangeX = this.chart.options.axisX.highLow || Chartist.getHighLow(this.chart.data.series.slice(1), this.chart.optionsProvider.getCurrentOptions(), 'x');
       var rangeY = this.chart.options.axisY.highLow || Chartist.getHighLow(this.chart.data.series.slice(1), this.chart.optionsProvider.getCurrentOptions(), 'y');
-
-      //var rangeX = this.chart.options.axisX.highLow;
-      //var rangeY = this.chart.options.axisY.highLow;
-      console.log(rangeX);
-      console.log(rangeY);
       var startingRadius = currentGraphData.series[currentGraphData.index].r;
       var diagonal = (Math.sqrt(Math.pow($('#resultsChart svg').height(), 2) + Math.pow($('#resultsChart svg').width(), 2)) || 1);
       var bound = {range: (Math.sqrt(Math.pow((rangeX.high - rangeX.low) || 1, 2) + Math.pow((rangeY.high - rangeY.low) || 1, 2)) || 1)};
       var newRadius = Chartist.projectLength(diagonal, startingRadius, bound);
-      console.log('newRadius:' + newRadius);
-
 
       var circ1 = new Chartist.Svg("circle");
       var text1 = new Chartist.Svg("text");
@@ -175,11 +154,11 @@
         x: currentGraphData.x + newRadius + 10,
         y: currentGraphData.y
       });
+      text1._node.innerHTML = 'Search ' + (currentGraphData.index + 1);
       currentGraphData.group.append(circ1);
       currentGraphData.group.append(text1);
-
     },
-
+    //Temp functions to calc circles:
     createCircles: function (series) {
       var allSeriesCircles = [];
       var seriesAverages = this.avgOfXandY(series);
@@ -194,7 +173,6 @@
       }
       return allSeriesCircles;
     },
-
     avgOfXandY: function (arrayToWorkOn) {
       var sumX = 0,
         sumY = 0,
@@ -218,7 +196,6 @@
       }
       return seriesAvg;
     },
-
     computeCircleRadius: function (arrayOfPoints, center) {
       var cX = center.x,
         cY = center.y,
@@ -233,7 +210,6 @@
       var avg = sum / (distancesFromCenter.length || 1);
       return avg;
     },
-
     calcDistanceBetweenPoints: function (x1, y1, x2, y2) {
       var distX = Math.pow((x2 - x1), 2);
       var distY = Math.pow((y2 - y1), 2);

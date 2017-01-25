@@ -7,21 +7,24 @@ window.app.router = (function (window, Backbone) {
 
     routes: {
       "api":"api",
-      "vennSearch":"vennSearch",
-      "*actions":"home",    // #help
-    },
-
-    home: function() {
-      this.destroyCurrentView();
-      this.loadNewView(window.app.homeView);
+      "workBench":"workBench",
+      "*actions":"vennSearch",    // #help
     },
     api: function () {
-      this.destroyCurrentView();
-      this.loadNewView(window.app.apiView);
+      if (window.CONFIG && window.CONFIG.debug) {
+        this.destroyCurrentView();
+        this.loadNewView(window.app.apiView);
+      } else {
+        window.location.href = '/';
+      }
     },
     vennSearch: function () {
       this.destroyCurrentView();
       this.loadNewView(window.app.vennSearchView);
+    },
+    workBench: function () {
+      this.destroyCurrentView();
+      this.loadNewView(window.app.workBenchView);
     },
 
     //View Functions

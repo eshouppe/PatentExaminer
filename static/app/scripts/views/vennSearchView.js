@@ -18,6 +18,7 @@
       'click .vennSearchView .primaryResultsContainer .searchnow':'vennSearch',
       'click .vennSearchView .primaryResultsContainer .topic':'commonWordOnGraphSelection',
       'click .vennSearchView .vennResults .reset':'resetZoom',
+      'keypress .vennSearchView':'enterPressed',
       'change .vennSearchView .primaryResultsContainer input':'onFrequentWordSelectionInputChange'
     },
     initialize: function () {
@@ -73,6 +74,17 @@
     },
     resetZoom: function () {
       this.chart.resetZoom();
+    },
+    enterPressed: function (event) {
+      var keycode = (event.keyCode ? event.keyCode : event.which);
+      if (keycode == '13') {
+        if (this.viewState.primarysearch){
+
+          $('.vennSearchView .searchContainer .searchnow').click();
+        } else if (this.viewState.primaryresults) {
+          $('.vennSearchView .primaryResultsContainer .searchnow').click();
+        }
+      }
     },
     changeLoader: function (show) {
       window.app.showHideLoadingBar(show);

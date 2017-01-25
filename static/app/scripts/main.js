@@ -78,10 +78,7 @@
   // //Add enter to search function
   // $(document).keypress(function(event){
   //
-  //   var keycode = (event.keyCode ? event.keyCode : event.which);
-  //   if(keycode == '13'){
-  //     $('.searchnow').click();
-  //   }
+
   // });
   // $('.searchContainer').on('click','.resetZoom',function () {
   //   resetFnc && resetFnc();

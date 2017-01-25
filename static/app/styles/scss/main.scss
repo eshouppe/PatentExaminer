@@ -219,10 +219,10 @@ $color4: #09c9dc;
   #resultsChart {
     .ct-zoom-rect {
       fill: rgba(200, 100, 100, 0.3);
-      stroke: red;
+      stroke: $primary-highlight-color;
     }
     .ct-grids .ct-grid {
-      stroke:rgba(255, 87, 34, 0.90);
+      stroke:$primary-highlight-color
     }
     .specialCircle1 {
       fill: transparent;

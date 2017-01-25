@@ -138,9 +138,9 @@ gulp.task('scripts',['templates'], () =>
       './app/scripts/templates.js',
       './app/scripts/views/treeChart.js',
       './app/scripts/views/vennSearchView.js',
+      './app/scripts/views/workBenchView.js',
       './app/scripts/views/chartView.js',
       './app/scripts/views/apiView.js',
-      './app/scripts/views/homeView.js',
       './app/scripts/router.js',
       './app/scripts/main.js'
       // Other scripts
