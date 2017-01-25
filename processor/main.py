@@ -48,7 +48,7 @@ class Processor_Job(object):
             return {search_term_dict['primary']: most_common_words}
         
         else:
-            return {search_term_dict['primary']: ["HTTP_error"]}
+            return {search_term_dict['primary']: ['HTTP_error']}
 
 
     def initiate_secondary_search(self, search_term_dict):
