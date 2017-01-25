@@ -4,6 +4,7 @@ from lib.model import Model_Text
 
 
 class Processor_Job(object):
+
     def __init__(self):
         # TODO Allow user to conduct full phrase search
         self.post_request_template = {
@@ -24,7 +25,6 @@ class Processor_Job(object):
         primary_search = Search_and_Process()
 
         search_term = search_term_dict['primary']
-        print("Search term b4 condition: {} Type: {}".format(search_term, type(search_term)))
         # Remove stopwords/punctuation and make lower case
         search_term = primary_search.condition_text(text_string=search_term)
 
@@ -101,6 +101,6 @@ class Processor_Job(object):
 
 
 this_job = Processor_Job()
-search = {'primary': "natural language processing"}
+search = {"primary": "natural language processing"}
 freq_terms = this_job.initiate_primary_search(search)
 print(freq_terms)

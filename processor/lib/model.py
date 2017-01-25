@@ -1,14 +1,13 @@
 import string
 from collections import Counter
 from data.stopwords import general_stopwords
+from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_distances
 from sklearn.manifold import MDS
 
 
 class Model_Text(object):
-    def __init__(self):
-        pass
    
     def calculate_tf(self, abstract_list, num_words_to_return=10):
         """Get the 10 most common non-stopwords"""
