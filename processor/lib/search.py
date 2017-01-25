@@ -1,6 +1,6 @@
-import requests
 import string
-from data.stopwords import general_stopwords
+import requests
+from processor.data.stopwords import general_stopwords
 
 
 class Search_and_Process(object):

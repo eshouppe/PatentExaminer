@@ -1,6 +1,6 @@
 from copy import deepcopy
-from lib.search import Search_and_Process
-from lib.model import Model_Text
+from processor.lib.search import Search_and_Process
+from processor.lib.model import Model_Text
 
 
 class Processor_Job(object):
@@ -98,9 +98,3 @@ class Processor_Job(object):
         cartesian_coords = secondary_model.mds_similarity_to_coords(cumulative_patent_abstracts)
 
         pick_name = secondary_model.calculate_centroid_and_radius(cumulative_patent_abstracts)
-
-
-this_job = Processor_Job()
-search = {"primary": "natural language processing"}
-freq_terms = this_job.initiate_primary_search(search)
-print(freq_terms)

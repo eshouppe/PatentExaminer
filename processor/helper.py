@@ -1,7 +1,6 @@
 import json
 import string
 from sklearn.cross_validation import train_test_split
-from topic_model import LDA_Model
 
 
 # Create a list of stopwords from a text file of new-line delimited stop words
@@ -41,15 +40,3 @@ def split_data():
 
         with open('data/test_data.json', 'w') as test_json:
             json.dump(test_data, test_json)
-
-
-# Train LDA model and save to file
-def train_model():
-    lda_train = LDA_Model()
-    lda_train.train_lda_model()
-
-# Call helper methods
-# create_stopwords_list()
-# split_data()
-train_model()
-
