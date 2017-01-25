@@ -29,6 +29,9 @@
           showGrid: true,
           showLabel: false,
           type: Chartist.AutoScaleAxis,
+          scaleMinSpace: 30,
+          divisor: 5,
+          low: 0
           // labelInterpolationFnc: function (value, index) {
           //   return index % 13 === 0 ? 'x' + value : null;
           // }
@@ -37,6 +40,9 @@
           showGrid: true,
           showLabel: false,
           type: Chartist.AutoScaleAxis,
+          scaleMinSpace: 40,
+          divisor: 5,
+          low: 0
         },
         plugins: [
           Chartist.plugins.tooltip(),
@@ -74,14 +80,18 @@
           newData.series[doc.series - 1].push(doc);
         }
       }
-      this.circle1 = data.search1Circle || {};
-      this.circle2 = data.search2Circle || {};
+      //Compute and Add Circles
+      newData.series.unshift(this.createCircles(newData.series));
       this.test = 0;
       this.seq = 0;
+      this
 
       this.chart.update(newData);
     },
     onDrawUpdates: function (data) {
+      if (data.type !== 'grid' && data.seriesIndex === 0) {
+        this.createVennCirclesOnGraph(data);
+      }
       //this.animatePoints(data);
       //this.addCircles(data);
     },
@@ -161,6 +171,84 @@
         data.group.append(circ2);
       }
 
+    },
+
+    createVennCirclesOnGraph: function (currentGraphData) {
+      var startingRadius = currentGraphData.series[currentGraphData.index].r;
+      var diagonal = (Math.sqrt(Math.pow($('#resultsChart svg').height(), 2) + Math.pow($('#resultsChart svg').width(), 2)) || 1);
+      var rangeX = Chartist.getHighLow(this.chart.data.series.slice(1), this.chart.optionsProvider.getCurrentOptions(), 'x');
+      var rangeY = Chartist.getHighLow(this.chart.data.series.slice(1), this.chart.optionsProvider.getCurrentOptions(), 'y');
+      var bound = {range:(Math.sqrt(Math.pow((rangeX.high - rangeX.low) || 1, 2) + Math.pow((rangeY.high - rangeY.low) || 1, 2)) || 1)};
+
+      //in this case range is the same for both axis...if not find the average of the two?
+      var newRadius = Chartist.projectLength(diagonal, startingRadius, bound);
+
+      var circ1 = new Chartist.Svg("circle");
+      circ1.attr({
+        "class": "specialCircle",
+        cx: currentGraphData.x,
+        cy: currentGraphData.y,
+        r: newRadius
+      });
+      currentGraphData.group.append(circ1);
+    },
+
+    createCircles: function (series) {
+      var allSeriesCircles = [];
+      var seriesAverages = this.avgOfXandY(series);
+      for (var currentSeries in series) {
+        var plottedSeries = series[currentSeries];
+        var seriesCenterOfMass = seriesAverages[currentSeries];
+        allSeriesCircles.push({
+          'x': seriesCenterOfMass.x,
+          'y': seriesCenterOfMass.y,
+          'r': this.computeCircleRadius(plottedSeries, seriesCenterOfMass)
+        });
+      }
+      return allSeriesCircles;
+    },
+
+    avgOfXandY: function (arrayToWorkOn) {
+      var sumX = 0,
+        sumY = 0,
+        count = 0,
+        seriesAvg = [];
+      for (var x in arrayToWorkOn) {
+        currentArray = arrayToWorkOn[x];
+        count = currentArray.length;
+        for (var dataPoint in currentArray) {
+          dataPoint = currentArray[dataPoint];
+          sumX += dataPoint['x'];
+          sumY += dataPoint['y'];
+        }
+        seriesAvg.push({
+          'x': sumX / (count || 1),
+          'y': sumY / (count || 1)
+        });
+        sumX = 0;
+        sumY = 0;
+        count = 0;
+      }
+      return seriesAvg;
+    },
+
+    computeCircleRadius: function (arrayOfPoints, center) {
+      var cX = center.x,
+        cY = center.y,
+        distancesFromCenter = [];
+      for (var currentPoint in arrayOfPoints) {
+        currentPoint = arrayOfPoints[currentPoint];
+        distancesFromCenter.push(this.calcDistanceBetweenPoints(cX, cY, currentPoint.x, currentPoint.y))
+      }
+      var sum = distancesFromCenter.reduce(function(a, b) { return a + b; });
+      var avg = sum / (distancesFromCenter.length || 1);
+      return avg;
+    },
+
+    calcDistanceBetweenPoints: function (x1, y1, x2, y2) {
+      var distX = Math.pow((x2 - x1), 2);
+      var distY = Math.pow((y2 - y1), 2);
+      return Math.sqrt(distX + distY);
     }
   });
 })(window, Backbone, Handlebars, Templates);
