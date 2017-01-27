@@ -179,6 +179,9 @@ $color4: #09c9dc;
 //**************************
 // Primary Search Styles
 //**************************
+#loadingProgress {
+  margin-top:10px;
+}
 .vennSearchView {
   .searchContainer {
     margin: 0 auto;
@@ -332,7 +335,31 @@ $color4: #09c9dc;
     stroke-width: 4px;
   }
 }
+.workBenchView {
+  border-radius:10px;
+  .headerContainer {
+    h1,h2,h3,h4,h5,h6 {
+      text-transform:uppercase;
+      margin: 0;
+    }
+    padding:1rem;
+  }
+  .listContainer {
+    overflow:auto;
+    max-height:350px;
+    ul {
+      li {
+        padding: 2px 0;
+        border-bottom:1px dotted $primary-highlight-color
+      }
+    }
+  }
+  .mdl-cell {
+    box-sizing: border-box;
+    color: $primary-background-color;
+  }
 
+}
 //**************************
 //**************************
 // Old Styles

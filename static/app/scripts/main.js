@@ -72,19 +72,37 @@
     });
   }
 
-  // //Add Search Function
-  // $(".searchContainer").on('click','.searchnow', searchNow);
-  //
-  // //Add enter to search function
-  // $(document).keypress(function(event){
-  //
-
-  // });
-  // $('.searchContainer').on('click','.resetZoom',function () {
-  //   resetFnc && resetFnc();
-  // });
+  //Local Storage Check
+  function storageAvailable(type) {
+    try {
+      var storage = window[type],
+        x = '__storage_test__';
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+    }
+    catch(e) {
+      return false;
+    }
+  }
 
   //Globals
+  window.app.localDataManager = function(get,key,value) {
+    if (storageAvailable('localStorage')) {
+      console.log('Local storage found');
+      var currentData = JSON.parse(localStorage.getItem('appData')) || {};
+      if (!get) {
+        currentData[key] = value;
+        localStorage.setItem('appData', JSON.stringify(currentData));
+      } else {
+        return currentData[key] || {};
+      }
+    }
+    else {
+      alert('No Local Storage Available. User data will not persist.');
+      return {};
+    }
+  };
   window.app.showToast = function (text) {
     var snackbarContainer = document.querySelector('#demo-toast-example'),
       showToastButton = document.querySelector('#demo-show-toast'),

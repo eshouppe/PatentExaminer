@@ -43,6 +43,28 @@ this["Templates"]["vennSearchView"] = Handlebars.template({"1":function(containe
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.vennresults : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</div>\n\n";
 },"useData":true});
-this["Templates"]["workBenchView"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div>Workbench view HBS</div>\n";
+this["Templates"]["workBenchView"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "              <li class=\"mdl-list__item mdl-list__item--two-line\">\n              <span class=\"mdl-list__item-primary-content\">\n                <i class=\"material-icons mdl-list__item-avatar\">lightbulb_outline</i>\n                <span>"
+    + alias2(alias1((depth0 != null ? depth0.patentId : depth0), depth0))
+    + "</span>\n                <span class=\"mdl-list__item-sub-title\">"
+    + alias2(alias1((depth0 != null ? depth0.patentTitle : depth0), depth0))
+    + "</span>\n              </span>\n              </li>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "              <li class=\"mdl-list__item mdl-list__item--two-line\">\n                <span class=\"mdl-list__item-primary-content\">\n                  <i class=\"material-icons mdl-list__item-avatar\">search</i>\n                  <span>"
+    + alias2(alias1((depth0 != null ? depth0.searchId : depth0), depth0))
+    + "</span>\n                  <span class=\"mdl-list__item-sub-title\">"
+    + alias2(alias1((depth0 != null ? depth0.searchText : depth0), depth0))
+    + "</span>\n                </span>\n              </li>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {};
+
+  return "<div class=\"mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid workBenchView\">\n  <div class=\"mdl-cell mdl-cell--12-col\">\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone\">\n        <div class=\"headerContainer\">\n          <h5>Workbench</h5>\n          <p>Saved patents from previous results</p>\n        </div>\n        <div class=\"mdl-cell mdl-cell--12-col listContainer\">\n          <ul class=\"demo-list-two mdl-list\">\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.savedPatents : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "          </ul>\n        </div>\n      </div>\n      <div class=\"mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone\">\n        <div class=\"headerContainer\">\n          <h5>Previous Searches</h5>\n          <p>Select a search to reload</p>\n        </div>\n        <div class=\"mdl-cell mdl-cell--12-col listContainer\">\n          <ul class=\"demo-list-two mdl-list\">\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.previousSearch : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "          </ul>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n";
 },"useData":true});
