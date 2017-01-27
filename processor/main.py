@@ -13,10 +13,10 @@ class Processor_Job(object):
                     "patent_abstract": 1
                 }
             },
-            "f": ["patent_number","patent_title","patent_abstract"],
+            "f": 1,
             "s": [{"patent_date":"desc"}],
             "o": {
-                "per_page":100
+                "per_page":20
             }
         }
     
@@ -28,13 +28,14 @@ class Processor_Job(object):
         # Remove stopwords/punctuation and make lower case
         search_term = primary_search.condition_text(text_string=search_term)
 
-        # Update request template with this search's term
+        # Format payload for request
         post_request_json = deepcopy(self.post_request_template)
         post_request_json["q"]["_text_any"]["patent_abstract"] = search_term
+        post_request_json["f"] = ["patent_abstract"]
         
         response_json = primary_search.make_post_request(payload=post_request_json)
         if response_json != "HTTP error":
-            nums, titles, abstracts = primary_search.process_post_result(resp_json=response_json)
+            abstracts = primary_search.process_post_result(resp_json=response_json)
 
             data_x = []
             for abstract in abstracts: # abstracts is a list of strings
@@ -67,11 +68,13 @@ class Processor_Job(object):
         cumulative_search_source = [] # List of lists. Track which search yielded this patent
 
         for key in search_term_dict:
+            search_term = search_term_dict[key]
             # Remove stopwords/punctuation and make lower case
-            search_term = secondary_search.condition_text(search_term_dict[key])
+            search_term = secondary_search.condition_text(text_string=search_term)
             # Format payload for request
             post_request_json = deepcopy(self.post_request_template)
             post_request_json["q"]["_text_any"]["patent_abstract"] = search_term
+            post_request_json["f"] = ["patent_number","patent_title","patent_abstract"]
             # Make HTTP request
             response_json = secondary_search.make_post_request(payload=post_request_json)
 
@@ -96,5 +99,4 @@ class Processor_Job(object):
         # Instantiate model class
         secondary_model = Model_Text()
         cartesian_coords = secondary_model.mds_similarity_to_coords(cumulative_patent_abstracts)
-
-        pick_name = secondary_model.calculate_centroid_and_radius(cumulative_patent_abstracts)
+        x_center, y_center, radius = secondary_model.calculate_centroid_and_radius(cartesian_coords)
