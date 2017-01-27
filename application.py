@@ -26,9 +26,8 @@ def do_primary_search():
 def do_secondary_search():
     if not request.json or ('primary' not in request.json):
         abort(500)
-    returnObj = {}
-    #TODO: Do search logic here
-
+    new_secondary_search = Processor_Job()
+    returnObj = new_secondary_search.initiate_secondary_search(request.json)
     return jsonify(returnObj)
 
 
