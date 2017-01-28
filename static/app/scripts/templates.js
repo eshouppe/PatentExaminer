@@ -44,21 +44,29 @@ this["Templates"]["vennSearchView"] = Handlebars.template({"1":function(containe
     + "</div>\n\n";
 },"useData":true});
 this["Templates"]["workBenchView"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var alias1=container.lambda, alias2=container.escapeExpression;
+    var helper, alias1=container.lambda, alias2=container.escapeExpression;
 
   return "              <li class=\"mdl-list__item mdl-list__item--two-line\">\n              <span class=\"mdl-list__item-primary-content\">\n                <i class=\"material-icons mdl-list__item-avatar\">lightbulb_outline</i>\n                <span>"
     + alias2(alias1((depth0 != null ? depth0.patentId : depth0), depth0))
     + "</span>\n                <span class=\"mdl-list__item-sub-title\">"
     + alias2(alias1((depth0 != null ? depth0.patentTitle : depth0), depth0))
-    + "</span>\n              </span>\n              </li>\n";
+    + "</span>\n              </span>\n                <span class=\"mdl-list__item-secondary-content\">\n                  <span class=\"mdl-list__item-secondary-action removeSavedPatent\" data-idx=\""
+    + alias2(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"index","hash":{},"data":data}) : helper)))
+    + "\"><i class=\"material-icons\">clear</i></span>\n                </span>\n              </li>\n";
 },"3":function(container,depth0,helpers,partials,data) {
-    var alias1=container.lambda, alias2=container.escapeExpression;
+    var helper, alias1=container.lambda, alias2=container.escapeExpression;
 
   return "              <li class=\"mdl-list__item mdl-list__item--two-line\">\n                <span class=\"mdl-list__item-primary-content\">\n                  <i class=\"material-icons mdl-list__item-avatar\">search</i>\n                  <span>"
-    + alias2(alias1((depth0 != null ? depth0.searchId : depth0), depth0))
-    + "</span>\n                  <span class=\"mdl-list__item-sub-title\">"
     + alias2(alias1((depth0 != null ? depth0.searchText : depth0), depth0))
-    + "</span>\n                </span>\n              </li>\n";
+    + "</span>\n                  <span class=\"mdl-list__item-sub-title\">\n                    Subsearch: "
+    + alias2(alias1((depth0 != null ? depth0.s1 : depth0), depth0))
+    + " "
+    + alias2(alias1((depth0 != null ? depth0.s2 : depth0), depth0))
+    + " "
+    + alias2(alias1((depth0 != null ? depth0.s3 : depth0), depth0))
+    + "\n                  </span>\n                </span>\n                <span class=\"mdl-list__item-secondary-content\">\n                  <span class=\"mdl-list__item-secondary-action removeSearch\" data-idx=\""
+    + alias2(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"index","hash":{},"data":data}) : helper)))
+    + "\"><i class=\"material-icons\">clear</i></span>\n                </span>\n              </li>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
 

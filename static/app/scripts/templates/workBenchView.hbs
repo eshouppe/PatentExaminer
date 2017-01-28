@@ -15,6 +15,9 @@
                 <span>{{this.patentId}}</span>
                 <span class="mdl-list__item-sub-title">{{this.patentTitle}}</span>
               </span>
+                <span class="mdl-list__item-secondary-content">
+                  <span class="mdl-list__item-secondary-action removeSavedPatent" data-idx="{{@index}}"><i class="material-icons">clear</i></span>
+                </span>
               </li>
             {{/each}}
           </ul>
@@ -31,8 +34,13 @@
               <li class="mdl-list__item mdl-list__item--two-line">
                 <span class="mdl-list__item-primary-content">
                   <i class="material-icons mdl-list__item-avatar">search</i>
-                  <span>{{this.searchId}}</span>
-                  <span class="mdl-list__item-sub-title">{{this.searchText}}</span>
+                  <span>{{this.searchText}}</span>
+                  <span class="mdl-list__item-sub-title">
+                    Subsearch: {{this.s1}} {{this.s2}} {{this.s3}}
+                  </span>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                  <span class="mdl-list__item-secondary-action removeSearch" data-idx="{{@index}}"><i class="material-icons">clear</i></span>
                 </span>
               </li>
             {{/each}}

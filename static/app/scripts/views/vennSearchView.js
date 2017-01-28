@@ -8,6 +8,12 @@
     class: 'vennSearchView',
     viewState:{primarysearch:true},
     viewTitle:'New Primary Search',
+    searchModel: {
+      'searchText':'',
+      's1':'',
+      's2':'',
+      's3':''
+    },
     frequentWordModel: {
       's1':'',
       's2':'',
@@ -36,11 +42,13 @@
     primarySearch: function () {
       //Setup Primary search logic here
       this.changeLoader(true);
+      //Update Search Model
+      this.searchModel.searchText = $('.vennSearchView #search1').val() || '';
       this.viewState = {primaryresults:true};
       this.viewTitle='Filter By Common Words';
       this.render();
       this.treeChart1 = new window.app.treeChart({
-        "name": "Pirate",
+        "name": this.searchModel.searchText,
         "children": [
           {"name": "Ball"},
           {"name": "Steel"},
@@ -65,6 +73,19 @@
     },
     vennSearch: function () {
       this.changeLoader(true);
+      //Update Search Model
+      this.searchModel.s1 = $('.vennSearchView #search2').val() || '';
+      this.searchModel.s2 = $('.vennSearchView #search3').val() || '';
+      this.searchModel.s3 = $('.vennSearchView #search4').val() || '';
+      var storedSearchData = window.app.localDataManager(true, 'searchData') || {};
+      if (storedSearchData['previousSearch'] && storedSearchData['previousSearch'].constructor === Array) {
+        storedSearchData['previousSearch'].push(this.searchModel);
+      } else {
+        storedSearchData['previousSearch'] = [];
+        storedSearchData['previousSearch'].push(this.searchModel);
+      }
+      debugger;
+      window.app.localDataManager(false,'searchData',storedSearchData);
       this.viewState = {vennresults:true};
       this.viewTitle='Venn Results';
       this.render();
