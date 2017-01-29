@@ -9,7 +9,7 @@
     viewState:{primarysearch:true},
     viewTitle:'New Primary Search',
     searchModel: {
-      'searchText':'',
+      'searchText':'',//primary for the api
       's1':'',
       's2':'',
       's3':''
@@ -24,6 +24,7 @@
       'click .vennSearchView .primaryResultsContainer .searchnow':'vennSearch',
       'click .vennSearchView .primaryResultsContainer .topic':'commonWordOnGraphSelection',
       'click .vennSearchView .vennResults .reset':'resetZoom',
+      'click .vennSearchView .vennResults #resultsChart .ct-point':'savePatent',
       'keypress .vennSearchView':'enterPressed',
       'change .vennSearchView .primaryResultsContainer input':'onFrequentWordSelectionInputChange'
     },
@@ -40,36 +41,62 @@
       componentHandler.upgradeDom();
     },
     primarySearch: function () {
+      var $searchButton = this.$el.find('.searchContainer .searchnow');
+
       //Setup Primary search logic here
       this.changeLoader(true);
-      //Update Search Model
+      $searchButton.attr('disabled',true);
       this.searchModel.searchText = $('.vennSearchView #search1').val() || '';
-      this.viewState = {primaryresults:true};
-      this.viewTitle='Filter By Common Words';
-      this.render();
-      this.treeChart1 = new window.app.treeChart({
-        "name": this.searchModel.searchText,
-        "children": [
-          {"name": "Ball"},
-          {"name": "Steel"},
-          {"name": "Carbon"},
-          {"name":"Powder"},
-          {"name":"Ship"},
-          {"name":"Wood"},
-          {"name":"Parrot"},
-          {"name":"Treasure"},
-          {"name":"Bounty"},
-          {"name":"Wench"}
-          // {
-          //   "name":"Pirate",
-          //   "children":[
-          //     {"name":"Barbosa"},
-          //     {"name":"Jack"}
-          //   ]
-          // }
-        ]
+
+      function processResults(response) {
+        //Update Search Model
+        debugger;
+
+        this.viewState = {primaryresults:true};
+        this.viewTitle='Filter By Common Words';
+        this.render();
+        this.treeChart1 = new window.app.treeChart({
+          "name": this.searchModel.searchText,
+          "children": [
+            {"name": "Ball"},
+            {"name": "Steel"},
+            {"name": "Carbon"},
+            {"name":"Powder"},
+            {"name":"Ship"},
+            {"name":"Wood"},
+            {"name":"Parrot"},
+            {"name":"Treasure"},
+            {"name":"Bounty"},
+            {"name":"Wench"}
+            // {
+            //   "name":"Pirate",
+            //   "children":[
+            //     {"name":"Barbosa"},
+            //     {"name":"Jack"}
+            //   ]
+            // }
+          ]
+        });
+        this.changeLoader(false);
+      }
+      $.ajax({
+        // url: '/venn/api/v1.0/search',
+        url: 'http://localhost:5000/venn/api/v1.0/search',
+        contentType: "application/json",
+        dataType:'json',
+        method:'POST',
+        //data is the search term
+        data:JSON.stringify({'primary':this.searchModel.searchText}),
+        success: processResults,
+        error: function(response){
+          debugger;
+          //var errorCode = JSON.parse(xhr.responseText);
+          $searchButton.attr('disabled', false);
+          this.changeLoader(false);
+          showToast('Search Error Occurred - Code:' + response.status);
+        }.bind(this)
       });
-      this.changeLoader(false);
+
     },
     vennSearch: function () {
       this.changeLoader(true);
@@ -84,7 +111,6 @@
         storedSearchData['previousSearch'] = [];
         storedSearchData['previousSearch'].push(this.searchModel);
       }
-      debugger;
       window.app.localDataManager(false,'searchData',storedSearchData);
       this.viewState = {vennresults:true};
       this.viewTitle='Venn Results';
@@ -95,6 +121,26 @@
     },
     resetZoom: function () {
       this.chart.resetZoom();
+    },
+    savePatent: function (event) {
+      debugger;
+      var meta = $(event.currentTarget).attr('ct:meta'),
+        numAndTitle = meta.split(':'),
+        patNum = numAndTitle[0],
+        title = numAndTitle[1],
+        newPatentDoc = {
+          'patentId':patNum,
+          'patentTitle':title
+        };
+      var storedSearchData = window.app.localDataManager(true, 'searchData') || {};
+      if (storedSearchData['savedPatents'] && storedSearchData['savedPatents'].constructor === Array) {
+        storedSearchData['savedPatents'].push(newPatentDoc);
+      } else {
+        storedSearchData['savedPatents'] = [];
+        storedSearchData['savedPatents'].push(newPatentDoc);
+      }
+      window.app.localDataManager(false,'searchData',storedSearchData);
+      window.app.showToast('Patent saved to workbench.')
     },
     enterPressed: function (event) {
       var keycode = (event.keyCode ? event.keyCode : event.which);

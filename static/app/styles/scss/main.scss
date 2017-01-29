@@ -334,6 +334,9 @@ $color4: #09c9dc;
     stroke: $primary-highlight-color;
     stroke-width: 4px;
   }
+  .chartist-tooltip:hover {
+    opacity:1;
+  }
 }
 .workBenchView {
   border-radius:10px;

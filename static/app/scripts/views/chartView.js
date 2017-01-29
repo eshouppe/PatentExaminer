@@ -19,6 +19,24 @@
       var data = {
         series: []
       };
+
+      var defaultTooltipOptions = {
+        currency: undefined, //accepts '£', '$', '€', etc.
+        //e.g. 4000 => €4,000
+        tooltipFnc: function(pointMeta){
+          var metaObj = pointMeta.split(':');
+          return 'USPat: ' + metaObj[0] + ' <br> ' + metaObj[1] + '<br> (click point to save patent)';
+        }, //accepts function
+        //build custom tooltip
+        transformTooltipTextFnc:null, // accepts function
+        // transform tooltip text
+        class: undefined, // accecpts 'class1', 'class1 class2', etc.
+        //adds class(es) to tooltip wrapper
+        anchorToPoint: false, //accepts true or false
+        //tooltips do not follow mouse movement -- they are anchored to the point / bar.
+        appendToBody: false //accepts true or false
+        //appends tooltips to body instead of chart container
+      };
       var options = {
         showLine: false,
         axisX: {
@@ -51,7 +69,7 @@
           low: -25
         },
         plugins: [
-          Chartist.plugins.tooltip(),
+          Chartist.plugins.tooltip(defaultTooltipOptions),
           // Chartist.plugins.ctPointLabels({
           //   textAnchor: 'middle'
           // }),
@@ -81,7 +99,8 @@
       if (data.resultsToPlot) {
         for (var idx in data.resultsToPlot) {
           var doc = data.resultsToPlot[idx];
-          doc.meta = 'Pat Num:' + doc.patent_ID;
+          doc.meta = doc.patent_ID + ':test title';
+          doc.titleTilly = 'test';
           newData.series[doc.series - 1].push(doc);
         }
       }

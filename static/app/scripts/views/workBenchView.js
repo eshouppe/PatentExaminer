@@ -46,33 +46,6 @@
       function filterByIndex(elm,idx) {
         return (idx !== searchIdx);
       }
-      // this.templateDataFromStorage.savedPatents = [
-      //   {
-      //     'patentId':'1234',
-      //     'patentTitle':'testing a patent'
-      //   },
-      //   {
-      //     'patentId':'9988',
-      //     'patentTitle':'Hi I am a patent 1'
-      //   },
-      //   {
-      //     'patentId':'1234',
-      //     'patentTitle':'Hi I am a patent 2'
-      //   },
-      //   {
-      //     'patentId':'1234',
-      //     'patentTitle':'testing a patent'
-      //   },
-      //   {
-      //     'patentId':'9988',
-      //     'patentTitle':'Hi I am a patent 1'
-      //   },
-      //   {
-      //     'patentId':'1234',
-      //     'patentTitle':'Hi I am a patent 2'
-      //   }
-      // ];
-
       this.templateDataFromStorage.previousSearch = this.templateDataFromStorage.previousSearch.filter(filterByIndex);
       window.app.localDataManager(false,'searchData',this.templateDataFromStorage);
       this.render();
