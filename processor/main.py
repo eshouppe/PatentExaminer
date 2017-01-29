@@ -26,11 +26,11 @@ class Processor_Job(object):
 
         search_term = search_term_dict['primary']
         # Remove stopwords/punctuation and make lower case
-        search_term = primary_search.condition_text(text_string=search_term)
+        conditioned_search_term = primary_search.condition_text(text_string=search_term)
 
         # Format payload for request
         post_request_json = deepcopy(self.post_request_template)
-        post_request_json["q"]["_text_any"]["patent_abstract"] = search_term
+        post_request_json["q"]["_text_any"]["patent_abstract"] = conditioned_search_term
         post_request_json["f"] = ["patent_abstract"]
         
         response_json = primary_search.make_post_request(payload=post_request_json)
@@ -46,7 +46,7 @@ class Processor_Job(object):
             
             # Instantiate model class and get most common words
             primary_model = Model_Text()
-            most_common_words = primary_model.calculate_tf(data_x) # Returns list
+            most_common_words = primary_model.calculate_tf(data_x, search_term.split(" ")) # Returns list
             return_obj = {
                 'primary_search': search_term_dict['primary'],
                 'common_words' : most_common_words
