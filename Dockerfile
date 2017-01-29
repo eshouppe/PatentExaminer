@@ -21,7 +21,26 @@ RUN apt-get update
 RUN apt-get install --yes --force-yes python3-pip python3.5
 RUN apt-get install --yes --force-yes tar git curl nano wget dialog net-tools build-essential
 
-ADD . /venndemo
+# Add git clone funcitonality
+# Make ssh dir
+RUN mkdir /root/.ssh/
+
+# Copy over private key, and set permissions
+ADD id_rsa_vennDemoBitbucket /root/.ssh/id_rsa_vennDemoBitbucket
+RUN chmod 700 /root/.ssh/id_rsa_vennDemoBitbucket
+RUN chown -R root:root /root/.ssh
+
+# Create known_hosts
+RUN touch /root/.ssh/known_hosts
+
+# Remove host checking
+RUN echo "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
+
+# Clone the conf files into the docker container
+RUN git clone git@bitbucket.org:ineedthekeyboard/venndemo.git /venndemo
+
+#don't copy files directly
+#ADD . /venndemo
  
 # # Get pip to download and install requirements:
 RUN pip3 install -r /venndemo/requirements.txt
