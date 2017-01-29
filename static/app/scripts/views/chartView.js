@@ -25,12 +25,12 @@
         //e.g. 4000 => €4,000
         tooltipFnc: function(pointMeta){
           var metaObj = pointMeta.split(':');
-          return 'USPat: ' + metaObj[0] + ' <br> ' + metaObj[1] + '<br> (click point to save patent)';
+          return 'USPat: ' + metaObj[0].substring(0,10) + ' <br> ' + metaObj[1] + '<br> (click point to save patent)';
         }, //accepts function
         //build custom tooltip
         transformTooltipTextFnc:null, // accepts function
         // transform tooltip text
-        class: undefined, // accecpts 'class1', 'class1 class2', etc.
+        class: 'tooltipListenerClass', // accecpts 'class1', 'class1 class2', etc.
         //adds class(es) to tooltip wrapper
         anchorToPoint: false, //accepts true or false
         //tooltips do not follow mouse movement -- they are anchored to the point / bar.
@@ -44,13 +44,13 @@
           showLabel: false,
           type: Chartist.AutoScaleAxis,
           scaleMinSpace: 30,
-          divisor: 5,
-          highLow: {
-            high: 150,
-            low: -25
-          },
-          high: 150,
-          low: -25
+          divisor: 5
+          // highLow: {
+          //   high: 150,
+          //   low: -25
+          // },
+          // high: 150,
+          // low: -25
           // labelInterpolationFnc: function (value, index) {
           //   return index % 13 === 0 ? 'x' + value : null;
           // }
@@ -60,13 +60,13 @@
           showLabel: false,
           type: Chartist.AutoScaleAxis,
           scaleMinSpace: 40,
-          divisor: 5,
-          highLow: {
-            high: 150,
-            low: -25
-          },
-          high: 150,
-          low: -25
+          divisor: 5
+          // highLow: {
+          //   high: 150,
+          //   low: -25
+          // },
+          // high: 150,
+          // low: -25
         },
         plugins: [
           Chartist.plugins.tooltip(defaultTooltipOptions),
@@ -88,6 +88,7 @@
       this.chart = new Chartist.Line('#resultsChart', data, options, responsiveOptions).on('draw', this.onDrawUpdates.bind(this));
     },
     drawGraph: function (data) {
+      debugger;
       var newData = {
         series: [
           [],
@@ -99,13 +100,13 @@
       if (data.resultsToPlot) {
         for (var idx in data.resultsToPlot) {
           var doc = data.resultsToPlot[idx];
-          doc.meta = doc.patent_ID + ':test title';
-          doc.titleTilly = 'test';
-          newData.series[doc.series - 1].push(doc);
+          doc.meta = '' + doc.patent_number + ':' + doc.patent_title;
+          newData.series[doc.series].push(doc);
         }
       }
       //Compute and Add Circles
-      newData.series.unshift(this.createCircles(newData.series));
+      newData.series.unshift(data.circles  || []);
+      debugger;
       this.test = 0;
       this.seq = 0;
 
@@ -178,61 +179,61 @@
       currentGraphData.group.append(text1);
     },
     //Temp functions to calc circles:
-    createCircles: function (series) {
-      var allSeriesCircles = [];
-      var seriesAverages = this.avgOfXandY(series);
-      for (var currentSeries in series) {
-        var plottedSeries = series[currentSeries];
-        var seriesCenterOfMass = seriesAverages[currentSeries];
-        allSeriesCircles.push({
-          'x': seriesCenterOfMass.x,
-          'y': seriesCenterOfMass.y,
-          'r': this.computeCircleRadius(plottedSeries, seriesCenterOfMass)
-        });
-      }
-      return allSeriesCircles;
-    },
-    avgOfXandY: function (arrayToWorkOn) {
-      var sumX = 0,
-        sumY = 0,
-        count = 0,
-        seriesAvg = [];
-      for (var x in arrayToWorkOn) {
-        currentArray = arrayToWorkOn[x];
-        count = currentArray.length;
-        for (var dataPoint in currentArray) {
-          dataPoint = currentArray[dataPoint];
-          sumX += dataPoint['x'];
-          sumY += dataPoint['y'];
-        }
-        seriesAvg.push({
-          'x': sumX / (count || 1),
-          'y': sumY / (count || 1)
-        });
-        sumX = 0;
-        sumY = 0;
-        count = 0;
-      }
-      return seriesAvg;
-    },
-    computeCircleRadius: function (arrayOfPoints, center) {
-      var cX = center.x,
-        cY = center.y,
-        distancesFromCenter = [];
-      for (var currentPoint in arrayOfPoints) {
-        currentPoint = arrayOfPoints[currentPoint];
-        distancesFromCenter.push(this.calcDistanceBetweenPoints(cX, cY, currentPoint.x, currentPoint.y))
-      }
-      var sum = distancesFromCenter.reduce(function (a, b) {
-        return a + b;
-      });
-      var avg = sum / (distancesFromCenter.length || 1);
-      return avg;
-    },
-    calcDistanceBetweenPoints: function (x1, y1, x2, y2) {
-      var distX = Math.pow((x2 - x1), 2);
-      var distY = Math.pow((y2 - y1), 2);
-      return Math.sqrt(distX + distY);
-    }
+    // createCircles: function (series) {
+    //   var allSeriesCircles = [];
+    //   var seriesAverages = this.avgOfXandY(series);
+    //   for (var currentSeries in series) {
+    //     var plottedSeries = series[currentSeries];
+    //     var seriesCenterOfMass = seriesAverages[currentSeries];
+    //     allSeriesCircles.push({
+    //       'x': seriesCenterOfMass.x,
+    //       'y': seriesCenterOfMass.y,
+    //       'r': this.computeCircleRadius(plottedSeries, seriesCenterOfMass)
+    //     });
+    //   }
+    //   return allSeriesCircles;
+    // },
+    // avgOfXandY: function (arrayToWorkOn) {
+    //   var sumX = 0,
+    //     sumY = 0,
+    //     count = 0,
+    //     seriesAvg = [];
+    //   for (var x in arrayToWorkOn) {
+    //     currentArray = arrayToWorkOn[x];
+    //     count = currentArray.length;
+    //     for (var dataPoint in currentArray) {
+    //       dataPoint = currentArray[dataPoint];
+    //       sumX += dataPoint['x'];
+    //       sumY += dataPoint['y'];
+    //     }
+    //     seriesAvg.push({
+    //       'x': sumX / (count || 1),
+    //       'y': sumY / (count || 1)
+    //     });
+    //     sumX = 0;
+    //     sumY = 0;
+    //     count = 0;
+    //   }
+    //   return seriesAvg;
+    // },
+    // computeCircleRadius: function (arrayOfPoints, center) {
+    //   var cX = center.x,
+    //     cY = center.y,
+    //     distancesFromCenter = [];
+    //   for (var currentPoint in arrayOfPoints) {
+    //     currentPoint = arrayOfPoints[currentPoint];
+    //     distancesFromCenter.push(this.calcDistanceBetweenPoints(cX, cY, currentPoint.x, currentPoint.y))
+    //   }
+    //   var sum = distancesFromCenter.reduce(function (a, b) {
+    //     return a + b;
+    //   });
+    //   var avg = sum / (distancesFromCenter.length || 1);
+    //   return avg;
+    // },
+    // calcDistanceBetweenPoints: function (x1, y1, x2, y2) {
+    //   var distX = Math.pow((x2 - x1), 2);
+    //   var distY = Math.pow((y2 - y1), 2);
+    //   return Math.sqrt(distX + distY);
+    // }
   });
 })(window, Backbone, Handlebars, Templates);

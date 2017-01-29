@@ -44,80 +44,103 @@
       var $searchButton = this.$el.find('.searchContainer .searchnow');
 
       //Setup Primary search logic here
+      this.searchModel.searchText = $('.vennSearchView #search1').val() || '';
+      if (this.searchModel.searchText === '') {
+        window.app.showToast('Nothing Searched. Try Again');
+        return;
+      }
       this.changeLoader(true);
       $searchButton.attr('disabled',true);
-      this.searchModel.searchText = $('.vennSearchView #search1').val() || '';
 
       function processResults(response) {
         //Update Search Model
-        debugger;
-
+        var newTreeData = {
+          "name": response.primary_search || '',
+          "children": []
+        };
+        $.each(response.common_words,function (idx,name) {
+          newTreeData.children.push({"name":name});
+        });
         this.viewState = {primaryresults:true};
         this.viewTitle='Filter By Common Words';
         this.render();
-        this.treeChart1 = new window.app.treeChart({
-          "name": this.searchModel.searchText,
-          "children": [
-            {"name": "Ball"},
-            {"name": "Steel"},
-            {"name": "Carbon"},
-            {"name":"Powder"},
-            {"name":"Ship"},
-            {"name":"Wood"},
-            {"name":"Parrot"},
-            {"name":"Treasure"},
-            {"name":"Bounty"},
-            {"name":"Wench"}
-            // {
-            //   "name":"Pirate",
-            //   "children":[
-            //     {"name":"Barbosa"},
-            //     {"name":"Jack"}
-            //   ]
-            // }
-          ]
-        });
+        this.treeChart1 = new window.app.treeChart(newTreeData);
         this.changeLoader(false);
       }
       $.ajax({
         // url: '/venn/api/v1.0/search',
-        url: 'http://localhost:5000/venn/api/v1.0/search',
+        url: 'http://localhost:5000/venn/api/v1.0/search/primary',
         contentType: "application/json",
         dataType:'json',
         method:'POST',
         //data is the search term
         data:JSON.stringify({'primary':this.searchModel.searchText}),
-        success: processResults,
+        success: processResults.bind(this),
         error: function(response){
           debugger;
           //var errorCode = JSON.parse(xhr.responseText);
           $searchButton.attr('disabled', false);
           this.changeLoader(false);
-          showToast('Search Error Occurred - Code:' + response.status);
+          window.app.showToast('Search Error Occurred - Code:' + response.status);
         }.bind(this)
       });
 
     },
     vennSearch: function () {
-      this.changeLoader(true);
-      //Update Search Model
       this.searchModel.s1 = $('.vennSearchView #search2').val() || '';
       this.searchModel.s2 = $('.vennSearchView #search3').val() || '';
       this.searchModel.s3 = $('.vennSearchView #search4').val() || '';
-      var storedSearchData = window.app.localDataManager(true, 'searchData') || {};
-      if (storedSearchData['previousSearch'] && storedSearchData['previousSearch'].constructor === Array) {
-        storedSearchData['previousSearch'].push(this.searchModel);
-      } else {
-        storedSearchData['previousSearch'] = [];
-        storedSearchData['previousSearch'].push(this.searchModel);
+      var $searchButton = this.$el.find('.primaryResultsContainer .searchnow');
+      this.changeLoader(true);
+      $searchButton.attr('disabled',true);
+      function saveSearch(searchModel) {
+        var storedSearchData = window.app.localDataManager(true, 'searchData') || {};
+        debugger;
+        if (storedSearchData['previousSearch'] && storedSearchData['previousSearch'].constructor === Array) {
+          storedSearchData['previousSearch'].push(searchModel);
+        } else {
+          storedSearchData['previousSearch'] = [];
+          storedSearchData['previousSearch'].push(searchModel);
+        }
+        window.app.localDataManager(false,'searchData',storedSearchData);
       }
-      window.app.localDataManager(false,'searchData',storedSearchData);
-      this.viewState = {vennresults:true};
-      this.viewTitle='Venn Results';
-      this.render();
-      this.changeLoader(false);
-      this.chart = new window.app.chartView();
-      this.chart.drawGraph(this.tempFakeVennData2());
+      function processResponse(response) {
+        saveSearch(this.searchModel);
+        debugger;
+        this.viewState = {vennresults:true};
+        this.viewTitle='Venn Results';
+        $searchButton.attr('disabled',false);
+        this.changeLoader(false);
+        this.render();
+
+        this.chart = new window.app.chartView();
+        //this.chart.drawGraph(this.tempFakeVennData2());
+        this.chart.drawGraph(response);
+      }
+      this.changeLoader(true);
+      //Update Search Model
+      $.ajax({
+        // url: '/venn/api/v1.0/search',
+        url: 'http://localhost:5000/venn/api/v1.0/search/secondary',
+        contentType: "application/json",
+        dataType:'json',
+        method:'POST',
+        //data is the search term
+        data:JSON.stringify({
+          'primary':this.searchModel.searchText,
+          's1':this.searchModel.s1 || '',
+          's2':this.searchModel.s2 || '',
+          's3':this.searchModel.s3 || ''
+        }),
+        success: processResponse.bind(this),
+        error: function(response){
+          debugger;
+          $searchButton.attr('disabled', false);
+          this.changeLoader(false);
+          window.app.showToast('Search Error Occurred - Code:' + response.status);
+        }.bind(this)
+      });
+
     },
     resetZoom: function () {
       this.chart.resetZoom();
@@ -278,6 +301,8 @@
       updateGraph();
       updateInputFields();
     },
+
+
     tempFakeVennData: function () {
       return {
         "matchingPatentNums": ["4323119", "9256837", "9322223", "9544721", "7089160", "5992941", "9122728", "9009656", "7188090", "9019971", "9091140", "9521002", "8807242", "8140821", "9514154", "9542278", "9460444", "9524243", "9160606", "9535629", "8780401"],

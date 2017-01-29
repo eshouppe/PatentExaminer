@@ -28,7 +28,7 @@ def do_secondary_search():
         abort(500)
     new_secondary_search = Processor_Job()
     points, circles, num_patents = new_secondary_search.initiate_secondary_search(request.json)
-    returnObj = {"results_to_plot": points, "circles": circles, "num_patents": num_patents}
+    returnObj = {"resultsToPlot": points, "circles": circles, "num_patents": num_patents}
     return jsonify(returnObj)
 
 

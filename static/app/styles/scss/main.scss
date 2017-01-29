@@ -196,6 +196,9 @@ $color4: #09c9dc;
       display: block;
     }
   }
+  .vennResults {
+    max-width: 1200px;
+  }
 }
 @mixin rotated-text($num-letters: 100, $angle-span: 180deg, $angle-offset: 0deg) {
   $angle-per-char: $angle-span / $num-letters;

@@ -89,7 +89,6 @@
   //Globals
   window.app.localDataManager = function(get,key,value) {
     if (storageAvailable('localStorage')) {
-      console.log('Local storage found');
       var currentData = JSON.parse(localStorage.getItem('appData')) || {};
       if (!get) {
         currentData[key] = value;

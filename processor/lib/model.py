@@ -127,9 +127,9 @@ class Model_Text(object):
         # The sublists in points_list have form [[x, y], num, title]
         array_point_objs, coords_array = self.create_points_vars(search_id, points_list)
         x_ctr, y_ctr, r = self.calculate_centroid_and_radius(np.asarray(coords_array))
-        circle_info = {"x_center": x_ctr,
-                       "y_center": y_ctr,
-                       "radius": r,
+        circle_info = {"x": x_ctr,
+                       "y": y_ctr,
+                       "r": r,
                        "series": search_id}
 
         return array_point_objs, circle_info
