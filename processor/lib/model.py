@@ -1,4 +1,5 @@
 import string
+import numpy as np
 from collections import Counter
 from processor.data.stopwords import general_stopwords
 from nltk.tokenize import word_tokenize
@@ -46,7 +47,7 @@ class Model_Text(object):
         s3_points = []
         all_points = []
 
-        if (len(coords) == len(search_ids) == len(patent_nums) = len(patent_titles)):
+        if (len(coords) == len(search_ids) == len(patent_nums) == len(patent_titles)):
             for pt, ids, num, title in zip(coords, search_ids, patent_nums, patent_titles):
                 a_point = [pt, num, title]
                 if 0 in ids:         
@@ -102,24 +103,30 @@ class Model_Text(object):
         return x_m, y_m, np.mean(Ri_1)
     
 
-    def create_points_objects(self, search_id, points_list):
+    def create_points_vars(self, search_id, points_list):
+        this_series_point_info = []
+        this_series_xy = []
+
         for point in points_list:
             single_point_obj = {
-                "x": point[0],
-                "y": point[1],
-                "patent_title": ,
-                "patent_number": ,
+                "x": point[0][0],
+                "y": point[0][1],
+                "patent_number": point[1],
+                "patent_title": point[2],
                 "series": search_id}
+            this_series_point_info.append(single_point_obj)
+            this_series_xy.append([point[0][0], point[0][1]])
+        
+        return this_series_point_info, this_series_xy
 
     
     def create_plot_arrays(self, search_id, points_list):
-        array_point_objs = self.create_points_objects(search_id, points_list)
+        # The sublists in points_list have form [[x, y], num, title]
+        array_point_objs, coords_array = self.create_points_vars(search_id, points_list)
+        x_ctr, y_ctr, r = self.calculate_centroid_and_radius(np.asarray(coords_array))
+        circle_info = {"x_center": x_ctr,
+                       "y_center": y_ctr,
+                       "radius": r,
+                       "series": search_id}
 
-        circles_array = [{"x_center":, "y_center":, "radius":, "series":}]
-        number_of_distinct_patents_returned = 22
-
-                if len(p_points) > 0:
-            
-            all_points.extend(p_array_obj_points)
-            p_x, p_y, p_r = self.calculate_centroid_and_radius(p_points)
-            p_circle = {"x_center": p_x, "y_center": p_y, "radius": p_r, "series": 0}
+        return array_point_objs, circle_info

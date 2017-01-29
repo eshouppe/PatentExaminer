@@ -34,15 +34,22 @@ class Search_and_Process(object):
             return "HTTP error"
 
 
-    def process_post_result(self, resp_json):
+    def process_post_result(self, resp_json, search_type):
         # Make arrays of each result component
         abstracts_from_response = []
         titles_from_response = []
         nums_from_response = []
 
-        for obj in resp_json['patents']:
-            abstracts_from_response.append(obj["patent_abstract"])
-            titles_from_response.append(obj["patent_title"])
-            nums_from_response.append(obj["patent_number"])
-        
-        return nums_from_response, titles_from_response, abstracts_from_response
+        if search_type == 'primary':
+            for obj in resp_json['patents']:
+                abstracts_from_response.append(obj["patent_abstract"])
+   
+            return abstracts_from_response
+
+        if search_type == 'secondary':
+            for obj in resp_json['patents']:
+                abstracts_from_response.append(obj["patent_abstract"])
+                titles_from_response.append(obj["patent_title"])
+                nums_from_response.append(obj["patent_number"])
+            
+            return nums_from_response, titles_from_response, abstracts_from_response
