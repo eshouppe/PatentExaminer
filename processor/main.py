@@ -16,7 +16,7 @@ class Processor_Job(object):
             "f": 1,
             "s": [{"patent_date":"desc"}],
             "o": {
-                "per_page":20
+                "per_page": 100
             }
         }
     
@@ -35,7 +35,8 @@ class Processor_Job(object):
         
         response_json = primary_search.make_post_request(payload=post_request_json)
         if response_json != "HTTP error":
-            abstracts = primary_search.process_post_result(resp_json=response_json)
+            abstracts = primary_search.process_post_result(resp_json=response_json,
+                                                           search_type='primary')
 
             data_x = []
             for abstract in abstracts: # abstracts is a list of strings
@@ -91,7 +92,8 @@ class Processor_Job(object):
 
                 if response_json != "HTTP error":
                     # Process from dictionary to lists of strings
-                    nums, titles, abstracts = secondary_search.process_post_result(resp_json=response_json)
+                    nums, titles, abstracts = secondary_search.process_post_result(resp_json=response_json,
+                                                                                   search_type='secondary')
                     # Update cumulative list of search results
                     for idx, num in enumerate(nums):
                         if num not in all_patent_nums:
@@ -107,17 +109,17 @@ class Processor_Job(object):
         # Instantiate model class
         secondary_model = Model_Text()
         cartesian_coords = secondary_model.mds_similarity_to_coords(all_patent_abstracts)
-        all_series_points = secondary_model.split_into_groups(cartesian_coords,
-                                                              all_search_sources,
-                                                              all_patent_nums,
-                                                              all_patent_titles)
+        all_series_point_info = secondary_model.split_into_groups(cartesian_coords,
+                                                                  all_search_sources,
+                                                                  all_patent_nums,
+                                                                  all_patent_titles)
         all_points_array = []
         all_circles_array = []
         
-        for series, point in enumerate(all_series_points):
-            if len(point) > 0:
-                points_array, circles_array = secondary_model.create_plot_arrays(series, coords)
+        for series, points in enumerate(all_series_point_info):
+            if len(points) > 0:
+                points_array, circles_obj = secondary_model.create_plot_arrays(series, points)
                 all_points_array.extend(points_array)
-                all_circles_array.extend(circles_array)
+                all_circles_array.append(circles_obj)
         
-        return all_points_array, all_circles_array
+        return all_points_array, all_circles_array, len(all_patent_nums)
