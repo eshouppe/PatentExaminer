@@ -46,9 +46,17 @@ class Processor_Job(object):
             # Instantiate model class and get most common words
             primary_model = Model_Text()
             most_common_words = primary_model.calculate_tf(data_x) # Returns list
-            return {search_term_dict['primary']: most_common_words}
+            return_obj = {
+                'primary_search': search_term_dict['primary'],
+                'common_words' : most_common_words
+            }
+            return return_obj
         
         else:
+            return_obj = {
+                'message': 'Patent search error. Please try again.',
+                'error' : '500 internal error'
+            }
             return {search_term_dict['primary']: ['HTTP_error']}
 
 
@@ -62,41 +70,54 @@ class Processor_Job(object):
         """
         secondary_search = Search_and_Process()
 
-        cumulative_patent_nums = [] # List of strings
-        cumulative_patent_titles = [] # List of strings
-        cumulative_patent_abstracts = [] # List of strings
-        cumulative_search_source = [] # List of lists. Track which search yielded this patent
+        all_patent_nums = [] # List of strings
+        all_patent_titles = [] # List of strings
+        all_patent_abstracts = [] # List of strings
+        all_search_sources = [] # List of lists. Track which search yielded this patent
+
+        series_id = {"primary": 0, "s1": 1, "s2": 2, "s3": 3} # Convert search name  series number
 
         for key in search_term_dict:
             search_term = search_term_dict[key]
-            # Remove stopwords/punctuation and make lower case
-            search_term = secondary_search.condition_text(text_string=search_term)
-            # Format payload for request
-            post_request_json = deepcopy(self.post_request_template)
-            post_request_json["q"]["_text_any"]["patent_abstract"] = search_term
-            post_request_json["f"] = ["patent_number","patent_title","patent_abstract"]
-            # Make HTTP request
-            response_json = secondary_search.make_post_request(payload=post_request_json)
+            if len(search_term) > 0: # Unused series has an empty string
+                # Remove stopwords/punctuation and make lower case
+                search_term = secondary_search.condition_text(text_string=search_term)
+                # Format payload for request
+                post_request_json = deepcopy(self.post_request_template)
+                post_request_json["q"]["_text_any"]["patent_abstract"] = search_term
+                post_request_json["f"] = ["patent_number","patent_title","patent_abstract"]
+                # Make HTTP request
+                response_json = secondary_search.make_post_request(payload=post_request_json)
 
-            if response_json != "HTTP error":
-                # Process from dictionary to lists of strings
-                nums, titles, abstracts = secondary_search.process_post_result(resp_json=response_json)
-                # Update cumulative list of search results
-                for idx, num in enumerate(nums):
-                    if num not in cumulative_patent_nums:
-                        cumulative_patent_nums.append(num)
-                        cumulative_patent_titles.append(titles[idx])
-                        cumulative_patent_abstracts.append(abstracts[idx])
-                        cumulative_search_source.append([key])
-                    else:
-                        # If already exists, add search source to sublist
-                        patent_idx = cumulative_patent_nums.index(num)
-                        cumulative_search_source[patent_idx].append(key)
-            
-            else: # If HTTP error, return early
-                return "NOT SURE WHAT MY FINAL DATA STRUCTURE WILL BE YET"
-                
+                if response_json != "HTTP error":
+                    # Process from dictionary to lists of strings
+                    nums, titles, abstracts = secondary_search.process_post_result(resp_json=response_json)
+                    # Update cumulative list of search results
+                    for idx, num in enumerate(nums):
+                        if num not in all_patent_nums:
+                            all_patent_nums.append(num)
+                            all_patent_titles.append(titles[idx])
+                            all_patent_abstracts.append(abstracts[idx])
+                            all_search_sources.append([series_id[key]])
+                        else:
+                            # If already exists, add search source to sublist
+                            patent_idx = all_patent_nums.index(num)
+                            all_search_sources[patent_idx].append(series_id[key])
+
         # Instantiate model class
         secondary_model = Model_Text()
-        cartesian_coords = secondary_model.mds_similarity_to_coords(cumulative_patent_abstracts)
-        x_center, y_center, radius = secondary_model.calculate_centroid_and_radius(cartesian_coords)
+        cartesian_coords = secondary_model.mds_similarity_to_coords(all_patent_abstracts)
+        all_series_points = secondary_model.split_into_groups(cartesian_coords,
+                                                              all_search_sources,
+                                                              all_patent_nums,
+                                                              all_patent_titles)
+        all_points_array = []
+        all_circles_array = []
+        
+        for series, point in enumerate(all_series_points):
+            if len(point) > 0:
+                points_array, circles_array = secondary_model.create_plot_arrays(series, coords)
+                all_points_array.extend(points_array)
+                all_circles_array.extend(circles_array)
+        
+        return all_points_array, all_circles_array

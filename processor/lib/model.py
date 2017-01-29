@@ -27,7 +27,8 @@ class Model_Text(object):
         # TODO Add stemming
         tfidf = TfidfVectorizer(stop_words=general_stopwords)
         tfidf_sparse_matrix = tfidf.fit_transform(abstract_list)
-        return cosine_distances(tfidf_sparse_matrix)
+        cos_dist_matrix = cosine_distances(tfidf_sparse_matrix)
+        return cos_dist_matrix
 
 
     def mds_similarity_to_coords(self, abstract_list):
@@ -36,6 +37,33 @@ class Model_Text(object):
         mds = MDS(n_components=2, dissimilarity="precomputed", random_state=42)
         mds_fit_coordinates = mds.fit_transform(distance_matrix) # n_samples by n_samples
         return mds_fit_coordinates
+
+
+    def split_into_groups(self, coords, search_ids, patent_nums, patent_titles):
+        p_points = []
+        s1_points = []
+        s2_points = []
+        s3_points = []
+        all_points = []
+
+        if (len(coords) == len(search_ids) == len(patent_nums) = len(patent_titles)):
+            for pt, ids, num, title in zip(coords, search_ids, patent_nums, patent_titles):
+                a_point = [pt, num, title]
+                if 0 in ids:         
+                    p_points.append(a_point)
+                if 1 in ids:
+                    s1_points.append(a_point)
+                if 2 in ids:
+                    s2_points.append(a_point)
+                if 3 in ids:
+                    s3_points.append(a_point)
+            
+        all_points.append(p_points)
+        all_points.append(s1_points)
+        all_points.append(s2_points)
+        all_points.append(s3_points)
+
+        return all_points
 
 
     def calculate_centroid_and_radius(self, series_coords):
@@ -74,5 +102,24 @@ class Model_Text(object):
         return x_m, y_m, np.mean(Ri_1)
     
 
-    def collect_label_text(self):
-        pass
+    def create_points_objects(self, search_id, points_list):
+        for point in points_list:
+            single_point_obj = {
+                "x": point[0],
+                "y": point[1],
+                "patent_title": ,
+                "patent_number": ,
+                "series": search_id}
+
+    
+    def create_plot_arrays(self, search_id, points_list):
+        array_point_objs = self.create_points_objects(search_id, points_list)
+
+        circles_array = [{"x_center":, "y_center":, "radius":, "series":}]
+        number_of_distinct_patents_returned = 22
+
+                if len(p_points) > 0:
+            
+            all_points.extend(p_array_obj_points)
+            p_x, p_y, p_r = self.calculate_centroid_and_radius(p_points)
+            p_circle = {"x_center": p_x, "y_center": p_y, "radius": p_r, "series": 0}

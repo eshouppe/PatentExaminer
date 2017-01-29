@@ -38,11 +38,11 @@ class Search_and_Process(object):
         # Make arrays of each result component
         abstracts_from_response = []
         titles_from_response = []
-        patent_nums_from_response = []
+        nums_from_response = []
 
         for obj in resp_json['patents']:
             abstracts_from_response.append(obj["patent_abstract"])
             titles_from_response.append(obj["patent_title"])
-            patent_nums_from_response.append(obj["patent_number"])
+            nums_from_response.append(obj["patent_number"])
         
-        return patent_nums_from_response, titles_from_response, abstracts_from_response
+        return nums_from_response, titles_from_response, abstracts_from_response
