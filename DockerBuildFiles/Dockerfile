@@ -26,18 +26,20 @@ RUN apt-get install --yes --force-yes tar git curl nano wget dialog net-tools bu
 RUN mkdir /root/.ssh/
 
 # Copy over private key, and set permissions
-ADD id_rsa_vennDemoBitbucket /root/.ssh/id_rsa_vennDemoBitbucket
-RUN chmod 700 /root/.ssh/id_rsa_vennDemoBitbucket
+ADD id_rsa_vennDemoBitbucket /root/.ssh/id_rsa
+RUN chmod 700 /root/.ssh/id_rsa
 RUN chown -R root:root /root/.ssh
 
 # Create known_hosts
 RUN touch /root/.ssh/known_hosts
+# Add bitbuckets key
+RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
 
 # Remove host checking
 RUN echo "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
 
 # Clone the conf files into the docker container
-RUN git clone git@bitbucket.org:ineedthekeyboard/venndemo.git /venndemo
+RUN git clone -b demoproject git@bitbucket.org:ineedthekeyboard/venndemo.git /venndemo
 
 #don't copy files directly
 #ADD . /venndemo
