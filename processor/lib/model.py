@@ -10,15 +10,18 @@ from sklearn.manifold import MDS
 
 class Model_Text(object):
    
-    def calculate_tf(self, abstract_list, num_words_to_return=10):
+    def calculate_tf(self, abstract_list, search_term_list, num_words_to_return=10):
         """Get the 10 most common non-stopwords"""
         # TODO Account for abstract size
         # TODO Change primary search to use tfidf
+        for idx, term in enumerate(search_term_list):
+            search_term_list[idx] = term.lower()
+
         cnt = Counter()
         for abstract in abstract_list:
             tokenized_abstract = word_tokenize(abstract)
             cnt.update(tokenized_abstract)
-        most_common_words = [pair[0] for pair in cnt.most_common(num_words_to_return)]
+        most_common_words = [pair[0] for pair in cnt.most_common(num_words_to_return) if pair[0] not in search_term_list]
         return most_common_words
         
 

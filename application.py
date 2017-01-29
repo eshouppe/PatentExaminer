@@ -27,7 +27,8 @@ def do_secondary_search():
     if not request.json or ('primary' not in request.json):
         abort(500)
     new_secondary_search = Processor_Job()
-    returnObj = new_secondary_search.initiate_secondary_search(request.json)
+    points, circles, num_patents = new_secondary_search.initiate_secondary_search(request.json)
+    returnObj = {"results_to_plot": points, "circles": circles, "num_patents": num_patents}
     return jsonify(returnObj)
 
 
