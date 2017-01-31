@@ -56,7 +56,7 @@ class Processor_Job(object):
         else:
             return_obj = {
                 'message': 'Patent search error. Please try again.',
-                'error' : '500 internal error'
+                'error' : '500'
             }
             return {search_term_dict['primary']: ['HTTP_error']}
 

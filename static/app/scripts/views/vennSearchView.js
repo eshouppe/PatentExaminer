@@ -30,8 +30,12 @@
     },
     initialize: function () {
       //Reup the state if need be
-
-      this.render();
+      if (window.app.data.reSearch) {
+        this.reRunSavedSearch(window.app.data.reSearch);
+        window.app.data.reSearch = null;
+      } else {
+        this.render();
+      }
     },
     render: function () {
       this.template = Templates.vennSearchView(this.viewState);
@@ -68,8 +72,8 @@
         this.changeLoader(false);
       }
       $.ajax({
-        // url: '/venn/api/v1.0/search',
-        url: 'http://localhost:5000/venn/api/v1.0/search/primary',
+        //url: 'http://127.0.0.1:5000/venn/api/v1.0/search/primary',
+        url: '/venn/api/v1.0/search/primary',
         contentType: "application/json",
         dataType:'json',
         method:'POST',
@@ -86,16 +90,25 @@
       });
 
     },
-    vennSearch: function () {
-      this.searchModel.s1 = $('.vennSearchView #search2').val() || '';
-      this.searchModel.s2 = $('.vennSearchView #search3').val() || '';
-      this.searchModel.s3 = $('.vennSearchView #search4').val() || '';
+    reRunSavedSearch: function (previousSearch) {
+      this.searchModel.searchText = previousSearch.searchText;
+      this.searchModel.s1 = previousSearch.s1;
+      this.searchModel.s2 = previousSearch.s2;
+      this.searchModel.s2 = previousSearch.s3;
+      this.vennSearch(true);
+
+    },
+    vennSearch: function (searchIsSaved) {
+      if (!searchIsSaved) {
+        this.searchModel.s1 = $('.vennSearchView #search2').val() || '';
+        this.searchModel.s2 = $('.vennSearchView #search3').val() || '';
+        this.searchModel.s3 = $('.vennSearchView #search4').val() || '';
+      }
       var $searchButton = this.$el.find('.primaryResultsContainer .searchnow');
       this.changeLoader(true);
       $searchButton.attr('disabled',true);
       function saveSearch(searchModel) {
         var storedSearchData = window.app.localDataManager(true, 'searchData') || {};
-        debugger;
         if (storedSearchData['previousSearch'] && storedSearchData['previousSearch'].constructor === Array) {
           storedSearchData['previousSearch'].push(searchModel);
         } else {
@@ -105,23 +118,23 @@
         window.app.localDataManager(false,'searchData',storedSearchData);
       }
       function processResponse(response) {
-        saveSearch(this.searchModel);
-        debugger;
+        if (!searchIsSaved) {
+          saveSearch(this.searchModel);
+        }
         this.viewState = {vennresults:true};
         this.viewTitle='Venn Results';
         $searchButton.attr('disabled',false);
         this.changeLoader(false);
         this.render();
 
-        this.chart = new window.app.chartView();
-        //this.chart.drawGraph(this.tempFakeVennData2());
+        this.chart = new window.app.chartView(this.searchModel);
         this.chart.drawGraph(response);
       }
       this.changeLoader(true);
       //Update Search Model
       $.ajax({
-        // url: '/venn/api/v1.0/search',
-        url: 'http://localhost:5000/venn/api/v1.0/search/secondary',
+        //url: 'http://127.0.0.1:5000/venn/api/v1.0/search/secondary',
+        url: '/venn/api/v1.0/search/secondary',
         contentType: "application/json",
         dataType:'json',
         method:'POST',
@@ -300,375 +313,6 @@
       }
       updateGraph();
       updateInputFields();
-    },
-
-
-    tempFakeVennData: function () {
-      return {
-        "matchingPatentNums": ["4323119", "9256837", "9322223", "9544721", "7089160", "5992941", "9122728", "9009656", "7188090", "9019971", "9091140", "9521002", "8807242", "8140821", "9514154", "9542278", "9460444", "9524243", "9160606", "9535629", "8780401"],
-        "numMatchedPatents": 21,
-        "resultsToPlot": [{
-          "full_search": [2],
-          "patent_ID": "9322223",
-          "series": 2,
-          "x": 0.33352814889601656,
-          "y": 0.19000498156127063
-        }, {
-          "full_search": [1, 2],
-          "patent_ID": "5992941",
-          "series": 3,
-          "x": 0.10929895088340076,
-          "y": 0.002346941301437168
-        }, {
-          "full_search": [1, 2],
-          "patent_ID": "9009656",
-          "series": 3,
-          "x": 0.439179705887706,
-          "y": -0.4303896233211017
-        }, {
-          "full_search": [1, 2],
-          "patent_ID": "9521002",
-          "series": 3,
-          "x": 0.329176116669107,
-          "y": -0.19021560779751778
-        }, {
-          "full_search": [1, 2],
-          "patent_ID": "8807242",
-          "series": 3,
-          "x": -0.37101924808360315,
-          "y": 0.3135603849295623
-        }, {
-          "full_search": [2],
-          "patent_ID": "9542278",
-          "series": 2,
-          "x": -0.13618406890000995,
-          "y": 0.2924221794509723
-        }, {
-          "full_search": [1, 2],
-          "patent_ID": "9524243",
-          "series": 3,
-          "x": -0.398666928574141,
-          "y": -0.28992593880563633
-        }, {
-          "full_search": [1, 2],
-          "patent_ID": "9160606",
-          "series": 3,
-          "x": -0.2645322942744308,
-          "y": -0.1589492255334406
-        }, {
-          "full_search": [1, 2],
-          "patent_ID": "9535629",
-          "series": 3,
-          "x": -0.10206097141792475,
-          "y": 0.016208546094341643
-        }, {
-          "full_search": [1],
-          "patent_ID": "8780401",
-          "series": 1,
-          "x": -0.2743059224631802,
-          "y": -0.022631982433892257
-        }, {
-          "full_search": [1],
-          "patent_ID": "4323119",
-          "series": 1,
-          "x": 0.26973577910441293,
-          "y": -0.3481144416771636
-        }, {
-          "full_search": [1],
-          "patent_ID": "9256837",
-          "series": 1,
-          "x": -0.12485800130735049,
-          "y": -0.02020601974509292
-        }, {
-          "full_search": [1],
-          "patent_ID": "9544721",
-          "series": 1,
-          "x": 0.1922855600527753,
-          "y": 0.2887026001364932
-        }, {
-          "full_search": [1],
-          "patent_ID": "7089160",
-          "series": 1,
-          "x": 0.06452938381558393,
-          "y": 0.29850707468999665
-        }, {
-          "full_search": [1],
-          "patent_ID": "9122728",
-          "series": 1,
-          "x": -0.051614015355108275,
-          "y": -0.21967544460508848
-        }, {
-          "full_search": [1],
-          "patent_ID": "9019971",
-          "series": 1,
-          "x": -0.43870803751839954,
-          "y": -0.2319184124959694
-        }, {
-          "full_search": [1],
-          "patent_ID": "9091140",
-          "series": 1,
-          "x": 0.06250063444774649,
-          "y": -0.14558082726596297
-        }, {
-          "full_search": [1],
-          "patent_ID": "8140821",
-          "series": 1,
-          "x": 0.18611658738573214,
-          "y": 0.39430347324397647
-        }, {
-          "full_search": [1],
-          "patent_ID": "9514154",
-          "series": 1,
-          "x": 0.018161105119711238,
-          "y": 0.12529324055268184
-        }, {
-          "full_search": [1],
-          "patent_ID": "9460444",
-          "series": 1,
-          "x": 0.2075076326461213,
-          "y": 0.25472015471415815
-        }, {
-          "full_search": [1],
-          "patent_ID": "7188090",
-          "series": 1,
-          "x": -0.05007011701416581,
-          "y": -0.11846205299402432
-        }],
-        "search1Circle": {"r": 0.3113606041595843, "x": -0.010386530526105633, "y": -0.025390903211170674},
-        "search2Circle": {"r": 0.3676135809111213, "x": -0.006808954323764376, "y": -0.028326373568901372},
-        "searchedString(s)": ["data", "mining"],
-        "searchedTerms": ["data", "mining"]
-      };
-    },
-    tempFakeVennData2: function () {
-      return {
-        "matchingPatentNums": ["4323119", "9256837", "9322223", "9544721", "7089160", "5992941", "9122728", "9009656", "7188090", "9019971", "9091140", "9521002", "8807242", "8140821", "9514154", "9542278", "9460444", "9524243", "9160606", "9535629", "8780401"],
-        "numMatchedPatents": 21,
-        "resultsToPlot": [
-          {
-            "patent_ID": "9322223",
-            "series": 1,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322223",
-            "series": 1,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322223",
-            "series": 1,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322223",
-            "series": 1,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322223",
-            "series": 1,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322223",
-            "series": 1,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322223",
-            "series": 1,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322223",
-            "series": 1,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322223",
-            "series": 1,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322223",
-            "series": 1,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322224",
-            "series": 2,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322225",
-            "series": 3,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322225",
-            "series": 3,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322225",
-            "series": 3,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322225",
-            "series": 3,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322225",
-            "series": 3,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322225",
-            "series": 3,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322225",
-            "series": 3,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322225",
-            "series": 3,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322226",
-            "series": 4,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322226",
-            "series": 4,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322226",
-            "series": 4,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322226",
-            "series": 4,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322226",
-            "series": 4,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322226",
-            "series": 4,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322226",
-            "series": 4,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          },
-          {
-            "patent_ID": "9322226",
-            "series": 4,
-            "x": Math.floor((Math.random() * 100) + 1),
-            "y": Math.floor((Math.random() * 100) + 1)
-          }
-        ]
-      }
     }
   });
 })(window, Backbone, Handlebars, Templates);

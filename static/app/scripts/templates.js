@@ -23,7 +23,17 @@ this["Templates"]["apiView"] = Handlebars.template({"1":function(container,depth
     + "      </ul>\n    </div>\n  </div>\n</div>\n";
 },"useData":true});
 this["Templates"]["chartView"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"mdl-grid\">\n  <div class=\"mdl-cell mdl-cell--12-col\">\n    <div class=\"ct-chart ct-golden-section\" id=\"resultsChart\"></div>\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--12-col\">\n        <div class=\"title center\">\n          <h6 style=\"text-decoration: underline;\">Legend</h6>\n        </div>\n      </div>\n      <div class=\"mdl-cell mdl-cell--3-col\">\n        <div class=\"title center search1Legend\">\n          Search 1\n        </div>\n      </div>\n      <div class=\"mdl-cell mdl-cell--3-col\">\n        <div class=\"title center search2Legend\">\n          Search 2\n        </div>\n      </div>\n      <div class=\"mdl-cell mdl-cell--3-col\">\n        <div class=\"title center search3Legend\">\n          Search 3\n        </div>\n      </div>\n      <div class=\"mdl-cell mdl-cell--3-col\">\n        <div class=\"title center search4Legend\">\n          Search 4\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n";
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "<div class=\"mdl-grid\">\n  <div class=\"mdl-cell mdl-cell--12-col\">\n    <div class=\"ct-chart ct-golden-section\" id=\"resultsChart\"></div>\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--12-col\">\n        <div class=\"title center\">\n          <h6 style=\"text-decoration: underline;\">Legend</h6>\n        </div>\n      </div>\n      <div class=\"mdl-cell mdl-cell--3-col\">\n        <div class=\"title center search1Legend\">\n          "
+    + alias4(((helper = (helper = helpers.searchText || (depth0 != null ? depth0.searchText : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"searchText","hash":{},"data":data}) : helper)))
+    + "\n        </div>\n      </div>\n      <div class=\"mdl-cell mdl-cell--3-col\">\n        <div class=\"title center search2Legend\">\n          "
+    + alias4(((helper = (helper = helpers.s1 || (depth0 != null ? depth0.s1 : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"s1","hash":{},"data":data}) : helper)))
+    + "\n        </div>\n      </div>\n      <div class=\"mdl-cell mdl-cell--3-col\">\n        <div class=\"title center search3Legend\">\n          "
+    + alias4(((helper = (helper = helpers.s2 || (depth0 != null ? depth0.s2 : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"s2","hash":{},"data":data}) : helper)))
+    + "\n        </div>\n      </div>\n      <div class=\"mdl-cell mdl-cell--3-col\">\n        <div class=\"title center search4Legend\">\n          "
+    + alias4(((helper = (helper = helpers.s3 || (depth0 != null ? depth0.s3 : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"s3","hash":{},"data":data}) : helper)))
+    + "\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n";
 },"useData":true});
 this["Templates"]["scatterView"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid\">\n  Plot search coming soon\n</div>\n";
@@ -46,7 +56,9 @@ this["Templates"]["vennSearchView"] = Handlebars.template({"1":function(containe
 this["Templates"]["workBenchView"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "              <li class=\"mdl-list__item mdl-list__item--two-line\">\n              <span class=\"mdl-list__item-primary-content\">\n                <i class=\"material-icons mdl-list__item-avatar\">lightbulb_outline</i>\n                <span>"
+  return "              <li class=\"mdl-list__item mdl-list__item--two-line savedPatent\" data-patentId=\""
+    + alias2(alias1((depth0 != null ? depth0.patentId : depth0), depth0))
+    + "\">\n              <span class=\"mdl-list__item-primary-content\">\n                <i class=\"material-icons mdl-list__item-avatar\">lightbulb_outline</i>\n                <span>"
     + alias2(alias1((depth0 != null ? depth0.patentId : depth0), depth0))
     + "</span>\n                <span class=\"mdl-list__item-sub-title\">"
     + alias2(alias1((depth0 != null ? depth0.patentTitle : depth0), depth0))
@@ -54,23 +66,25 @@ this["Templates"]["workBenchView"] = Handlebars.template({"1":function(container
     + alias2(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"index","hash":{},"data":data}) : helper)))
     + "\"><i class=\"material-icons\">clear</i></span>\n                </span>\n              </li>\n";
 },"3":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=container.lambda, alias2=container.escapeExpression;
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression, alias5=container.lambda;
 
-  return "              <li class=\"mdl-list__item mdl-list__item--two-line\">\n                <span class=\"mdl-list__item-primary-content\">\n                  <i class=\"material-icons mdl-list__item-avatar\">search</i>\n                  <span>"
-    + alias2(alias1((depth0 != null ? depth0.searchText : depth0), depth0))
+  return "              <li class=\"mdl-list__item mdl-list__item--two-line savedSearch\" data-idx=\""
+    + alias4(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
+    + "\">\n                <span class=\"mdl-list__item-primary-content\">\n                  <i class=\"material-icons mdl-list__item-avatar\">search</i>\n                  <span>"
+    + alias4(alias5((depth0 != null ? depth0.searchText : depth0), depth0))
     + "</span>\n                  <span class=\"mdl-list__item-sub-title\">\n                    Subsearch: "
-    + alias2(alias1((depth0 != null ? depth0.s1 : depth0), depth0))
+    + alias4(alias5((depth0 != null ? depth0.s1 : depth0), depth0))
     + " "
-    + alias2(alias1((depth0 != null ? depth0.s2 : depth0), depth0))
+    + alias4(alias5((depth0 != null ? depth0.s2 : depth0), depth0))
     + " "
-    + alias2(alias1((depth0 != null ? depth0.s3 : depth0), depth0))
+    + alias4(alias5((depth0 != null ? depth0.s3 : depth0), depth0))
     + "\n                  </span>\n                </span>\n                <span class=\"mdl-list__item-secondary-content\">\n                  <span class=\"mdl-list__item-secondary-action removeSearch\" data-idx=\""
-    + alias2(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"index","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
     + "\"><i class=\"material-icons\">clear</i></span>\n                </span>\n              </li>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
 
-  return "<div class=\"mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid workBenchView\">\n  <div class=\"mdl-cell mdl-cell--12-col\">\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone\">\n        <div class=\"headerContainer\">\n          <h5>Workbench</h5>\n          <p>Saved patents from previous results</p>\n        </div>\n        <div class=\"mdl-cell mdl-cell--12-col listContainer\">\n          <ul class=\"demo-list-two mdl-list\">\n"
+  return "<div class=\"mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid workBenchView\">\n  <div class=\"mdl-cell mdl-cell--12-col\">\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone\">\n        <div class=\"headerContainer\">\n          <h5>Workbench</h5>\n          <p>Select a saved patent to open</p>\n        </div>\n        <div class=\"mdl-cell mdl-cell--12-col listContainer\">\n          <ul class=\"demo-list-two mdl-list\">\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.savedPatents : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "          </ul>\n        </div>\n      </div>\n      <div class=\"mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone\">\n        <div class=\"headerContainer\">\n          <h5>Previous Searches</h5>\n          <p>Select a search to reload</p>\n        </div>\n        <div class=\"mdl-cell mdl-cell--12-col listContainer\">\n          <ul class=\"demo-list-two mdl-list\">\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.previousSearch : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")

@@ -4,12 +4,12 @@
       <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
         <div class="headerContainer">
           <h5>Workbench</h5>
-          <p>Saved patents from previous results</p>
+          <p>Select a saved patent to open</p>
         </div>
         <div class="mdl-cell mdl-cell--12-col listContainer">
           <ul class="demo-list-two mdl-list">
             {{#each savedPatents}}
-              <li class="mdl-list__item mdl-list__item--two-line">
+              <li class="mdl-list__item mdl-list__item--two-line savedPatent" data-patentId="{{this.patentId}}">
               <span class="mdl-list__item-primary-content">
                 <i class="material-icons mdl-list__item-avatar">lightbulb_outline</i>
                 <span>{{this.patentId}}</span>
@@ -31,7 +31,7 @@
         <div class="mdl-cell mdl-cell--12-col listContainer">
           <ul class="demo-list-two mdl-list">
             {{#each previousSearch}}
-              <li class="mdl-list__item mdl-list__item--two-line">
+              <li class="mdl-list__item mdl-list__item--two-line savedSearch" data-idx="{{@index}}">
                 <span class="mdl-list__item-primary-content">
                   <i class="material-icons mdl-list__item-avatar">search</i>
                   <span>{{this.searchText}}</span>

@@ -7,7 +7,9 @@
     el: '#appView',
     events:{
       'click .workBenchView .removeSearch':'removeSearch',
-      'click .workBenchView .removeSavedPatent':'removePatent'
+      'click .workBenchView .removeSavedPatent':'removePatent',
+      'click .workBenchView .savedPatent':'openSavedPatent',
+      'click .workBenchView .savedSearch':'openSavedSearch'
     },
     initialize: function () {
       this.templateDataFromStorage = window.app.localDataManager(true, 'searchData');
@@ -32,6 +34,28 @@
       this.template = Templates.workBenchView(this.templateDataFromStorage);
       this.$el.html(this.template);
     },
+    openSavedPatent: function (event) {
+      var patentId = $(event.currentTarget).data('patentid') || null,
+        url = 'https://patents.google.com/patent/';
+      if (patentId) {
+        patentId = "US" + patentId;
+        url = url + patentId + '/en';
+        window.open(url,'_blank');
+      }
+    },
+    openSavedSearch: function (event) {
+      var searchIdx = $(event.currentTarget).data('idx');
+      function filterByIndex(elm,idx) {
+        return (idx === searchIdx);
+      }
+      selectedSavedSearchData = this.templateDataFromStorage.previousSearch.filter(filterByIndex)[0] || null;
+      if (selectedSavedSearchData) {
+        window.app.data.reSearch = selectedSavedSearchData;
+        window.location.href = "/#vennSearch";
+      } else {
+        window.app.showToast("Saved Search Corrupted")
+      }
+    },
     removePatent: function (event) {
       var searchIdx = $(event.currentTarget).data('idx');
       function filterByIndex(elm,idx) {
@@ -40,6 +64,7 @@
       this.templateDataFromStorage.savedPatents = this.templateDataFromStorage.savedPatents.filter(filterByIndex);
       window.app.localDataManager(false,'searchData',this.templateDataFromStorage);
       this.render();
+      event.stopPropagation();
     },
     removeSearch: function (event) {
       var searchIdx = $(event.currentTarget).data('idx');
@@ -49,6 +74,7 @@
       this.templateDataFromStorage.previousSearch = this.templateDataFromStorage.previousSearch.filter(filterByIndex);
       window.app.localDataManager(false,'searchData',this.templateDataFromStorage);
       this.render();
+      event.stopPropagation();
     }
   });
 })(window, Backbone, Handlebars, Templates);

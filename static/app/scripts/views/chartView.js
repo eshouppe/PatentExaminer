@@ -5,10 +5,11 @@
   window.app.chartView = Backbone.View.extend({
     template: '',
     el: '.chartView',
-    initialize: function () {
+    initialize: function (searchObj) {
       this.seq = 0;
       this.resetFnc = null;
-      this.template = Templates.chartView();
+      this.searchObj = searchObj;
+      this.template = Templates.chartView(searchObj);
       this.render();
       this.buildInitialChart();
     },
@@ -32,7 +33,7 @@
         // transform tooltip text
         class: 'tooltipListenerClass', // accecpts 'class1', 'class1 class2', etc.
         //adds class(es) to tooltip wrapper
-        anchorToPoint: false, //accepts true or false
+        anchorToPoint: true, //accepts true or false
         //tooltips do not follow mouse movement -- they are anchored to the point / bar.
         appendToBody: false //accepts true or false
         //appends tooltips to body instead of chart container
@@ -88,7 +89,6 @@
       this.chart = new Chartist.Line('#resultsChart', data, options, responsiveOptions).on('draw', this.onDrawUpdates.bind(this));
     },
     drawGraph: function (data) {
-      debugger;
       var newData = {
         series: [
           [],
@@ -106,7 +106,6 @@
       }
       //Compute and Add Circles
       newData.series.unshift(data.circles  || []);
-      debugger;
       this.test = 0;
       this.seq = 0;
 
@@ -174,7 +173,12 @@
         x: currentGraphData.x + newRadius + 10,
         y: currentGraphData.y
       });
-      text1._node.innerHTML = 'Search ' + (currentGraphData.index + 1);
+      switch (currentGraphData.index) {
+        case 0:
+          text1._node.innerHTML = this.searchObj['searchText'];
+        default:
+          text1._node.innerHTML = this.searchObj['s'+currentGraphData.index];
+      }
       currentGraphData.group.append(circ1);
       currentGraphData.group.append(text1);
     },
