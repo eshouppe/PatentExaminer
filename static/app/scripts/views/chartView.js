@@ -33,10 +33,13 @@
         // transform tooltip text
         class: 'tooltipListenerClass', // accecpts 'class1', 'class1 class2', etc.
         //adds class(es) to tooltip wrapper
-        anchorToPoint: true, //accepts true or false
+        anchorToPoint: false,  //accepts true or false
         //tooltips do not follow mouse movement -- they are anchored to the point / bar.
-        appendToBody: false //accepts true or false
+        appendToBody: false,  //accepts true or false
         //appends tooltips to body instead of chart container
+        'tooltipOffset': {
+          'y': -30
+        }
       };
       var options = {
         showLine: false,
@@ -176,8 +179,10 @@
       switch (currentGraphData.index) {
         case 0:
           text1._node.innerHTML = this.searchObj['searchText'];
-        default:
+          break;
+       default:
           text1._node.innerHTML = this.searchObj['s'+currentGraphData.index];
+          break;
       }
       currentGraphData.group.append(circ1);
       currentGraphData.group.append(text1);

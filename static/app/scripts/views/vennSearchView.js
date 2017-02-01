@@ -72,16 +72,15 @@
         this.changeLoader(false);
       }
       $.ajax({
-        //url: 'http://127.0.0.1:5000/venn/api/v1.0/search/primary',
-        url: '/venn/api/v1.0/search/primary',
+        url: 'http://127.0.0.1:5000/venn/api/v1.0/search/primary',
+        //url: '/venn/api/v1.0/search/primary',
         contentType: "application/json",
         dataType:'json',
         method:'POST',
         //data is the search term
         data:JSON.stringify({'primary':this.searchModel.searchText}),
         success: processResults.bind(this),
-        error: function(response){
-          debugger;
+        error: function(response) {
           //var errorCode = JSON.parse(xhr.responseText);
           $searchButton.attr('disabled', false);
           this.changeLoader(false);
@@ -96,10 +95,9 @@
       this.searchModel.s2 = previousSearch.s2;
       this.searchModel.s2 = previousSearch.s3;
       this.vennSearch(true);
-
     },
     vennSearch: function (searchIsSaved) {
-      if (!searchIsSaved) {
+      if (searchIsSaved !== true) {
         this.searchModel.s1 = $('.vennSearchView #search2').val() || '';
         this.searchModel.s2 = $('.vennSearchView #search3').val() || '';
         this.searchModel.s3 = $('.vennSearchView #search4').val() || '';
@@ -118,7 +116,7 @@
         window.app.localDataManager(false,'searchData',storedSearchData);
       }
       function processResponse(response) {
-        if (!searchIsSaved) {
+        if (searchIsSaved !== true) {
           saveSearch(this.searchModel);
         }
         this.viewState = {vennresults:true};
@@ -133,8 +131,8 @@
       this.changeLoader(true);
       //Update Search Model
       $.ajax({
-        //url: 'http://127.0.0.1:5000/venn/api/v1.0/search/secondary',
-        url: '/venn/api/v1.0/search/secondary',
+        url: 'http://127.0.0.1:5000/venn/api/v1.0/search/secondary',
+        //url: '/venn/api/v1.0/search/secondary',
         contentType: "application/json",
         dataType:'json',
         method:'POST',
@@ -146,8 +144,7 @@
           's3':this.searchModel.s3 || ''
         }),
         success: processResponse.bind(this),
-        error: function(response){
-          debugger;
+        error: function(response) {
           $searchButton.attr('disabled', false);
           this.changeLoader(false);
           window.app.showToast('Search Error Occurred - Code:' + response.status);
@@ -182,7 +179,6 @@
       var keycode = (event.keyCode ? event.keyCode : event.which);
       if (keycode == '13') {
         if (this.viewState.primarysearch){
-
           $('.vennSearchView .searchContainer .searchnow').click();
         } else if (this.viewState.primaryresults) {
           $('.vennSearchView .primaryResultsContainer .searchnow').click();

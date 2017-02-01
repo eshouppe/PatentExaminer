@@ -51,7 +51,7 @@
       selectedSavedSearchData = this.templateDataFromStorage.previousSearch.filter(filterByIndex)[0] || null;
       if (selectedSavedSearchData) {
         window.app.data.reSearch = selectedSavedSearchData;
-        window.location.href = "/#vennSearch";
+        window.location.href = "#vennSearch";
       } else {
         window.app.showToast("Saved Search Corrupted")
       }
