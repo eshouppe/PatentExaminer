@@ -72,8 +72,8 @@
         this.changeLoader(false);
       }
       $.ajax({
-        url: 'http://127.0.0.1:5000/venn/api/v1.0/search/primary',
-        //url: '/venn/api/v1.0/search/primary',
+        //url: 'http://127.0.0.1:5000/venn/api/v1.0/search/primary',
+        url: '/venn/api/v1.0/search/primary',
         contentType: "application/json",
         dataType:'json',
         method:'POST',
@@ -131,8 +131,8 @@
       this.changeLoader(true);
       //Update Search Model
       $.ajax({
-        url: 'http://127.0.0.1:5000/venn/api/v1.0/search/secondary',
-        //url: '/venn/api/v1.0/search/secondary',
+        //url: 'http://127.0.0.1:5000/venn/api/v1.0/search/secondary',
+        url: '/venn/api/v1.0/search/secondary',
         contentType: "application/json",
         dataType:'json',
         method:'POST',
