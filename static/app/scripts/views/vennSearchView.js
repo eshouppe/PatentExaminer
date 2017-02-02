@@ -24,7 +24,7 @@
       'click .vennSearchView .primaryResultsContainer .searchnow':'vennSearch',
       'click .vennSearchView .primaryResultsContainer .topic':'commonWordOnGraphSelection',
       'click .vennSearchView .vennResults .reset':'resetZoom',
-      'click .vennSearchView .vennResults #resultsChart .ct-point':'savePatent',
+      'click .vennSearchView .vennResults #resultsChart .ct-point' : 'savePatent',
       'keypress .vennSearchView':'enterPressed',
       'change .vennSearchView .primaryResultsContainer input':'onFrequentWordSelectionInputChange'
     },
@@ -156,7 +156,6 @@
       this.chart.resetZoom();
     },
     savePatent: function (event) {
-      debugger;
       var meta = $(event.currentTarget).attr('ct:meta'),
         numAndTitle = meta.split(':'),
         patNum = numAndTitle[0],
