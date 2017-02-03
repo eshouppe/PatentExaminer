@@ -24,7 +24,8 @@
       'click .vennSearchView .primaryResultsContainer .searchnow':'vennSearch',
       'click .vennSearchView .primaryResultsContainer .topic':'commonWordOnGraphSelection',
       'click .vennSearchView .vennResults .reset':'resetZoom',
-      'click .vennSearchView .vennResults #resultsChart .ct-point' : 'savePatent',
+      'mouseup  .ct-point' : 'savePatent',
+      'click  .ct-point' : 'savePatent2',
       'keypress .vennSearchView':'enterPressed',
       'change .vennSearchView .primaryResultsContainer input':'onFrequentWordSelectionInputChange'
     },
@@ -155,7 +156,12 @@
     resetZoom: function () {
       this.chart.resetZoom();
     },
+    savePatent2: function(event) {
+      console.log('click event');
+      console.log(event);
+    },
     savePatent: function (event) {
+      debugger;
       var meta = $(event.currentTarget).attr('ct:meta'),
         numAndTitle = meta.split(':'),
         patNum = numAndTitle[0],
@@ -164,6 +170,8 @@
           'patentId':patNum,
           'patentTitle':title
         };
+        console.log('clicked');
+        console.log(meta);
       var storedSearchData = window.app.localDataManager(true, 'searchData') || {};
       if (storedSearchData['savedPatents'] && storedSearchData['savedPatents'].constructor === Array) {
         storedSearchData['savedPatents'].push(newPatentDoc);

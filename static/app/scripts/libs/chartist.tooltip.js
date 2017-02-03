@@ -70,6 +70,11 @@
 
         function on(event, selector, callback) {
           $chart.addEventListener(event, function (e) {
+            if (event === 'click' || event === 'mouseup' || event === 'mousedown') {
+              debugger;
+              console.log(event);
+              return;
+            }
             if (!selector || hasClass(e.target, selector))
               callback(e);
           });

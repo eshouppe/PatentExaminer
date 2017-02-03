@@ -131,16 +131,13 @@ gulp.task('scripts',['templates'], () =>
       './app/scripts/libs/numeric.js',
       './app/scripts/libs/chartist.js',
       './app/scripts/libs/chartist.tooltip.js',
-      './app/scripts/libs/chartist.pointlabel.js',
-      './app/scripts/libs/chartist.zoom.js',
-      './app/scripts/libs/chartist.zoom.js',
       './app/scripts/libs/chartist.zoom.js',
       './app/scripts/templates.js',
       './app/scripts/views/treeChart.js',
-      './app/scripts/views/vennSearchView.js',
-      './app/scripts/views/workBenchView.js',
       './app/scripts/views/chartView.js',
       './app/scripts/views/apiView.js',
+      './app/scripts/views/vennSearchView.js',
+      './app/scripts/views/workBenchView.js',
       './app/scripts/router.js',
       './app/scripts/main.js'
       // Other scripts
@@ -151,7 +148,7 @@ gulp.task('scripts',['templates'], () =>
       .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts'))
       .pipe($.concat('main.min.js'))
-      .pipe($.uglify({preserveComments: 'some'}))
+      .pipe($.uglify({preserveComments: 'none'}))
       // Output files
       .pipe($.size({title: 'scripts'}))
       .pipe($.sourcemaps.write('.'))
