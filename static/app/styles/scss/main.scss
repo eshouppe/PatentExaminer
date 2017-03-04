@@ -228,7 +228,7 @@ $color4: #09c9dc;
       stroke: $primary-highlight-color;
     }
     .ct-grids .ct-grid {
-      stroke:$primary-highlight-color
+      stroke:white;
     }
     .specialCircle1 {
       fill: transparent;
@@ -265,11 +265,11 @@ $color4: #09c9dc;
     //Graph series colors
     //Circle Points
     .ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
-      stroke: white;
+      stroke: transparent;
     }
 
     .ct-series-a .ct-slice-pie, .ct-series-a .ct-area {
-      fill: white;
+      fill:transparent;
     }
     //Scatter points
     .ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {

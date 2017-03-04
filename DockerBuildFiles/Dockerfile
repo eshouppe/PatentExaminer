@@ -39,7 +39,7 @@ RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
 RUN echo "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
 
 # Clone the conf files into the docker container
-RUN git clone -b demoproject git@bitbucket.org:ineedthekeyboard/venndemo.git /venndemo
+RUN git clone -b venndemo git@bitbucket.org:ineedthekeyboard/shadesofdepth.git /venndemo
 
 #don't copy files directly
 #ADD . /venndemo

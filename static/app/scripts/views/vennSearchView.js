@@ -24,8 +24,9 @@
       'click .vennSearchView .primaryResultsContainer .searchnow':'vennSearch',
       'click .vennSearchView .primaryResultsContainer .topic':'commonWordOnGraphSelection',
       'click .vennSearchView .vennResults .reset':'resetZoom',
-      'mouseup  .ct-point' : 'savePatent',
-      'click  .ct-point' : 'savePatent2',
+      // 'mouseup  .ct-point' : 'savePatent',
+      'contextmenu .ct-point':'savePatent',
+      'click  .ct-point' : 'savePatent',
       'keypress .vennSearchView':'enterPressed',
       'change .vennSearchView .primaryResultsContainer input':'onFrequentWordSelectionInputChange'
     },
@@ -94,7 +95,7 @@
       this.searchModel.searchText = previousSearch.searchText;
       this.searchModel.s1 = previousSearch.s1;
       this.searchModel.s2 = previousSearch.s2;
-      this.searchModel.s2 = previousSearch.s3;
+      this.searchModel.s3 = previousSearch.s3;
       this.vennSearch(true);
     },
     vennSearch: function (searchIsSaved) {
@@ -181,6 +182,8 @@
       }
       window.app.localDataManager(false,'searchData',storedSearchData);
       window.app.showToast('Patent saved to workbench.')
+      event.stopPropagation();
+      event.preventDefault();
     },
     enterPressed: function (event) {
       var keycode = (event.keyCode ? event.keyCode : event.which);

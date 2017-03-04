@@ -26,7 +26,7 @@
         //e.g. 4000 => €4,000
         tooltipFnc: function(pointMeta){
           var metaObj = pointMeta.split(':');
-          return 'USPat: ' + metaObj[0].substring(0,10) + ' <br> ' + metaObj[1] + '<br> (click point to save patent)';
+          return 'USPat: ' + metaObj[0].substring(0,10) + ' <br> ' + metaObj[1] + '<br> (right click point to save patent)';
         }, //accepts function
         //build custom tooltip
         transformTooltipTextFnc:null, // accepts function
